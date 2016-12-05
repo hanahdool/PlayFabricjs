@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+
+<!-- 캔버스 범위에서 넘어간 건 안보임. -->
+<!--background-color: cadetblue-->
+<!-- 배경색 입히면 내용 다 지워버림 -->
+<canvas id="canvas2" width="300" heoght="300" style="border: 1px solid purple"></canvas>
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.add(new fabric.Circle({ radius: 30, fill: 'yellow', top: 100, left: 100 }));
+  canvas.add(new fabric.Rect({ width:30, height: 60, fill: 'green', top: 100, left: 100 }));
+  canvas.add(new fabric.Rect({ width:30, height: 60, fill: 'blue', top: 100, left: -20 }));
+  canvas.add(new fabric.Rect({ width:30, height: 60, fill: 'red', top: 100, left:200 }));
+//  new fabric.Triangle
+
+  // 빈공간 드래그시
+//  canvas.selectionColor = 'rgba(0, 255, 0, 0.3)';
+//  canvas.selectionBorderColor = 'red';
+  canvas.selectionLineWidth = 5;
+
+
+  fabric.Image.fromURL('image/img1.jpeg', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+    canvas.add(img.set({ left: 500, top: 500, angle: -20 }).scale(0.25)); //angle은 왼쪽 위 기준으로
+
+//    img.on('moving', function() { positionBtn(img) });
+//    positionBtn(img);
+
+  });
+  fabric.Image.fromURL('image/img2.jpeg', function(img) {
+    canvas.add(img.set({ left: 800, top: 500, angle: 20}).scale(0.25));
+
+//    img.on('moving', function() { positionBtn(img) });
+//    positionBtn(img);
+
+  });
+
+
+
+  var pointX = 250;
+  var pointY = 250;
+
+  function makePoint(left, top, l1, l2, l3, l4) {
+    var c = new fabric.Circle({ left: left, top: top, strokeWidth: 2, radius: 5, fill: 'skyblue', stroke: 'grey' });
+    c.hasControls = c.hasBorders = false;
+
+    c.line1 = l1;
+    c.line2 = l2;
+    c.line3 = l3;
+    c.line4 = l4;
+
+    return c;
+  }
+
+  function makeLine(coords) {
+    return new fabric.Line(coords, { fill: "yellow", stroke: "skyblue", strokeWidth:5, selectable: false});
+  }
+
+  var l1 = makeLine([pointX, pointY, pointX, pointY+50]),
+    l2 = makeLine([pointX, pointY+50, pointX, pointY+100]),
+    l3 = makeLine([pointX, pointY+100, pointX+50, pointY+100]),
+    l4 = makeLine([pointX+50, pointY+100, pointX+50, pointY+50]),
+    l5 = makeLine([pointX+50, pointY+50, pointX+50, pointY]),
+    l6 = makeLine([pointX+50, pointY+50, pointX, pointY]);
+
+  canvas.add(l1, l2, l3, l4, l5, l6);
+
+  canvas.add(
+//    makePoint(l1.get('x1'), l1.get('y1'), null, l1),
+//    makePoint(l1.get('x2'), l1.get('y2'), l1, l2, l5, l6),
+//    makePoint(l2.get('x2'), l2.get('y2'), l2, l3, l4),
+//    makePoint(l3.get('x2'), l3.get('y2'), l3),
+//    makePoint(l4.get('x2'), l4.get('y2'), l4),
+//    makePoint(l5.get('x2'), l5.get('y2'), l5),
+//    makePoint(l6.get('x2'), l6.get('y2'), l6)
+//
+
+    makePoint(l1.get('x1'), l1.get('y1'), l1, l2),
+    makePoint(l1.get('x1'), l1.get('y1'), l2, l3),
+    makePoint(l1.get('x1'), l1.get('y1'), l3, l4),
+    makePoint(l1.get('x1'), l1.get('y1'), l4, l5),
+    makePoint(l1.get('x1'), l1.get('y1'), l5, l6)
+//    makePoint(l1.get('x1'), l1.get('y1'), l6, l),
+//    makePoint(l1.get('x1'), l1.get('y1'), l, l),
+
+
+  );
+
+  canvas.on('object:moving', function(e) {
+    var p = e.target;
+    p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
+    p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+    p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
+    p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
+    canvas.renderAll();
+  });
+
+
+
+
+</script>
+
+
+</body>
+</html>
