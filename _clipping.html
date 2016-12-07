@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+<script>
+
+  (function() {
+    var canvas = this.__canvas = new fabric.Canvas('canvas');
+    fabric.Object.prototype.transparentCorners = false;
+
+    var radius = 300;
+
+    fabric.Image.fromURL('image/img1.jpeg', function(img) {
+      img.scale(0.5).set({
+        left: 100,
+        top: 100,
+        angle: -15,
+        clipTo: function (ctx) {
+//          ctx.arc(0, 0, radius, 0, Math.PI * 2, true);
+          ctx.rect(-300,-100,700,500); // 이미지 중앙으로부터 시작좌표 x, y, 크기 w, h
+
+        }
+      });
+      canvas.add(img).setActiveObject(img);
+    });
+
+
+  })();
+
+
+
+</script>
+
+</body>
+</html>
