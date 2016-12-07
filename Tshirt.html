@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+
+</head>
+<body style="position:absolute">
+
+
+<div id="hood" style="background:url('image/hood.png') no-repeat; position:relative; border: 3px solid red; width:550px; height:650px " >
+<canvas id="canvas" width="550" height="650" style="border: 1px solid black; position:absolute; left: 500px; top:500px"></canvas>
+</div>
+
+<script>
+  var canvas = new fabric.Canvas('canvas');
+
+//  // 캔버스 배경 이미지 지정
+//  canvas.setBackgroundImage('image/hood.png', canvas.renderAll.bind(canvas), {
+//    backgroundImageOpacity: 0.5,
+//    backgroundImageStretch: false
+//  });
+////  this.__canvas.push(canvas); // 에러나는데. 뭐하는 거지
+
+//  // 티셔츠 추가
+//  fabric.Image.fromURL('image/hood.png', function(img) {
+//    canvas.add(img.set({ left: 10, top: 10 }).scale(1));
+////    img.clipTo(img.getContext());
+//
+//  });
+
+
+
+
+    fabric.Image.fromURL('image/img2.jpeg', function(img) {
+      canvas.add(img.set({ left: 150, top: 150 }).scale(0.3));
+    });
+
+    canvas.clipTo = function (ctx) {
+      ctx.rect(150,200,250,200); // left, top
+    };
+    canvas.clipTo(canvas.getContext('2d'));
+
+
+</script>
+
+</body>
+</html>
