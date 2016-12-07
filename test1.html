@@ -19,11 +19,29 @@
 <script>
 
   var canvas = new fabric.Canvas('canvas');
-  canvas.add(new fabric.Circle({ radius: 30, fill: 'yellow', top: 100, left: 100 }));
+  var circle = new fabric.Circle({ radius: 30, fill: 'yellow', top: 100, left: 100 });
+  canvas.add(circle);
   canvas.add(new fabric.Rect({ width:30, height: 60, fill: 'green', top: 100, left: 100 }));
   canvas.add(new fabric.Rect({ width:30, height: 60, fill: 'blue', top: 100, left: -20 }));
   canvas.add(new fabric.Rect({ width:30, height: 60, fill: 'red', top: 100, left:200 }));
 //  new fabric.Triangle
+
+
+  circle.bringForward(); // 무조건 맨 앞으로
+//  circle.bringToFront(); // 1회 앞으로?
+
+
+  // 추가할 때 인덱스 지정
+  canvas.insertAt(new fabric.Circle({ radius: 50, fill: 'pink', top: 100, left: 100 }), 2); // obj, index
+  canvas.insertAt(new fabric.Rect({ width: 100, height: 100, fill: 'lightgrey', top: 100, left: 100 }), 1);
+  // z-index랑 마찬가지로 index 큰 게 맨 위
+  // index 같으면 먼저 한게 위에
+
+
+  // canvas_object = canvas.item(index);
+
+
+
 
   // 빈공간 드래그시
 //  canvas.selectionColor = 'rgba(0, 255, 0, 0.3)';
