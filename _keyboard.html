@@ -7,13 +7,76 @@
   <script src = "js/underscore.js"></script>
   <script src = "js/jquery.js"></script>
 </head>
-<body style="position:absolute">
-<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+<body>
+
+<div id="canvas-wrapper">
+  <canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+</div>
+
 <script>
 
-  // Delete
+  // @ Done
   // 방향키 <-. ->, 아래, 위
+
+
+  // @ To do
+  // Delete
   // Ctrl+C, Ctrl+V
+
+
+  // 스택오버플로우 링크 :  http://stackoverflow.com/questions/24733030/fabric-js-moving-image-with-keyboard
+
+
+//  그룹화 되어있는거랑, 단일 객체랑 같이 선택하고 이동하려면 어떻게 되는지 나중에 꼭 확인
+
+
+  var canvas = new fabric.Canvas('canvas', { backgroundColor: 'rgba(255, 255, 255, 0)' });
+
+  var rect = new fabric.Rect({ width: 100, height: 100, top: 100, left: 100, fill: 'pink' });
+  canvas.add(rect);
+
+  canvas.add(new fabric.Rect({ width:50, height:50, top:200, left:100, fill:'grey' }));
+  canvas.add(new fabric.Rect({ width:50, height:50, top:200, left:200, fill:'grey' }));
+
+
+  var processKeys = function(e) {
+    e = e || window.event;
+
+    var movementDelta = 2;
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+
+    switch (e.keyCode) {
+
+      case 37 : {
+        e.preventDefault(); // 이것도 밑에 공통 if부분에 넣을 수 있는지.
+        if (active) active.set('left', active.get('left') - movementDelta);
+        break;
+      }
+      case 39 : {
+        e.preventDefault();
+        if (active) active.set('left', active.get('left') + movementDelta);
+        break;
+      }
+      case 38 : {
+        e.preventDefault();
+        if (active) active.set('top', active.get('top') - movementDelta);
+        break;
+      }
+      case 40 : {
+        e.preventDefault();
+        if (active) active.set('top', active.get('top') + movementDelta);
+        break;
+      }
+    }
+
+    if (active) active.setCoords() && canvas.renderAll(); // setCoords() 결과가 falsy 값을 뱉을 수도 있는지 반드시 확인!
+
+  };
+
+  var canvasWrapper = document.getElementById('canvas-wrapper');
+  canvasWrapper.tabIndex = 1000;
+  canvasWrapper.addEventListener("keydown", processKeys, false);
+  canvasWrapper.style.outline = "none";
 
 
 </script>

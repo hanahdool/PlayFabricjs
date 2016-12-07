@@ -8,8 +8,66 @@
   <script src = "js/jquery.js"></script>
 </head>
 <body style="position:absolute">
+
+<div id="editor" ng-show="canvas.getActiveObject()" class="ng-hide">
+  <label style="margin-left:10px">Color : </label>
+  <input type="color" id="textColor">
+</div>
+
 <canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
 <script>
+
+
+  // @ Done
+  // 글씨 색 바꾸기
+  // 글씨체 바꾸기
+  // 정렬
+
+  // @ To do
+  // 전체 말고 부분적으로 속성 적용
+
+
+
+  var canvas = new fabric.Canvas('canvas');
+
+  // textbox, IText
+  var text = new fabric.IText('라랄라랄텍스트~ 라라랄~', {
+    fontSize: 50,
+    left: 50,
+    top: 0,
+    lineHeight: 1,
+    originX: 'left',
+    fontFamily: 'Helvetica',
+    fontWeight: 'bold',
+    statefullCache: true
+  });
+  canvas.add(text);
+
+
+  // 색깔
+  var textColor = document.getElementById("textColor");
+  var color = textColor.value;
+
+  textColor.addEventListener("input", function() {
+    text.setColor(textColor.value);
+    canvas.renderAll();
+  });
+
+
+  // 텍스트 타입
+//  text.setFontStyle("italic"); canvas.renderAll();
+//  text.setFontStyle("normal"); canvas.renderAll();
+//  text.setFontStyle("oblique"); canvas.renderAll();
+
+  // 글씨체
+//  text.set({ fontFamily: "Helvetica" }); canvas.renderAll();
+//  text.set({ fontFamily: "Cursive" }); canvas.renderAll();
+//  text.set({ fontFamily: "Helvetica" }); canvas.renderAll();
+
+
+  // 정렬
+//  text.textAlign = "right"; canvas.renderAll();
+//  text.setTextAlign("left"); canvas.renderAll();
 
 
 </script>
