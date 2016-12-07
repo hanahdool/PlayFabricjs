@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+<button id="group"> 그룹 묶기 </button>
+<button id="ungroup"> 그룹 풀기 </button>
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+
+  // 도형끼리 그룹핑
+  // 사진끼리 그룹핑
+  // 텍스트 그룹핑
+  // 도형-사진-텍스트 같이 그룹핑
+
+
+  var rect1 = new fabric.Rect({ width: 100, height: 100, top: 100, left: 100, fill: 'pink' });
+  canvas.add(rect1);
+
+  var rect2 = new fabric.Rect({ width:50, height:50, top:200, left:100, fill:'grey' });
+  canvas.add(rect2);
+
+
+
+  $("#group").on('click', function() {
+    var activegroup = canvas.getActiveGroup();
+    if (!activegroup) return;
+    var objectsInGroup = activegroup.getObjects();
+    activegroup.clone(function(newgroup) {
+      canvas.discardActiveGroup();
+      objectsInGroup.forEach(function(object) {
+        canvas.remove(object);
+      });
+      canvas.add(newgroup);
+    });
+  });
+
+  $("#ungroup").click(function() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject.type == "group") {
+      var items = activeObject._objects;
+      activeObject._restoreObjectsState();
+      canvas.remove(activeObject);
+      for (var i = 0; i < items.length; i++) {
+        canvas.add(items[i]);
+        canvas.item(canvas.size() - 1).hasControls = true;
+      }
+      canvas.renderAll();
+    }
+  });
+
+
+</script>
+
+</body>
+</html>

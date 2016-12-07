@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+  <script src = "js/jscolor.min.js"></script>
+</head>
+<body style="position:absolute">
+<!--<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>-->
+
+
+<!--<input class="jscolor" value="ab2567">-->
+
+
+<!--<input class="jscolor" onchange="update(this.jscolor)" value="cc66ff">-->
+<!--<p id="rect" style="border: 1px solid grey; width: 161px; height:100px;">-->
+
+
+<input class="jscolor {onFineChange:'update(this)'}" value="cc66ff">
+<p id="rect" style="border: 1px solid grey; width: 161px; height:100px;">
+
+
+<script>
+//  http://jscolor.com/examples/
+//function update(jscolor) {
+//  document.getElementById('rect').style.backgroundColor = "#" + jscolor;
+//}
+
+// 이 두개 뭐가 다른지 모르겠넹
+
+function update(jscolor) {
+  document.getElementById('rect').style.backgroundColor = "#" + jscolor;
+}
+
+
+</script>
+
+</body>
+</html>

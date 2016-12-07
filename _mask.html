@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+
+<script>
+
+  // 티셔츠 범위 벗어나면 안보이도록? - 이건 원래 캔버스가 그런데,
+  // 캔버스 안에서도 마스크 지정할 수 있음
+
+
+
+  var canvas = new fabric.Canvas('canvas');
+
+  var rect1 = new fabric.Rect({ width: 500, height: 500, top: 100, left: 100, fill: 'pink' });
+  canvas.add(rect1);
+
+  var rect2 = new fabric.Rect({ width:200, height:200, top:200, left:100, fill:'grey' });
+  canvas.add(rect2);
+
+
+  // 캔버스 자체에 마스크
+//  canvas.clipTo = function (ctx) {
+////    ctx.arc(100, 100, 200, 0, Math.PI * 2, true);
+//    ctx.rect(100,100,300,300)
+//  };
+//  canvas.clipTo(canvas.getContext('2d'));
+
+
+  rect2.clipTo = function (ctx) {
+    ctx.rect(10,10,100,100);
+  };
+  rect2.clipTo(rect1.getContext('2d'));
+
+
+//
+//  rect2.clipTo = function (ctx) {
+//    ctx.rect(10,10,100,100);
+//  };
+//  rect2.clipTo(rect2.getContext('2d'));
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

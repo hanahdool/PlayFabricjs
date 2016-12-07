@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+<button id="clear">모두 지우기</button>
+<button id="before"> 이전 </button>
+<button id="after"> 다음 </button>
+<button id="drawing-mode"> 객체화 </button>
+
+<script>
+
+  // custom object
+
+  // 그리기
+  // 그린 거 하나하나 객체화
+  // 그룹핑도 됨, 색 변경 가능?
+
+  // 색변경(color-picker), 선 굵기 변경,
+
+
+
+//  var canvas = new fabric.Canvas('canvas');
+
+  (function() {
+    // 캔버스 셋팅
+    var $ = function(id) { return document.getElementById(id); };
+    var canvas = new fabric.Canvas('canvas', { isDrawingMode : true }); // drawing 되는 부분
+
+    fabric.Object.prototype.transparentCorners = false;
+
+
+    // 기본 그리는 동작
+    var clearEl = $('clear');
+    clearEl.onclick = function() { canvas.clear(); };
+
+
+    // 그린 그림 객체화
+    var drawingModeEl = $('drawing-mode');
+    drawingModeEl.onclick = function() {
+      canvas.isDrawingMode = !canvas.isDrawingMode;
+      if (canvas.isDrawingMode) {
+        drawingModeEl.innerHTML = '객체화';
+      }
+      else {
+        drawingModeEl.innerHTML = '그리기';
+      }
+    };
+
+
+
+
+  })();
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> 좌표계 </title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+
+<script>
+
+  // 모든 객체의 좌표 기준은 왼쪽, 위?
+  // 이동하는 객체의 좌표 콘솔에 찍기. (해당 캔버스 기준)
+
+  // 좌표 눈금자 아니면 축척
+
+
+//  canvas 태그는 화면이 처음 로딩되었을때의 좌표계를 갖기 때문에 scroll을 통해 canvas를 이동해도 canvas 내부의 좌표는 그대로 유지가 된다.
+// 따라서 fabric.js를 통해 생성한 object를 선택할 수가 없게 된다.
+//    이 문제를 해결하기 위해서는 fabric.js의 canvas 객체의 offset 값을 scroll로 이동한 만큼 변경시켜주면 된다.
+
+//  var orgCanvasOffsetLeft = canvas._offset.left;
+//
+//  $("#divCanvas").scroll(function(){
+//    canvas._offset.left = orgCanvasOffsetLeft - $("#divCanvas").scrollLeft();
+//  });
+  //divCanvas : canvas 태그를 감싸는 상위 div 태그. fabric.js를 통해 생성된 div 태그 아님.
+
+  var canvas = new fabric.Canvas('canvas');
+
+//  fabric.object.prototype.transparentCorners = false;
+
+  var rect = new fabric.Rect({
+    width: 100,
+    height: 100,
+    top: 100,
+    left: 100,
+    fill: '#f00'
+  });
+  canvas.add(rect);
+  canvas.add(new fabric.Rect({ width: 50, height: 50, top: 200, left: 100, fill: 'grey' }));
+
+  var x = rect.getLeft();
+  var y = rect.getTop();
+  console.log("x : ", x, ",   y : ", y);
+
+  function updateControls(data) {
+//    scaleControl.value = rect.getScaleX();
+//    angleControl.value = rect.getAngle();
+//    leftControl.value = rect.getLeft();
+//    topControl.value = rect.getTop();
+//    console.log(data.e.shiftKey);
+//    console.log(data.target);
+    var rect = data.target;
+    console.log("x: ", rect.getLeft(), ",  y: ", rect.getTop(), ",   angle: ", rect.getAngle(), ",  scaleX: ", rect.getScaleX());
+  }
+
+  canvas.on({ // 해당 캔버스 내부 어딘가를 건드렸을 경우
+    'object:moving' : updateControls,
+    'object:scaling' : updateControls,
+//    'object:resizing' : updateControls, // 이건 뭐하는 경우인지. 다시불러올떄 였나?
+    'object:rotating' : updateControls
+  });
+
+/*
+  rect.setAngle(45).setCoords();
+  canvas.renderAll(); // 하나만 렌더링 할 수는?
+
+  rect.scale(1.5).setCoords();
+  canvas.renderAll();
+
+  rect.setTop(10).setCoords();
+  canvas.renderAll();
+
+  rect.setLeft(300).setCoords();
+  canvas.renderAll();
+*/
+
+</script>
+
+
+</body>
+</html>
