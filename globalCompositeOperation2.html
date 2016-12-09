@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position: absolute">
+<img src="image/T.png">
+<canvas id="canvas" width="1200" height="800" style="position: absolute; left: 0; top: 0"></canvas>
+<script>
+
+  var canvas = new fabric.Canvas('canvas',
+//    , { backgroundColor: 'white' }
+//    , { backgroundImage: 'image/T.png' }  // error
+  { left: 0, top: 0}
+  );
+
+//  canvas.setBackgroundImage('image/T.png');
+
+
+  // 배경을 넣으면 globalCompositeOperation 안보임..............
+  // 왜!!!!!!!!!?????????????????????????????
+
+
+// 이미지로 배경 넣기
+//  fabric.Image.fromURL('image/T.png', function(img) {
+//    canvas.add(img.set({
+//      left: 0,
+//      top: 0,
+//      evented: false,
+//      selectable: false
+//    }));
+//  });
+
+
+  var front = new fabric.Rect({ width: 270, height: 370, top: 200, left: 345, fill: 'pink', selectable: false, evented: false }); // opacity: 0 해도 안됨......
+
+  canvas.add(front);
+
+
+
+
+  fabric.Image.fromURL('image/img3.png', function(img) {
+    img.globalCompositeOperation = "source-atop";
+    img.set({ top: 300, left: 300 });
+    canvas.add(img.set({}).scale(0.2));
+  });
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
