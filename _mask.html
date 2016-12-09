@@ -7,8 +7,8 @@
   <script src = "js/underscore.js"></script>
   <script src = "js/jquery.js"></script>
 </head>
-<body style="position:absolute">
-<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+<body width="1700" style="border: 3px solid blue;" >
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black;"></canvas>
 
 <script>
 
@@ -19,11 +19,19 @@
 
   var canvas = new fabric.Canvas('canvas');
 
-  var rect1 = new fabric.Rect({ width: 500, height: 500, top: 100, left: 100, fill: 'pink' });
+  var ctx = canvas.getContext();
+  ctx.fillStyle = "black";
+
+  fabric.Image.fromURL('image/img1.jpeg', function(img) {
+    canvas.add(img.set({ left: 300, top: 300, angle: -10 }).scale(0.5));
+  });
+
+  var rect2 = new fabric.Rect({ width: 500, height: 500, top: 100, left: 100, fill:'grey' });
+  canvas.add(rect2);
+
+  var rect1 = new fabric.Rect({ width:200, height:200, top:200, left:100, fill: 'rgba(255,255,0,0.5)' });
   canvas.add(rect1);
 
-  var rect2 = new fabric.Rect({ width:200, height:200, top:200, left:100, fill:'grey' });
-  canvas.add(rect2);
 
 
   // 캔버스 자체에 마스크
@@ -33,12 +41,12 @@
 //  };
 //  canvas.clipTo(canvas.getContext('2d'));
 
-
-  rect2.clipTo = function (ctx) {
-    ctx.rect(10,10,100,100);
-  };
-  rect2.clipTo(rect1.getContext('2d'));
-
+//
+//  rect2.clipTo = function (ctx) {
+//    ctx.rect(10,10,100,100);
+//  };
+//  rect2.clipTo(rect1.getContext('2d'));
+//
 
 //
 //  rect2.clipTo = function (ctx) {
@@ -47,7 +55,29 @@
 //  rect2.clipTo(rect2.getContext('2d'));
 
 
+  rect1.clipTo = function(ctx) {
+    ctx.rect(-500, -500, 1000, 1000);
+  }
+  rect1.clipTo(rect1.getContext('2d'));
 
+//  var photoImg = $('#img-photo');
+//  var photoImgSrc = photoImg.attr('src');
+//  fabric.Image.fromURL(photoImgSrc, function(img) {
+//    var photoImgWidth = photoImg.width();
+//    var photoImgHeight = photoImg.height();
+//    var hRatio = 380/photoImgWidth;
+//    var vRatio = 300/photoImgHeight;
+//    var ratio = Math.min(hRatio, vRatio);
+//    pImg = img.set({left: 380/2, top: 300/2, angle: 0});
+//    img.scale(ratio).setCoords();
+//    canvas.add(pImg);
+//    canvas.sendToBack(pImg);
+//    canvas.renderAll();
+//  });
+
+
+  canvas.controlsAboveOverlay = true;
+  canvas.globalCompositeOperation = "source-out";
 
 
 

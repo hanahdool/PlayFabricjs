@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 3px solid black"></canvas>
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+  var rect = new fabric.Rect({
+    left: 50,
+    top: 50,
+    fill: 'green',
+    width: 40,
+    height: 80
+  });
+  var circle = new fabric.Circle({
+    radius: 20,
+    fill: 'red',
+    left: 100,
+    top: 100
+  });
+
+  canvas.add(rect);
+  canvas.add(circle);
+
+
+  var pol = new fabric.Polygon([
+      { x: 200, y: 0 },
+      { x: 250, y: 50 },
+      { x: 250, y: 100 },
+      { x: 150, y: 100 },
+      { x: 150, y: 50 } ],
+    {
+      left: 250,
+      top: 150,
+      angle: 0,
+      fill: 'green'
+    });
+
+  canvas.add(pol);
+
+
+
+  canvas.add(new fabric.Polygon([
+    { x: 100, y: 0 },
+    { x: 100, y: 100 },
+    { x: 400, y: 100 },
+    { x: 400, y: 400 },
+    { x: 100, y: 400 },
+    { x: 100, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 500 },
+    { x: 500, y: 500 },
+    { x: 500, y: 0 },
+//    { x: 100, y: 0 } //없어도 됨ㅁ 알아서 첫좌표랑 이어주는 듯
+  ], {
+    left: 200,
+    top: 200,
+    angle:0,
+    fill: "black"
+  }))
+
+
+
+</script>
+</body>
+</html>

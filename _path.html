@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 3px solid blue"></canvas>
+<script>
+
+  var canvas = new fabric.StaticCanvas('canvas');
+
+
+//  var path = new fabric.Path('M 0 0 L 50 0 M 0 0 L 4 -3 M 0 0 L 4 3 z', {
+//    stroke: 'red',
+//    strokeWidth: 1,
+//    fill: false,
+//    originX: 'left',
+//    originY: 'top'
+//  });
+//  path.setAngle(45).set({ left: 100, top: 100 });
+//  canvas.add(path);
+
+
+  // move, line, curve, arc
+
+//  var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z', {
+  var path = new fabric.Path('M 0 0 L 0 300 L 300 300 L 300 0 z', {
+    left: 100,
+    top: 100,
+    stroke: 'red',
+    strokeWidth: 2,
+    fill: false,
+    originX: 'left',
+    originY: 'top'
+    //angle: 45
+  });
+  path.set({ left: 300, top: 300 });
+
+  canvas.add(path);
+
+
+</script>
+</body>
+</html>

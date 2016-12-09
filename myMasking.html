@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 3px solid black"></canvas>
+<script>
+
+  var canvas = new fabric.Canvas('canvas'
+    , { backgroundColor: 'black' }
+  );
+
+
+  fabric.Image.filters.Mask = fabric.util.createClass({
+    type: 'Mask',
+    initialize: function(options) {
+      this.mask = options.mask || null;
+      this.channel = [ 0, 1, 2, 3 ].indexOf( options.channel ) > -1 ? options.channel : 0;
+    },
+    applyTo: function(canvasEl) {
+      if(!this.mask) return;
+      console.log("==================", this.mask._originalElement); // this.mask._originalImage
+      var context = canvasEl.getContext('2d'),
+        imageData = context.getImageData(0, 0, canvasEl.width, canvasEl.height),
+        data = imageData.data,
+        maskEl = this.mask._originalElement,
+        maskCanvasEl = fabric.util.createCanvasElement(),
+        channel = this.channel,
+        i;
+      maskCanvasEl.width = maskEl.width;
+      maskCanvasEl.height = maskEl.height;
+      maskCanvasEl.getContext('2d').drawImage(maskEl, 0, 0, maskEl.width, maskEl.height);
+      var maskImageData = maskCanvasEl.getContext('2d').getImageData(0, 0, maskEl.width, maskEl.height),
+        maskData = maskImageData.data;
+      for ( i = 0; i < imageData.width * imageData.height * 4; i += 4 ) {
+        data[ i + 3 ] = maskData[ i + channel ];
+      }
+      context.putImageData( imageData, 0, 0 );
+    }
+  });
+
+
+  // 되는거. 같은 크기
+//  fabric.Image.fromURL('image/color_.png', function(image) {
+//    new fabric.Image.fromURL('image/circle_.png', function (mask) {
+//      image.clone(function (img) {
+//        img.filters.push(new fabric.Image.filters.Mask({'mask': mask}));
+//        img.applyFilters(function () {
+//          canvas.add(img);
+//        });
+//      });
+//    });
+//  });
+
+
+
+//  fabric.Image.fromURL('image/color_.png', function(image) {
+////    canvas.add(image.set({ width:400, height:400 }));
+//    new fabric.Image.fromURL('image/mask_weekend2.png', function(mask) {
+//      canvas.add(mask.set({ width:400, height:400 }));
+//
+//      image.clone( function( img ) {
+////        canvas.add(img);
+//        console.log(img.getWidth(), img.getHeight());
+//        console.log(mask.getWidth(), mask.getHeight());
+//
+//
+//        img.filters.push( new fabric.Image.filters.Mask( { 'mask': mask } ) );
+//        img.applyFilters( function() {
+//          console.log(img.getWidth(), img.getHeight());
+//          console.log(mask.getWidth(), mask.getHeight());
+//
+//          canvas.add( img );
+//        });
+//      });
+//    });
+//  });
+//
+
+
+
+
+  fabric.Image.fromURL('image/T.png', function(image) {
+    image.set({evented:false, selectable:false});
+    canvas.add(image);
+    new fabric.Image.fromURL('image/T_black.png', function (mask) {
+      image.clone(function (img) {
+        img.filters.push(new fabric.Image.filters.Mask({'mask': mask}));
+        img.applyFilters(function () {
+          img.set({ evented: false, selectable: false });
+//           canvas.controlsAboveOverlay = true;
+//          img.getContext('2d').globalCompositeOperation = "source-atop"
+          canvas.add(img);
+        });
+      });
+    });
+  });
+
+
+
+
+  var ii;
+  fabric.Image.fromURL('image/black.png', function(img) {
+    canvas.add(img.set({ left: 350, top: 300 }));
+    ii = img;
+  });
+
+  fabric.Image.fromURL('image/img3.png', function(img) {
+    canvas.add(img.set({ left: 350, top: 300 }));
+    ii = img;
+  });
+
+  canvas.on({
+    'object:moving' : function() { console.log(ii.getTop(), ii.getLeft()); },
+  });
+
+
+
+
+
+
+
+
+
+
+  // 원래 코드
+
+//  fabric.Image.fromURL('image/img3.png', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+//    canvas.add(img.set({ left: 100, top: 100 })); //angle은 왼쪽 위 기준으로
+
+//    canvas.add(new fabric.Rect({ width:300, height:300, top:200, left:100, fill:'grey' }));
+
+//    img.clipTo = function(ctx) {
+//      ctx.rect(0, 0, 200, 200);
+//    };
+//    rect1.clipTo(rect1.getContext('2d'));
+
+//  var rect = new fabric.Rect({ width:100, height:100, top:200, left:100, fill:'grey' });
+//    canvas.add(rect);
+//    img.remove(canvas.item(1));
+
+
+//  });
+
+
+
+//  var shape = canvas.item(0);
+//  canvas.remove(shape);
+//  canvas.clipTo = function(ctx) {
+//    shape.render(ctx);
+//  }
+
+  //  var rect = new fabric.Rect({ width:300, height:300, top:200, left:100, fill:'grey' });
+
+
+//  rect1.clipTo = function(ctx) {
+//    ctx.rect(-500, -500, 1000, 1000);
+//  }
+//  rect1.clipTo(rect1.getContext('2d'));
+
+
+
+</script>
+</body>
+</html>

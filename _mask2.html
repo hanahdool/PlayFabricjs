@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body width="1700" style="border: 3px solid blue;" >
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black;"></canvas>
+
+<script>
+  var cropCanvas = new fabric.Canvas('crop', {
+    backgroundColor: '#000',
+  });
+  var imgURL = 'https://dl.dropboxusercontent.com/u/17055521/face2.jpg';
+
+  //1 - adding bg image
+  fabric.Image.fromURL(imgURL, function(picBg) {
+    picBg.set({
+      selectable: true,
+      evented: true,
+      opacity: 0.6
+    });
+    cropCanvas.add(picBg);
+    picBg.centerH().setCoords();
+
+
+    //2 - adding main image and mask
+    fabric.Image.fromURL(imgURL, function(pic) {
+
+      var rect = new fabric.Rect({
+        left: 0,
+        top: 0,
+        fill: '#000',
+        opacity: 0.1,
+        width: cropCanvas.width,
+        height: cropCanvas.height,
+        selectable: false,
+        evented: false
+      });
+
+      pic.set({
+        selectable: false,
+        evented: false,
+        opacity: 1,
+      });
+
+      cropCanvas.add(pic);
+      cropCanvas.add(rect);
+      pic.centerH().setCoords();
+
+      var path = new fabric.Path('M1.398,84.129c3.305,20.461,9.73,50.635,13.591,67.385c2.354,10.212,12.549,23.734,18.51,30.02c4.923,5.191,27.513,23.343,38.34,27.589c18.604,7.295,33.984,4.187,46.012-8.306c12.028-12.493,25.595-34.78,27.954-43.994c2.587-10.105,5.065-26.842,4.313-37.243c-1.036-14.316-14.224-69.332-16.806-79.55c-4.48-17.735-26.246-48.821-80.609-37.668C-1.66,13.514-1.879,63.844,1.398,84.129z');
+
+      path.set({
+        originX: 'center',
+        originY: 'center',
+      });
+
+      pic.set({
+        clipTo: function(ctx) {
+          path.render(ctx);
+        }
+      });
+
+      cropCanvas.renderAll();
+    });
+  });
+
+
+</script>
+
+</body>
+</html>
