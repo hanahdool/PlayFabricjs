@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+
+</head>
+<body>
+
+<div id="canvas-wrapper">
+  <canvas id="canvas" width="910" height="1000"></canvas>
+</div>
+
+<div class="edit" style="position:absolute; top: 100px; left: 1000px; border: 1px solid grey">
+  <div class="product">
+    <h3>제품 변경</h3>
+  </div>
+  <button id="text_btn"> 텍스트 넣기 </button>
+  <br>
+  <button onclick="undo()"> 앞으로 가기 </button>
+  <button onclick="redo()"> 뒤로 가기 </button>
+
+</div>
+
+<div class="editor" style="position:absolute; top: 500px; left: 800px; border: 1px solid grey">
+  <label>편집</label>
+  <div class="basic" style="border: 1px solid grey">
+    <button>맨 앞으로</button>
+    <button>맨 뒤로</button>
+    <button>가운데로</button>
+    <button>지우기</button>
+  </div>
+  <div class="text" style="border: 1px solid grey">
+    <input type="color" id="textColor">
+    <button>글씨체</button>
+    <button id="left" onclick="textAlign_left()">left</button>
+    <button id="center" onclick="textAlign_center()">center</button>
+    <button id="right" onclick="textAlign_right()">right</button>
+    <br>
+    <button id="bold" onclick="fontWeight_bold()">B</button>
+    <button id="italic" onclick="fontStyle_italic()">I</button>
+    <button id="underLine" onclick="textLine_under()">_</button>
+    <button id="middleLine" onclick="textLine_middle()">―</button>
+    <button id="overLine" onclick="textLine_over()">￣</button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas'
+//    , { backgroundColor: 'skyblue' } // 배경을 지정하면 globalCompositeOperation이 안먹음..
+//    , { backgroundImage: 'image/T.png' }  // error
+  );
+
+//  canvas.setBackgroundImage('image/T.png', canvas.renderAll.bind(canvas), {
+//    scaleY: canvas.height,
+//    scaleX: canvas.width,
+//    left: 0,
+//    top: 0
+//  }); canvas.renderAll(); // 필요 없을
+
+
+  canvas.preserveObjectStacking = true; // 객체 선택 관련 설정
+
+  fabric.Image.fromURL('image/T_crop.png', function(img) {
+    img.set({selectable: false, evented: false});
+    canvas.add(img.scale(1.5));
+
+    var rect = new fabric.Rect({ width: 400, height: 600, top: 250, left: 250, fill: 'rgba(255, 255, 255, 0.1)' });
+    rect.set({selectable: false});
+    rect.globalCompositeOperation = "source-atop";
+    canvas.add(rect);
+
+
+
+  });
+
+
+
+  // 이미지 추가
+  fabric.Image.fromURL('image/black.png', function(img) {
+    img.globalCompositeOperation = "source-atop";
+    canvas.add(img.set({ left: 600, top: 200 }));
+  });
+
+  fabric.Image.fromURL('image/mask_weekend.png', function(img) {
+    img.globalCompositeOperation = "source-atop";
+    canvas.add(img.set({ left: 280, top: 300 }));
+  });
+
+  fabric.Image.fromURL('image/color.png', function(img) {
+    img.globalCompositeOperation = "source-atop";
+    img.scale(1.5);
+    canvas.add(img.set({ left: 180, top: 700 }));
+  });
+
+
+
+  // 텍스트 추가
+  $('#text_btn').on('click', function(e) {
+    var text = new fabric.IText('라랄라랄텍스트~ 라라랄~', {
+      fontSize: 50,
+      left: 250,
+      top: 250,
+      lineHeight: 1,
+      originX: 'left',
+      fontFamily: 'Helvetica',
+      fontWeight: 'bold',
+      statefullCache: true
+    });
+    text.globalCompositeOperation = "source-atop";
+    canvas.add(text);
+  });
+
+
+  // 텍스트 이벤트 모음
+//  '.editor .text #left'
+  // 색깔
+  var textColor = document.getElementById("textColor");
+  textColor.addEventListener("input", function() {
+    canvas.getActiveObject().setColor(textColor.value);
+    canvas.renderAll();
+  });
+
+  // 정렬
+  function textAlign_left() {
+    canvas.getActiveObject().textAlign = "left"; canvas.renderAll();
+  }
+  function textAlign_center() {
+    canvas.getActiveObject().textAlign = "center"; canvas.renderAll();
+  }
+  function textAlign_right() {
+    canvas.getActiveObject().textAlign = "right"; canvas.renderAll();
+  }
+
+  // 스타일
+  function fontWeight_bold() {
+    var text = canvas.getActiveObject();
+    text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+   canvas.renderAll();
+  }
+  function fontStyle_italic() {
+    var text = canvas.getActiveObject();
+    text.setFontStyle((text.fontStyle == "italic") ? "" : "italic");
+    canvas.renderAll();
+  }
+
+  // 라인
+  function textLine_under() {
+    var text = canvas.getActiveObject();
+    text.textDecoration = (text.textDecoration == "underline") ? "" : "underline";
+    canvas.renderAll();
+  }
+  function textLine_middle() {
+    var text = canvas.getActiveObject();
+    text.textDecoration = (text.textDecoration == "line-through") ? "" : "line-through";
+    canvas.renderAll();
+  }
+  function textLine_over() {
+    var text = canvas.getActiveObject();
+    text.textDecoration = (text.textDecoration == "overline") ? "" : "overline";
+    canvas.renderAll();
+  }
+
+
+  // 키보드 이벤트 -  이동, 삭제(del키)
+  var processKeys = function(e) {
+    e = e || window.event;
+
+    var movementDelta = 2;
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+
+    if (!active) return ;
+
+    switch (e.keyCode) {
+      // keycode 0은 키보드로 입력받을 수는 없는데, 시스템에서 입력이 발생하는 경우가 있을지..
+      case 37 : e.preventDefault(); active.set('left', active.get('left') - movementDelta); break;
+      case 39 : e.preventDefault(); active.set('left', active.get('left') + movementDelta); break;
+      case 38 : e.preventDefault(); active.set('top', active.get('top') - movementDelta); break;
+      case 40 : e.preventDefault(); active.set('top', active.get('top') + movementDelta); break;
+      case 46 : e.preventDefault(); active.remove();
+    }
+    active.setCoords() && canvas.renderAll(); // setCoords() 결과가 falsy 값을 뱉을 수도 있는지 반드시 확인!
+  };
+
+  var canvasWrapper = document.getElementById('canvas-wrapper');
+  canvasWrapper.tabIndex = 1000;
+  canvasWrapper.addEventListener("keydown", processKeys, false);
+  canvasWrapper.style.outline = "none";
+
+
+  // undo, redo
+  // ver 1
+//  canvas.on('object:added',function(){
+//    if(!isRedoing){
+//      h = [];
+//    }
+//    isRedoing = false;
+//  });
+//
+//  var isRedoing = false;
+//  var h = [];
+//  function undo(){
+//    if(canvas._objects.length>0){
+//      h.push(canvas._objects.pop());
+//      canvas.renderAll();
+//    }
+//  }
+//  function redo(){
+//
+//    if(h.length>0){
+//      isRedoing = true;
+//      canvas.add(h.pop());
+//    }
+//  }
+
+
+  // ver 2
+  var canvasStack = [];
+  var i = 0;
+  canvas.on({
+//    'object:added' : saving,
+//    'object:modified' : saving,
+//    'object:rotating' : saving,
+//    'object:scaling' : saving,
+//    'object:moving' : saving
+//    'mouse:up' : saving
+    'object:modified' : saving //이거다!! 근데 텍스트가 안먹음 ㅜㅜ
+  });
+
+  function saving() {
+    console.log("save!");
+//    canvasStack.push(JSON.stringify(canvas));
+    canvasStack[i++]= JSON.stringify(canvas);
+    canvas.length = i; // 꼭 있어야 됨! - 뒤에꺼 짤라야 함
+  }
+
+  function undo() {
+    if (i == 0) return ;
+    canvas.loadFromJSON(canvasStack[--i], function() {
+      canvas.renderAll();
+    });
+  }
+//  canvas.loadFromJson('', function() {canvas.renderAll();})
+  function redo() {
+    if (i == canvas.length) return ;
+    canvas.loadFromJSON(canvasStack[++i], function() {
+      canvas.renderAll();
+    });
+  }
+
+</script>
+</body>
+</html>

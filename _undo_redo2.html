@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+
+</head>
+<body>
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+
+<button onclick="undo()">undo</button>
+<button onclick="redo()">redo</button>
+<script>
+
+  // error!!
+  // https://chillydraji.wordpress.com/2014/05/21/add-undo-redo-functionality-in-fabric-js/
+
+  var canvas = new fabric.Canvas('canvas');
+
+  var rect = new fabric.Rect({ width: 100, height: 100, top: 100, left: 100, fill: 'rgba(255, 0, 0, 1)' });
+  canvas.add(rect);
+
+
+  var current;
+  var list = [];
+  var state = [];
+  var index = 0;
+  var index2 = 0;
+  var action = false;
+  var refresh = true;
+
+
+  canvas.on("object:added", function (e) { //canvas -object of canvas tag
+    var object = e.target;
+    if (action === true) {
+      state = [state[index2]];
+      list = [list[index2]];
+      action = false;
+      index = 1;
+    }
+    object.saveState(); //save object
+    state[index] = JSON.stringify(object.originalState);
+    list[index] = object;
+    index++;
+    index2 = index - 1;
+    refresh = true;
+  });
+
+  canvas.on("object:modified", function (e) {
+    var object = e.target;
+    if (action === true) {
+      state = [state[index2]];
+      list = [list[index2]];
+      action = false;
+      index = 1;
+    }
+    object.saveState();
+    state[index] = JSON.stringify(object.originalState);
+    list[index] = object;
+    index++;
+    index2 = index - 1;
+    refresh = true;
+  });
+
+  function undo() {
+
+    if (index <= 0) {
+      index = 0;
+      return;
+    }
+
+    if (refresh === true) {
+      index--;
+      refresh = false;
+    }
+
+    index2 = index - 1;
+    current = list[index2];
+    current.setOptions(JSON.parse(state[index2]));
+    index--;
+    current.setCoords();
+    canvas.renderAll();
+    action = true;
+  }
+
+  function redo() {
+    action = true;
+    if (index >= state.length - 1) {
+      return;
+    }
+
+    index2 = index + 1;
+    current = list[index2];
+    current.setOptions(JSON.parse(state[index2]));
+    index++;
+    current.setCoords();
+    canvas.renderAll();
+  }
+
+
+
+</script>
+</body>
+</html>

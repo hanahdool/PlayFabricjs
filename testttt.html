@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script src = "js/fabric.min.js"></script>
+
+<canvas id="canvas" width="800" height="600"></canvas>
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+
+  fabric.Image.fromURL('http://serio.piiym.net/CVBla/txtboard/thumb/1260285874089s.jpg', function (oImg) {
+    canvas.add(oImg);
+  });
+
+  fabric.Image.fromURL('http://www.clker.com/cliparts/2/5/6/5/1194986466653224692smiley110.svg.med.png', function (oImg1) {
+    canvas.add(oImg1);
+  });
+  canvas.renderAll();
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="_active_object.css">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body>
+<!--<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>-->
+<div id="filters">
+  <ul class="clearfix">
+    <li class="clearfix">
+      <div class="block">	<a href="#" id="startCrop" class="button">Enter crop mode</a>
+
+      </div>
+      <div class="block">	<a href="#" id="crop" class="button">Crop</a>
+
+      </div>
+    </li>
+  </ul>
+</div>
+<div id="canvas-container" class="over">
+  <div class="canvas-container" style="width: 800px; height: 600px; position: relative; -webkit-user-select: none;">
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </div>
+</div>
+<script>
+
+//  http://jsfiddle.net/86bTc/4/
+//  active object 선택되어도 뒤에있으면 가려지는 것
+//  fabric 버전 1.7부터 이렇게 됨...
+
+  var canvas = new fabric.Canvas('canvas');
+  var el;
+  var object, lastActive, object1, object2;
+  var cntObj = 0;
+  var selection_object_left = 0;
+  var selection_object_top = 0;
+
+  var src = "http://fabricjs.com/lib/pug.jpg";
+  fabric.Image.fromURL('http://serio.piiym.net/CVBla/txtboard/thumb/1260285874089s.jpg', function (oImg) {
+    canvas.add(oImg);
+  });
+
+  fabric.Image.fromURL('http://www.clker.com/cliparts/2/5/6/5/1194986466653224692smiley110.svg.med.png', function (oImg1) {
+    oImg1.top = 200;
+    oImg1.left = 300;
+    canvas.add(oImg1);
+  });
+  canvas.renderAll();
+
+
+  $('#crop').on('click', function (event) {
+
+    var eLeft = el.get('left');
+    var eTop = el.get('top');
+    var left = eLeft - object.left;
+    var top = eTop - object.top;
+
+    left *= 1;
+    top *= 1;
+
+    var eWidth = el.get('width');
+    var eHeight = el.get('height');
+    var eScaleX = el.get('scaleX');
+    var eScaleY = el.get('scaleY');
+    var width = eWidth * 1;
+    var height = eHeight * 1;
+    object.clipTo = function (ctx) {
+
+      ctx.rect(-(eWidth / 2) + left, -(eHeight / 2) + top, parseInt(width * eScaleX), parseInt(eScaleY * height));
+
+
+    }
+
+
+
+    for (var i = 0; i < $("#layers li").size(); i++) {
+      canvas.item(i).selectable = true;
+    }
+    disabled = true;
+
+    canvas.remove(el);
+    lastActive = object;
+    canvas.renderAll();
+
+
+
+  });
+
+  $('#startCrop').on('click', function () {
+
+
+
+    canvas.remove(el);
+    if (canvas.getActiveObject()) {
+
+      object = canvas.getActiveObject();
+
+      if (lastActive !== object) {
+        console.log('different object');
+      } else {
+        console.log('same object');
+      }
+      if (lastActive && lastActive !== object) {
+        //lastActive.clipTo = null; results in clip loss
+
+      }
+
+
+
+      el = new fabric.Rect({
+        fill: 'rgba(0,0,0,0.3)',
+        originX: 'left',
+        originY: 'top',
+        stroke: '#ccc',
+        strokeDashArray: [2, 2],
+        opacity: 1,
+        width: 1,
+        height: 1,
+        borderColor: '#36fd00',
+        cornerColor: 'green',
+        hasRotatingPoint: false
+      });
+
+      el.left = canvas.getActiveObject().left;
+      selection_object_left = canvas.getActiveObject().left;
+      selection_object_top = canvas.getActiveObject().top;
+      el.top = canvas.getActiveObject().top;
+      el.width = canvas.getActiveObject().width * canvas.getActiveObject().scaleX;
+      el.height = canvas.getActiveObject().height * canvas.getActiveObject().scaleY;
+
+
+      canvas.add(el);
+      canvas.setActiveObject(el);
+      for (var i = 0; i < $("#layers li").size(); i++) {
+        canvas.item(i).selectable = false;
+      }
+    } else {
+      alert("Please select an object or layer");
+    }
+
+  });
+
+</script>
+</body>
+</html>
