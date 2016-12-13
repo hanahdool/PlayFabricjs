@@ -16,6 +16,51 @@
   // 한 단계 앞,뒤로 보내기
   // 가운데 정렬 - 좌표 관련
 
+  var canvas = new fabric.Canvas('canvas');
+
+  canvas.preserveObjectStacking = true; // 선택된 객체 무조건 앞 아니게!!! 순서대로!
+
+  var rect1 = new fabric.Rect({ width:150, height:150, top:200, left:200, fill:'rgba(100, 100, 200, 1)' });
+  canvas.add(rect1);
+
+  var rect2 = new fabric.Rect({ width: 100, height: 100, top: 200, left: 200, fill: 'rgba(255, 100, 100, 1)' });
+  canvas.add(rect2);
+
+  var rect2 = new fabric.Rect({ width:70, height:70, top:200, left:200, fill:'rgba(100, 200, 100, 1)' });
+  canvas.add(rect2);
+
+
+  var i;
+
+  fabric.Image.fromURL('image/img1.jpeg', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+    i = img;
+    canvas.add(img.set({ left: 300, top: 300, angle: -10 }).scale(0.5)); //angle은 왼쪽 위 기준으로
+  });
+  fabric.Image.fromURL('image/img2.jpeg', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+    canvas.add(img.set({ left: 300, top: 300, angle: -10 }).scale(0.5)); //angle은 왼쪽 위 기준으로
+  });
+
+  fabric.Image.fromURL('image/img3.png', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+    canvas.add(img.set({ left: 300, top: 300, angle: -10 }).scale(0.5)); //angle은 왼쪽 위 기준으로
+  });
+
+
+
+  // 하고나서 렌더링 안해도 됨.
+//  rect.bringForward(); // 1회 앞으로
+//  rect.bringToFront(); // 맨 앞으로
+
+//  rect.sendBackwards(); //1회 뒤로
+//  rect.sendToBack(); // 맨뒤로
+
+
+
+//  // 추가할 때 인덱스 지정
+//  canvas.insertAt(new fabric.Circle({ radius: 50, fill: 'pink', top: 100, left: 100 }), 2); // obj, index
+//  canvas.insertAt(new fabric.Rect({ width: 100, height: 100, fill: 'lightgrey', top: 100, left: 100 }), 1);
+//  // z-index랑 마찬가지로 index 큰 게 맨 위
+  // index 같으면 먼저 한게 위에
+
 
 </script>
 

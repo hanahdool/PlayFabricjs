@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1500" height="1000" style="border: 1px solid black"></canvas>
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+
+  fabric.Image.fromURL('image/Disneyland.png', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+    canvas.add(img);
+  });
+
+
+
+
+
+  var f = fabric.Image.filters;
+
+  function applyFilter(index, filter) {
+    var obj = canvas.getActiveObject();
+    obj.filters[index] = filter;
+    obj.applyFilters(canvas.renderAll.bind(canvas));
+  }
+
+  function applyFilterValue(index, prop, value) {
+    var obj = canvas.getActiveObject();
+    if (obj.filters[index]) {
+      obj.filters[index][prop] = value;
+      obj.applyFilters(canvas.renderAll.bind(canvas));
+    }
+  }
+
+
+  new f.Grayscale();
+  new f.Invert();
+  new f.RemoveWhite();
+  new f.Sepia();
+  new f.Sepia2();
+
+
+  canvas.getActiveObject().filters.push(new f.Grayscale);
+  canvas.getActiveObject().applyFilters(canvas.renderAll.bind(canvas));
+
+
+
+</script>
+
+
+<script>
+
+
+  //  var rect1 = new fabric.Rect({ width:150, height:150, top:200, left:200, fill:'rgba(100, 100, 200, 1)' });
+  //  canvas.add(rect1);
+  //
+  //
+  //  var text = new fabric.IText('라랄라랄텍스트~ 라라랄~', {
+  //    fontSize: 50,
+  //    left: 50,
+  //    top: 0,
+  //    lineHeight: 1,
+  //    originX: 'left',
+  //    fontFamily: 'Helvetica',
+  //    fontWeight: 'bold',
+  //    statefullCache: true
+  //  });
+  //  canvas.add(text);
+
+
+</script>
+
+</body>
+</html>

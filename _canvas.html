@@ -24,8 +24,13 @@
 //  ctx.fillRect = (0, 0, 500, 300);
 //  ctx.globalAlpha
 
-//  canvas.renderAll();
+  canvas.renderAll();
 //  console.log(ctx);
+
+  canvas.setBackgroundImage('image/T.png', canvas.renderAll.bind(canvas), {
+//    backgroundImageOpacity: 0.5,
+//    backgroundImageStretch: false
+  });
 
 
 </script>

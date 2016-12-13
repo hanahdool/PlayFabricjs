@@ -20,21 +20,30 @@
   </div>
   <button id="text_btn"> 텍스트 넣기 </button>
   <br>
-  <button onclick="undo()"> 앞으로 가기 </button>
-  <button onclick="redo()"> 뒤로 가기 </button>
-
+  <!--<button onclick="undo()"> 앞으로 가기 </button>-->
+  <!--<button onclick="redo()"> 뒤로 가기 </button>-->
+  <button id="undo" disabled>undo</button>
+  <button id="redo" disabled>redo</button>
 </div>
 
 <div class="editor" style="position:absolute; top: 500px; left: 800px; border: 1px solid grey">
   <label>편집</label>
   <div class="basic" style="border: 1px solid grey">
-    <button>맨 앞으로</button>
-    <button>맨 뒤로</button>
-    <button>가운데로</button>
-    <button>지우기</button>
+    <button onclick="bringFront()">앞으로</button>
+    <button onclick="bringBack()">뒤로</button>
+    <button onclick="bringVeryFront()">맨 앞으로</button>
+    <button onclick="bringVeryBack()">맨 뒤로</button>
+    <button onclick="bringCenter()">가운데 정렬</button>
+    <button onclick="remove()">지우기</button>
+    <br>
+    <label> 필터 </label>
+    <button onclick="filtering1()">1</button>
+    <button onclick="filtering2()">2</button>
+    <button onclick="filtering3()">3</button>
+
   </div>
   <div class="text" style="border: 1px solid grey">
-    <input type="color" id="textColor">
+    <input type="color" id="textColor"> <!-- value="#ff0000" 초기 색깔 -->
     <button>글씨체</button>
     <button id="left" onclick="textAlign_left()">left</button>
     <button id="center" onclick="textAlign_center()">center</button>
@@ -65,21 +74,36 @@
 //    top: 0
 //  }); canvas.renderAll(); // 필요 없을
 
+//  var canvasStack = [];
+//  var i = 0;
+
 
   canvas.preserveObjectStacking = true; // 객체 선택 관련 설정
 
+
+  // 이거 안됨ㅜ
+//  canvas.setBackgroundImage('image/T.png', canvas.renderAll.bind(canvas), {
+////    backgroundImageOpacity: 0.5,
+////    backgroundImageStretch: false
+//  });
+
+
   fabric.Image.fromURL('image/T_crop.png', function(img) {
     img.set({selectable: false, evented: false});
-    canvas.add(img.scale(1.5));
+
+    canvas.setBackgroundImage(img.scale(1.5)); // 이렇게! http://stackoverflow.com/questions/33459355/fabric-js-clip-object-to-background-image
+    canvas.renderAll();
+
 
     var rect = new fabric.Rect({ width: 400, height: 600, top: 250, left: 250, fill: 'rgba(255, 255, 255, 0.1)' });
     rect.set({selectable: false});
     rect.globalCompositeOperation = "source-atop";
     canvas.add(rect);
 
-
+//    canvasStack[i++] = JSON.stringify(canvas);
 
   });
+
 
 
 
@@ -87,17 +111,20 @@
   fabric.Image.fromURL('image/black.png', function(img) {
     img.globalCompositeOperation = "source-atop";
     canvas.add(img.set({ left: 600, top: 200 }));
+//    canvasStack[i++] = JSON.stringify(canvas);
   });
 
   fabric.Image.fromURL('image/mask_weekend.png', function(img) {
     img.globalCompositeOperation = "source-atop";
     canvas.add(img.set({ left: 280, top: 300 }));
+//    canvasStack[i++] = JSON.stringify(canvas);
   });
 
   fabric.Image.fromURL('image/color.png', function(img) {
     img.globalCompositeOperation = "source-atop";
     img.scale(1.5);
     canvas.add(img.set({ left: 180, top: 700 }));
+//    canvasStack[i++] = JSON.stringify(canvas);
   });
 
 
@@ -195,6 +222,37 @@
   canvasWrapper.style.outline = "none";
 
 
+  // 이미지 앞으로, 뒤로
+  function bringFront() { // 1회 앞으로
+    (canvas.getActiveObject() || canvas.getActiveGroup()).bringForward();
+  }
+  function bringVeryFront() { // 맨 앞으로
+    (canvas.getActiveObject() || canvas.getActiveGroup()).bringToFront();
+  }
+  function bringBack() { // 1회 뒤로
+    (canvas.getActiveObject() || canvas.getActiveGroup()).sendBackwards();
+  }
+  function bringVeryBack() { // 맨뒤로
+    (canvas.getActiveObject() || canvas.getActiveGroup()).sendToBack();
+  }
+
+  function bringCenter() {
+    (canvas.getActiveObject() || canvas.getActiveGroup()).center()
+  }
+
+  // 삭제
+  function remove() {
+    (canvas.getActiveObject() || canvas.getActiveGroup()).remove();
+  }
+
+
+
+  // 필터링
+  function filtering1() {
+    (canvas.getActiveObject() || canvas.getActiveGroup())
+  }
+
+
   // undo, redo
   // ver 1
 //  canvas.on('object:added',function(){
@@ -222,8 +280,7 @@
 
 
   // ver 2
-  var canvasStack = [];
-  var i = 0;
+/*
   canvas.on({
 //    'object:added' : saving,
 //    'object:modified' : saving,
@@ -235,25 +292,88 @@
   });
 
   function saving() {
-    console.log("save!");
-//    canvasStack.push(JSON.stringify(canvas));
     canvasStack[i++]= JSON.stringify(canvas);
     canvas.length = i; // 꼭 있어야 됨! - 뒤에꺼 짤라야 함
+    console.log("save : ", i, canvasStack);
   }
 
   function undo() {
+    console.log(i)
     if (i == 0) return ;
+    canvas.getActiveObject.active = false;
+    console.log("undo : ", i, canvasStack);
     canvas.loadFromJSON(canvasStack[--i], function() {
       canvas.renderAll();
     });
   }
 //  canvas.loadFromJson('', function() {canvas.renderAll();})
   function redo() {
-    if (i == canvas.length) return ;
+    if (i == canvasStack.length) return ;
+    console.log("redo : ", i, canvasStack);
     canvas.loadFromJSON(canvasStack[++i], function() {
       canvas.renderAll();
     });
   }
+
+*/
+
+
+  // ver 3
+
+  var state;
+  var undo = [];
+  var redo = [];
+
+//  state = '{"objects":[{"type":"image","originX":"left","originY":"top","left":0,"top":0,"width":607,"height":603,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeLineJoin":"miter","strokeMiterLimit":10,"scaleX":1.5,"scaleY":1.5,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-over","transformMatrix":null,"skewX":0,"skewY":0,"crossOrigin":"","alignX":"none","alignY":"none","meetOrSlice":"meet","src":"http://localhost:63342/PlayFabricjs/image/T_crop.png","filters":[],"resizeFilters":[]},{"type":"rect","originX":"left","originY":"top","left":250,"top":250,"width":400,"height":600,"fill":"rgba(255, 255, 255, 0.1)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeLineJoin":"miter","strokeMiterLimit":10,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-atop","transformMatrix":null,"skewX":0,"skewY":0,"rx":0,"ry":0}],"background":""}'
+  function save() {
+    // clear the redo stack
+    console.log("save!");
+    redo = [];
+    $('#redo').prop('disabled', true);
+    // initial call won't have a state
+    if (state) {
+      undo.push(state);
+      $('#undo').prop('disabled', false);
+    }
+    state = JSON.stringify(canvas);
+    console.log(state);
+  }
+
+  function replay(playStack, saveStack, buttonsOn, buttonsOff) {
+    saveStack.push(state);
+    state = playStack.pop();
+    var on = $(buttonsOn);
+    var off = $(buttonsOff);
+    // turn both buttons off for the moment to prevent rapid clicking
+    on.prop('disabled', true);
+    off.prop('disabled', true);
+    canvas.clear();
+    canvas.loadFromJSON(state, function() {
+      canvas.renderAll();
+      // now turn the buttons back on if applicable
+      on.prop('disabled', false);
+      if (playStack.length) {
+        off.prop('disabled', false);
+      }
+    });
+  }
+
+//  $(function() {
+
+  canvas.on({
+    'object:modified' : save // 잘 안되는것 같음. 텍스트 색깔 변경했을 때!! -> 버튼 누를 때마다도 save해줘야 할듯!
+  });
+
+
+
+  $('#undo').click(function() {
+    replay(undo, redo, '#redo', this);
+  });
+  $('#redo').click(function() {
+    replay(redo, undo, '#undo', this);
+  });
+//  });
+
 
 </script>
 </body>
