@@ -3,24 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet" href="_cropping.css">
   <script src = "js/fabric.min.js"></script>
   <script src = "js/underscore.js"></script>
   <script src = "js/jquery.js"></script>
 </head>
 <body style="position:absolute">
-<canvas id="canvas" width="1500" height="1000" style="border: 1px solid black"></canvas>
+<!--<canvas id="canvas" width="800" height="800" style="border: 1px solid black"></canvas>-->
+<div id="filters">
+  <ul class="clearfix">
+    <li class="clearfix">
+      <div class="block">	<a href="#" id="startCrop" class="button">Enter crop mode</a>
+
+      </div>
+      <div class="block">	<a href="#" id="crop" class="button">Crop</a>
+
+      </div>
+    </li>
+  </ul>
+</div>
+<div id="canvas-container" class="over">
+  <div class="canvas-container" style="width: 800px; height: 600px; position: relative; -webkit-user-select: none;">
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </div>
+</div>
+
+
+<div id="my">
+  <canvas id="myCanvas" width="600" height="600">
+
+  </canvas>
+  <button id="mySizingMode"> sizing mode </button>
+  <button id="myCropMode"> crop mode </button>
+  <button id="myCrop"> crop </button>
+
+</div>
+
 <script>
 
-  var canvas = new fabric.Canvas('canvas');
+  // http://jsfiddle.net/86bTc/4/
+  // 변형
 
-  fabric.Image.fromURL('image/Disneyland.png', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
-    canvas.add(img.scale(0.5));
+//  var canvas = new fabric.Canvas('canvas');
+//
+//  fabric.Image.fromURL('image/Disneyland.png', function(img) {
+//    canvas.add(img.scale(0.5));
+//  });
+
+
+
+  var canvas = new fabric.Canvas('canvas');
+  var el;
+  var object, lastActive, object1, object2;
+  var cntObj = 0;
+  var selection_object_left = 0;
+  var selection_object_top = 0;
+
+  canvas.setBackgroundColor("yellow");
+
+  var src = "http://fabricjs.com/lib/pug.jpg";
+  fabric.Image.fromURL('http://serio.piiym.net/CVBla/txtboard/thumb/1260285874089s.jpg', function (oImg) {
+    canvas.add(oImg);
+  });
+
+//  fabric.Image.fromURL('http://www.clker.com/cliparts/2/5/6/5/1194986466653224692smiley110.svg.med.png', function (oImg1) {
+//    oImg1.top = 200;
+//    oImg1.left = 300;
+//    canvas.add(oImg1);
+//  });
+  canvas.renderAll();
+
+  var disabled;
+
+
+
+  $('#startCrop').on('click', function () {
+
+    canvas.remove(el);
+    if (canvas.getActiveObject()) {
+
+      object = canvas.getActiveObject();
+
+      if (lastActive !== object) {
+        console.log('different object');
+      } else {
+        console.log('same object');
+      }
+      if (lastActive && lastActive !== object) {
+//        lastActive.clipTo = null; //results in clip loss - 이건 뭐하는 거지?
+      }
+
+      el = new fabric.Rect({
+        fill: 'rgba(0,0,0,0.3)',
+        originX: 'left',
+        originY: 'top',
+        stroke: '#ccc',
+        strokeDashArray: [2, 2],
+        opacity: 1,
+        width: 1,
+        height: 1,
+        borderColor: '#36fd00',
+        cornerColor: 'green',
+        hasRotatingPoint: false
+      });
+
+      el.left = canvas.getActiveObject().left;
+      selection_object_left = canvas.getActiveObject().left;
+      selection_object_top = canvas.getActiveObject().top;
+      el.top = canvas.getActiveObject().top;
+      el.width = canvas.getActiveObject().width * canvas.getActiveObject().scaleX;
+      el.height = canvas.getActiveObject().height * canvas.getActiveObject().scaleY;
+
+
+      canvas.add(el);
+      canvas.setActiveObject(el);
+      for (var i = 0; i < $("#layers li").size(); i++) {
+        canvas.item(i).selectable = false;
+      }
+    } else {
+      alert("Please select an object or layer");
+    }
+
   });
 
 
+  $('#crop').on('click', function (event) {
+
+    var eLeft = el.get('left');
+    var eTop = el.get('top');
+    var left = eLeft - object.left;
+    var top = eTop - object.top;
+
+    left *= 1;
+    top *= 1;
+
+    var eWidth = el.get('width');
+    var eHeight = el.get('height');
+    var eScaleX = el.get('scaleX');
+    var eScaleY = el.get('scaleY');
+    var width = eWidth * 1;
+    var height = eHeight * 1;
+    object.clipTo = function (ctx) {
+      ctx.rect(-(eWidth / 2) + left, -(eHeight / 2) + top, parseInt(width * eScaleX), parseInt(eScaleY * height));
+    };
+
+    for (var i = 0; i < $("#layers li").size(); i++) {
+      canvas.item(i).selectable = true;
+    }
+    disabled = true;
+
+    canvas.remove(el);
+    lastActive = object;
+    canvas.renderAll();
+
+  });
 
 
 //  canvas.getActiveObject().selectable = false;
+
+
+
+
+
+
+// do myself!
+
+  var myCanvas = new fabric.Canvas('myCanvas');
+
+
+
+    fabric.Image.fromURL('image/Disneyland.png', function(img) {
+      myCanvas.add(img.scale(0.5));
+    });
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,173 @@
+body {
+  margin: 0;
+  background-color: #8f8f8f;
+}
+
+div {
+  /*border: 1px solid white;*/
+}
+
+#canvas-wrapper {
+  /*margin: 5px;*/
+}
+
+#tool-bar {
+  padding: 5px;
+  width: 100%;
+  height: 50px;
+  background-color: #333333;
+}
+
+#tool-bar img {
+  width: 40px;
+  height: 30px;
+}
+
+
+
+#logo {
+  padding-left: 15px;
+  display: inline-block;
+}
+#logo h3 {
+  color: white;
+}
+
+#do {
+  padding-left: 600px;
+  display: inline-block;
+}
+#do img {
+  margin-left: 20px;
+}
+
+#icon {
+  padding-left: 100px;
+
+  display: inline-block;
+}
+
+#icon img {
+  margin-left: 20px;
+}
+
+#icon #textBtn {
+  /*padding: 3px;*/
+  /*margin: 5px;*/
+  width: 30px;
+  height: 30px;
+}
+
+
+
+#body {
+
+  margin: 5px;
+
+}
+
+#body #part {
+  display: inline-block;
+  height: 730px;
+  width: 200px;
+  vertical-align: top;
+}
+
+#body #editor {
+  display: inline-block;
+  margin: 10px;
+  vertical-align: top;
+  background-color: whitesmoke;
+  box-shadow: 1px 1px 4px 4px #666666;
+  width: 500px;
+  margin: 30px;
+  border: 1px solid #444444;
+  position: absolute;
+  top: 400px;
+}
+
+#editor #edit_object, #editor #edit_text {
+  padding: 15px 7px;
+}
+
+#editor #stateBar {
+  background-color: #333333;
+  color: whitesmoke;
+  padding: 3px 5px;
+}
+
+#editor button {
+
+  border-style: none;
+  /*background-color: #333333;*/
+  border-radius: 3px;
+  /*color: white;*/
+  font-size: 13px;
+  font-weight: bold;
+  margin: 3px;
+  padding: 3px 10px;
+  width: 80px;
+  height: 25px;
+}
+
+
+
+
+.scene {
+  /*padding: 5px;*/
+  margin: 5px;
+  padding: 5px;
+  background-color: white;
+}
+
+#canvas-wrapper {
+  display: inline-block;
+
+}
+
+#canvas {
+  /*height: 610px;*/
+  /*width: 610px;*/
+}
+
+#canvas {
+  background-color: white;
+
+}
+
+
+
+
+
+
+#bottom {
+  width: 100%;
+  /*width: 2000px;*/
+  height: 150px;
+  padding: 5px;
+  overflow-x: scroll;
+  /*overflow-y: scroll;*/
+
+}
+
+#bottom #filterImages {
+  /*overflow-x: scroll;*/
+  /*overflow-y: scroll;*/
+
+  margin-left: 200px;
+}
+
+#bottom img {
+  padding: 5px;
+}
+
+#bottom #filterImages .filterImage{
+  display: inline-block;
+  text-align: center; /* 해당 div안의 span문자열 가운데 정렬 */
+}
+
+.filterImage span {
+
+  /*font-weight: bold;*/
+}
+

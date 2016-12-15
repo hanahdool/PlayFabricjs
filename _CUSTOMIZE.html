@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="_CUSTOMIZE.css">
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+
+</head>
+<body>
+
+<div id="tool-bar">
+  <div id="logo">
+    <h3>MAPPLER TOOL</h3>
+  </div>
+  <div id="do">
+    <img src="image/redo.png"/>
+    <img src="image/undo.png"/>
+  </div>
+
+  <div id="icon">
+    <img id="itemBtn" src="image/item.png"/> <!-- 헐! 이거 다 버튼으로 바꾸기!!!!!!!!!!! -->
+    <img id="textBtn" onclick="createText()" src="image/text.png"/>
+    <img id="uploadBtn" src="image/upload.png"/>
+  </div>
+
+</div>
+<div id="body">
+
+  <div id="part">
+    <div id="scene1" class="scene">
+      <img src="image/front.png"/>
+    </div>
+    <div id="scene2" class="scene">
+      <img src="image/back.png"/>
+    </div>
+    <div id="scene3" class="scene">
+      <img src="image/neck.png"/>
+    </div>
+    <div id="scene4" class="scene">
+      <img src="image/left.png"/>
+    </div>
+    <div id="scene5" class="scene">
+      <img src="image/right.png"/>
+    </div>
+
+  </div>
+  <div id="canvas-wrapper">
+    <canvas id="canvas" width="730px" height="730px"></canvas>
+  </div>
+
+  <div id="editor">
+    <div id="stateBar">
+      <span>editor</span>
+    </div>
+    <div id="edit_object" hidden>
+      <button onclick="bringFront()">앞으로</button>
+      <button onclick="bringBack()">뒤로</button>
+      <button onclick="bringVeryFront()">맨 앞으로</button>
+      <button onclick="bringVeryBack()">맨 뒤로</button>
+      <br>
+      <button onclick="bringCenter()">가운데 정렬</button>
+      <button onclick="remove()">지우기</button>
+      <button onclick="remove()">자르기</button>
+    </div>
+
+    <div id="edit_text" hidden>
+      <hr>
+      <input type="color" id="textColor"> <!-- value="#ff0000" 초기 색깔 -->
+      <button>글씨체</button>
+      <br>
+      <button id="bold" onclick="fontWeight_bold()">B</button>
+      <button id="italic" onclick="fontStyle_italic()">I</button>
+      <br>
+      <button id="left" onclick="textAlign_left()">left</button>
+      <button id="center" onclick="textAlign_center()">center</button>
+      <button id="right" onclick="textAlign_right()">right</button>
+      <br>
+      <button id="underLine" onclick="textLine_under()">_</button>
+      <button id="middleLine" onclick="textLine_middle()">―</button>
+      <button id="overLine" onclick="textLine_over()">￣</button>
+
+    </div>
+
+  </div>
+
+
+  <!--</div>-->
+
+
+</div>
+
+<div id="bottom">
+  <div id="filterImages" hidden>
+
+    <div class="filterImage">
+      <img src=""/>
+      <br>
+      <span> grayscale </span>
+    </div>
+
+    <div class="filterImage">
+      <img src=""/>
+      <br>
+      <span> invert </span>
+    </div>
+
+    <div class="filterImage">
+      <img src=""/>
+      <br>
+      <span> sepia </span>
+    </div>
+
+    <div class="filterImage">
+      <img src=""/>
+      <br>
+      <span> sepia2 </span>
+    </div>
+
+    <div class="filterImage">
+      <img src=""/>
+      <br>
+      <span> sepia2 </span>
+    </div>
+
+    <div class="filterImage">
+      <img src=""/>
+      <br>
+      <span> sepia2 </span>
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas'
+//    , { backgroundColor: 'skyblue' } // 배경을 지정하면 globalCompositeOperation이 안먹음..
+//    , { backgroundImage: 'image/T.png' }  // error
+  );
+
+//  canvas.setBackgroundImage('image/T.png', canvas.renderAll.bind(canvas), {
+//    scaleY: canvas.height,
+//    scaleX: canvas.width,
+//    left: 0,
+//    top: 0
+//  }); canvas.renderAll(); // 필요 없을
+
+//  var canvasStack = [];
+//  var i = 0;
+
+
+  canvas.preserveObjectStacking = true; // 객체 선택 관련 설정
+
+
+  // 이거 안됨ㅜ
+//  canvas.setBackgroundImage('image/T.png', canvas.renderAll.bind(canvas), {
+////    backgroundImageOpacity: 0.5,
+////    backgroundImageStretch: false
+//  });
+
+
+  fabric.Image.fromURL('image/T_crop.png', function(img) {
+    img.set({selectable: false, evented: false});
+
+    canvas.setBackgroundImage(img.scale(1.2)); // 이렇게! http://stackoverflow.com/questions/33459355/fabric-js-clip-object-to-background-image
+    canvas.renderAll();
+
+//
+//    var rect = new fabric.Rect({ width: 400, height: 600, top: 250, left: 250, fill: 'rgba(255, 255, 255, 0.1)' });
+//    rect.set({selectable: false});
+//    rect.globalCompositeOperation = "source-atop";
+//    canvas.add(rect);
+
+//    canvasStack[i++] = JSON.stringify(canvas);
+
+  });
+
+
+
+
+
+
+
+
+  function objectMode() {
+    $('#edit_object').show();
+    $('#filterImages').show();
+    $('#edit_text').hide();
+  }
+
+
+  function textMode() {
+    $('#edit_object').show();
+    $('#filterImages').show();
+    $('#edit_text').show();
+  }
+
+
+  function noMode() {
+    $('#edit_object').hide();
+    $('#filterImages').hide();
+    $('#edit_text').hide();
+  }
+
+
+  canvas.on({
+    'mouse:up' : function() {
+      if (canvas.getActiveGroup()) return objectMode();
+      if (canvas.getActiveObject())
+        return canvas.getActiveObject().isType('i-text') ? textMode() : objectMode();
+      return noMode();
+    },
+//     'object:selected' : function(o) {
+//       var activeObject = o.target;
+//       if(activeObject.isType('text')){
+//       }
+//       else if(activeObject.isType('image')){
+//       }
+//       else if( activeObject.isType('xyz')){
+//       }
+//     }
+  });
+
+  ///////////////////////////////////////////////////////////////// _final.html 기능 추가 시작
+
+
+  // 텍스트 추가
+  function createText() {
+    var text = new fabric.IText('글씨를 입력해주세요.', {
+      fontSize: 50,
+      left: 250,
+      top: 250,
+      lineHeight: 1,
+      originX: 'left',
+      fontFamily: 'Helvetica',
+      fontWeight: 'bold',
+      statefullCache: true
+    });
+    text.globalCompositeOperation = "source-atop";
+    canvas.add(text);
+  }
+
+
+
+  // 텍스트 이벤트 모음
+  //  '.editor .text #left'
+  // 색깔
+  var textColor = document.getElementById("textColor");
+  textColor.addEventListener("input", function() {
+    canvas.getActiveObject().setColor(textColor.value);
+    canvas.renderAll();
+  });
+
+  // 정렬
+  function textAlign_left() {
+    canvas.getActiveObject().textAlign = "left"; canvas.renderAll();
+  }
+  function textAlign_center() {
+    canvas.getActiveObject().textAlign = "center"; canvas.renderAll();
+  }
+  function textAlign_right() {
+    canvas.getActiveObject().textAlign = "right"; canvas.renderAll();
+  }
+
+  // 스타일
+  function fontWeight_bold() {
+    var text = canvas.getActiveObject();
+    text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+    canvas.renderAll();
+  }
+  function fontStyle_italic() {
+    var text = canvas.getActiveObject();
+    text.setFontStyle((text.fontStyle == "italic") ? "" : "italic");
+    canvas.renderAll();
+  }
+
+  // 라인
+  function textLine_under() {
+    var text = canvas.getActiveObject();
+    text.textDecoration = (text.textDecoration == "underline") ? "" : "underline";
+    canvas.renderAll();
+  }
+  function textLine_middle() {
+    var text = canvas.getActiveObject();
+    text.textDecoration = (text.textDecoration == "line-through") ? "" : "line-through";
+    canvas.renderAll();
+  }
+  function textLine_over() {
+    var text = canvas.getActiveObject();
+    text.textDecoration = (text.textDecoration == "overline") ? "" : "overline";
+    canvas.renderAll();
+  }
+
+
+  // 키보드 이벤트 -  이동, 삭제(del키)
+  var processKeys = function(e) {
+    e = e || window.event;
+
+    var movementDelta = 2;
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+
+    if (!active) return ;
+
+    switch (e.keyCode) {
+      // keycode 0은 키보드로 입력받을 수는 없는데, 시스템에서 입력이 발생하는 경우가 있을지..
+      case 37 : e.preventDefault(); active.set('left', active.get('left') - movementDelta); break;
+      case 39 : e.preventDefault(); active.set('left', active.get('left') + movementDelta); break;
+      case 38 : e.preventDefault(); active.set('top', active.get('top') - movementDelta); break;
+      case 40 : e.preventDefault(); active.set('top', active.get('top') + movementDelta); break;
+      case 46 : e.preventDefault(); active.remove();
+    }
+    active.setCoords() && canvas.renderAll(); // setCoords() 결과가 falsy 값을 뱉을 수도 있는지 반드시 확인!
+  };
+
+  var canvasWrapper = document.getElementById('canvas-wrapper');
+  canvasWrapper.tabIndex = 1000;
+  canvasWrapper.addEventListener("keydown", processKeys, false);
+  canvasWrapper.style.outline = "none";
+
+
+  // 이미지 앞으로, 뒤로
+  function bringFront() { // 1회 앞으로
+    (canvas.getActiveObject() || canvas.getActiveGroup()).bringForward();
+  }
+  function bringVeryFront() { // 맨 앞으로
+    (canvas.getActiveObject() || canvas.getActiveGroup()).bringToFront();
+  }
+  function bringBack() { // 1회 뒤로
+    (canvas.getActiveObject() || canvas.getActiveGroup()).sendBackwards();
+  }
+  function bringVeryBack() { // 맨뒤로
+    (canvas.getActiveObject() || canvas.getActiveGroup()).sendToBack();
+  }
+
+  function bringCenter() {
+    (canvas.getActiveObject() || canvas.getActiveGroup()).center()
+  }
+
+  // 삭제
+  function remove() {
+    (canvas.getActiveObject() || canvas.getActiveGroup()).remove();
+  }
+
+
+  ///////////////////////////////////////////////////////////////// _final.html 기능 추가 끝
+
+
+
+
+  ///////////////////////////////////////////////////////////////
+  $('#uploadBtn').click('on', function() {
+
+    fabric.Image.fromURL('image/dog.png', function(img) {
+      getFilterImage(img);
+
+      img.globalCompositeOperation = "source-atop";
+//      img.center(); img.setCoords(); // 이건 왜 안먹지
+      img.set({ left: 220, top: 270 });
+      canvas.add(img);
+      canvas.renderAll();
+
+    });
+
+  });
+
+  // ------------------------------------------------------------------- 필터링 start
+  var f = fabric.Image.filters;
+
+  var grayscale = new f.Grayscale();
+  var invert = new f.Invert();
+  var sepia = new f.Sepia();
+  var sepia2 = new f.Sepia2();
+  // blur, sharpen, emboss 는 매트릭스로
+
+
+  function getFilterImage(img) {
+//    var i = canvas.toDataURL(); // 캔버스 할 때는 이렇게!
+
+
+    img.filters[0] = grayscale;
+//    img.applyFilters(canvas.renderAll.bind(canvas));
+    img.applyFilters();
+
+    var i = img.toDataURL();
+
+//    $('#filterImages').children()[0].setAttribute('src', i)
+//    $('#filterImages').children()[1]
+//    $('#filterImages').children()[2]
+//    $('#filterImages').children()[3]
+//    $('#filterImages').children()[4]
+    _.each($('#filterImages').find('img'), function(imgTag) {
+      imgTag.setAttribute('src', i);
+      imgTag.setAttribute('width', '100px');
+      imgTag.setAttribute('height', '100px');
+
+    });
+
+
+//    $('#filterImages').show();
+
+  }
+
+  // ------------------------------------------------------------------- 필터링 end
+
+
+</script>
+</body>
+</html>

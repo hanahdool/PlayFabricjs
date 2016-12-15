@@ -13,12 +13,6 @@
 
   var canvas = new fabric.Canvas('canvas');
 
-  fabric.Image.fromURL('image/Disneyland.png', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
-    canvas.add(img);
-  });
-
-
-
 
 
   var f = fabric.Image.filters;
@@ -37,7 +31,6 @@
     }
   }
 
-
   new f.Grayscale();
   new f.Invert();
   new f.RemoveWhite();
@@ -45,8 +38,30 @@
   new f.Sepia2();
 
 
-  canvas.getActiveObject().filters.push(new f.Grayscale);
-  canvas.getActiveObject().applyFilters(canvas.renderAll.bind(canvas));
+
+
+
+
+  fabric.Image.fromURL('image/Disneyland.png', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+
+//    img.filters.push(new f.Grayscale);
+//    img.applyFilters(canvas.renderAll.bind(canvas));
+
+    canvas.add(img);
+
+
+
+  });
+
+
+
+
+
+
+
+//  canvas.getActiveObject().filters.push(new f.Grayscale);
+//  canvas.getActiveObject().applyFilters(canvas.renderAll.bind(canvas));
+
 
 
 
