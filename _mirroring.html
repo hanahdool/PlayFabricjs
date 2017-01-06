@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body>
+<!--<canvas id="canvas" width="910" height="1000"></canvas>-->
+<!--<button onclick="flip_v()">좌우반전</button>-->
+<!--<button onclick="flip_h()">상하반전</button>-->
+<form>
+  <input type="checkbox" id="horizontalCheckbox" onclick="flipNinjas()"/> <label for="horizontalCheckbox">Flip horizontal</label>
+  <input type="checkbox" id="verticalCheckbox" onclick="flipNinjas()"/> <label for="verticalCheckbox">Flip vertical</label>
+  <!--<button id="flipButton">Flip ninjas!</button>-->
+</form>
+<canvas id="canvas" width="500" height="328" style="border: 1px solid black"></canvas>
+
+
+<script>
+
+
+  // 원래는 flip이라고 한다!!
+/*
+ // 위치가 이상해짐, 여러번 안 됨
+ // 여러번 안됨.
+  var canvas = new fabric.Canvas('canvas');
+  fabric.Image.fromURL('image/img1.jpeg', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+    canvas.add(img.set({ left: 300, top: 300 }).scale(0.5)); //angle은 왼쪽 위 기준으로
+  });
+
+
+
+  // Lateral reversal
+  function v_mirroring() { // vertical
+    // 반전 후 이미지 위치, 클릭 문제 해결하기
+    canvas.getActiveObject().set("angle", "180").set('flipY', true);
+    canvas.renderAll();
+  }
+
+  function h_mirroring() { // horizontal
+    canvas.getActiveObject().set("angle", "-180").set('flipX', true);
+    canvas.renderAll();
+  }
+  //  obj.oCoords.
+*/
+
+
+  // 단순 돌리기(상하반전+좌우반전 효과): obj.scale(-1,1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // http://jsfiddle.net/yong/ZJQX5/
+
+
+//  var canvas = document.getElementById('canvas'),
+  var canvas = new fabric.Canvas('canvas'), // 이건 이렇게 해도 되네!
+    ctx = canvas.getContext('2d'),
+//    flipButton = document.getElementById('flipButton'),
+    img = new Image(),
+    width = 500,
+    height = 328;
+
+  function flipImage(image, ctx, flipH, flipV) {
+    var scaleH = flipH ? -1 : 1, // Set horizontal scale to -1 if flip horizontal
+      scaleV = flipV ? -1 : 1, // Set verical scale to -1 if flip vertical
+      posX = flipH ? width * -1 : 0, // Set x position to -100% if flip horizontal
+      posY = flipV ? height * -1 : 0; // Set y position to -100% if flip vertical
+    ctx.save(); // Save the current state
+    ctx.scale(scaleH, scaleV); // Set scale to flip the image
+    ctx.drawImage(img, posX, posY, width, height); // draw the image
+    console.log(canvas);
+//    canvas.add(img);
+    ctx.restore(); // Restore the last saved state
+  };
+
+
+  function flipNinjas() {
+    console.log("변함!!");
+    var flipH = document.getElementById('horizontalCheckbox').checked,
+      flipV = document.getElementById('verticalCheckbox').checked;
+
+    flipImage(img, ctx, flipH, flipV);
+    return false;
+  }
+
+//  $('#horizontalCheckbox').onChange = flipNinjas;
+//  $('#verticalCheckbox').onChange = flipNinjas;
+//  document.getElementById('horizontalCheckbox').
+
+
+//  flipButton.onclick = flipNinjas;
+
+  img.onload = flipNinjas;
+
+  img.src = 'http://3.bp.blogspot.com/-h_hVjcMqx8Q/TdSbVhT18sI/AAAAAAAAACQ/y-egUR0AtRM/s1600/ninja_true-ninjas.gif';
+
+</script>
+
+</body>
+</html>

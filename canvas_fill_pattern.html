@@ -1,0 +1,43 @@
+<html>
+<head>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+
+</head>
+
+
+<body>
+<canvas id="canvas" width="320" height="319" style="width: 320px; height: 319px;">
+</canvas>
+<canvas id="canvas2" width="500" height="500">
+</canvas>
+<canvas id="canvas3" width="500" height="500">
+</canvas>
+
+</body>
+
+<script>
+  var canvas = document.getElementById('canvas');
+  var context = canvas.getContext('2d');
+
+  var imageObj = new Image();
+  imageObj.onload = function() {
+    context.drawImage(imageObj, 0, 0, 320, 319);
+
+    var canvas2 = document.getElementById('canvas2');
+    var context2 = canvas2.getContext('2d');
+    var pattern = context2.createPattern(canvas, 'no-repeat');
+    context2.fillStyle = pattern;
+    context2.fillRect(0, 0, 500, 500);
+
+
+  };
+  imageObj.src = './image/wecan.png';
+
+
+
+
+
+</script>
+
+</html>

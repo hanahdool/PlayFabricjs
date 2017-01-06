@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src = "js/fabric.min.js"></script>
+  <script src = "js/fabric.js"></script>
   <script src = "js/underscore.js"></script>
   <script src = "js/jquery.js"></script>
 </head>
@@ -11,20 +11,64 @@
 <canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
 <script>
 
-  (function() {
-    var canvas = this.__canvas = new fabric.Canvas('canvas');
-    fabric.Object.prototype.transparentCorners = false;
+    var canvas = new fabric.Canvas('canvas');
+//    fabric.Object.prototype.transparentCorners = false;
 
-    var radius = 300;
 
+    fabric.Image.fromURL('image/dog.png', function(img) {
+      img.set({ left: 200, top: 100 });
+//      img.width = 530; img.height = 400;
+      canvas.add(img).setActiveObject(img);
+    });
+
+
+
+
+
+
+
+/*
     fabric.Image.fromURL('image/img1.jpeg', function(img) {
-      img.scale(0.5).set({
-        left: 100,
-        top: 100,
-        angle: -15,
+      img.scale(1).set({ left: 530, top: 100,
         clipTo: function (ctx) {
-//          ctx.arc(0, 0, radius, 0, Math.PI * 2, true);
-          ctx.rect(-300,-100,700,500); // 이미지 중앙으로부터 시작좌표 x, y, 크기 w, h
+
+//          ctx.rect(-260,-100,530,400); // 이미지 중앙으로부터 시작좌표 x, y, 크기 w, h
+
+          ctx.beginPath();
+          ctx.moveTo(-200,-200);
+          ctx.lineTo(0,10);
+          ctx.lineTo(10,10);
+          ctx.lineTo(15,5);
+          ctx.lineTo(10,0);
+          ctx.lineTo(0,0);
+          ctx.closePath();
+        }
+      });
+//      img.width = 530; img.height = 400;
+
+//      img.oCoords.mt.y = 200;
+//      img.oCoords.tl.y = 200;
+//      img.oCoords.tr.y = 200;
+//      img.setCoords();
+
+      canvas.add(img).setActiveObject(img);
+    });
+*/
+
+
+
+    fabric.Image.fromURL('image/dog.png', function(img) {
+      img.setAngle(-30);
+      img.scale(1).set({ left: 530, top: 100,
+        clipTo: function (ctx) { // 얘는 이미지랑 같이 돌아가니까
+
+          ctx.beginPath();
+          ctx.moveTo(-50, -50);
+          ctx.lineTo(-50,100);
+          ctx.lineTo(140,100);
+          ctx.lineTo(140,-50);
+//          ctx.lineTo(-50,-50);
+          ctx.closePath(); // begin, close Path 없으면 다음 Path 생성할 때 영향을 주는..??
 
         }
       });
@@ -32,7 +76,44 @@
     });
 
 
-  })();
+
+    function rpath() {
+      var path = new fabric.Path(_.reduce(_.values(_.pick(_.extend(canvas.getActiveObject().oCoords), 'tl', 'tr', 'br', 'bl')), function(memo, v, i, l) {
+        if (i == 0) return 'M ' + v.x + ' ' + v.y + ' ';
+        return memo + 'L ' + v.x + ' ' + v.y + ' ' + (l.length-1 == i ? 'z' : '');
+      }, ''), {
+        left: 0,
+        top: 0,
+        stroke: 'red',
+        strokeWidth: 2,
+        fill: false,
+        originX: 'left',
+        originY: 'top'
+        //angle: 45
+      });
+      canvas.add(path);
+    }
+
+
+
+
+
+    /*
+        fabric.Image.fromURL('image/img1.jpeg', function(img) {
+          img.scale(0.5).set({
+            left: 300,
+            top: 100,
+            clipTo: function (ctx) {
+    //          ctx.arc(0, 0, radius, 0, Math.PI * 2, true);
+              ctx.rect(-260,-100,530,400); // 이미지 중앙으로부터 시작좌표 x, y, 크기 w, h
+
+            }
+          });
+          img.width = 530; img.height = 400;
+          canvas.add(img).setActiveObject(img);
+        });
+    */
+
 
 
 

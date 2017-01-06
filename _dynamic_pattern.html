@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;"></canvas>
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+
+  canvas.setWidth(1000);
+  canvas.setHeight(1000);
+
+
+
+  // 화질이 너무 안좋아짐..
+
+  fabric.Object.prototype.transparentCorners = false;
+
+//  var padding = 10;
+
+  var i = 'image/wecan.png';
+//  var i = 'image/tiger.png';
+
+  fabric.Image.fromURL(i, function(img){
+    /*canvas.add(img);*/
+
+    var patternSourceCanvas = new fabric.StaticCanvas();
+    patternSourceCanvas.setDimensions({
+      width: img.getWidth(), // + padding,
+      height: img.getHeight() // + padding
+    });
+    patternSourceCanvas.add(img);
+
+    var c1 = patternSourceCanvas.getElement();
+    console.log(c1);
+
+    canvas.add(_.extend(new fabric.Rect({
+      left:0,
+      top:0,
+      width:400,
+      height: 420,
+      fill: canvas.getContext('2d').createPattern(c1, 'no-repeat'),
+      stroke: [1],
+
+//      scaleX: 1.5, // 아~!! 패턴을 씌운 채로 확대!!!!
+//      scaleY: 1.5
+    }), { hi: 1 }));
+  });
+
+  fabric.Image.fromURL(i, function(img) {
+
+//    img.scaleToWidth(200); // 이미지 크기 지정
+//    img.scaleToHeight(300);
+//    img.setAngle(0);
+//    img.scaleY = 1.5;
+//    img.width = 320;
+//    img.height = 319;
+//    img.scaleX = 0.7;
+//    img.scaleY = 0.7;
+
+    var pattern = new fabric.Pattern({
+      source: function() {
+        var patternSourceCanvas = new fabric.StaticCanvas();
+        patternSourceCanvas.add(img);
+        patternSourceCanvas.setDimensions({
+          width: img.getWidth(), // + padding,
+          height: img.getHeight() // + padding
+        });
+        console.log(patternSourceCanvas, patternSourceCanvas.getElement(), img.getWidth(), img.getHeight())
+        return patternSourceCanvas.getElement();
+      },
+//      source: i,
+      repeat: 'no-repeat',
+      offsetX: 0,
+      offsetY: 0,
+
+    });
+
+
+    // 자유 다각형의 경우
+//    canvas.add(new fabric.Polygon(
+//      [ {x: 185, y: 0},
+//        {x: 250, y: 100},
+//        {x: 385, y: 170},
+//        {x: 0, y: 245 } ],
+//      {
+//      left: 0,
+//      top: 200,
+////      angle: -30,
+//      fill: pattern,
+//      objectCaching: false
+//    }));
+
+
+    /*
+    * 패턴 셋팅
+    * */
+//    pattern.offsetX = 0;
+//    pattern.offsetY = 0;
+
+//    pattern.repeat = 'repeat'; //'no-repeat';
+
+
+
+
+/*
+    canvas.add(_.extend(new fabric.Rect({
+      left:400,
+      top:450,
+      width:400,
+      height: 420,
+      fill: pattern,
+      stroke: [1],
+    }), { hi: 2 }));*/
+
+
+
+    canvas.renderAll();
+
+  });
+
+
+
+
+</script>
+
+</body>
+</html>

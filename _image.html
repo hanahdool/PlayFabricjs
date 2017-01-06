@@ -21,6 +21,17 @@
 
   var canvas = new fabric.Canvas('canvas'); // drawing 되는 부분
 
+/*
+  img.set({
+    hasControls: true/false, // 크기조정 못하게
+    lockScalingFlip: false // 크기조절할 때 너무작아서 넘어가지 못하게
+  });
+*/
+
+
+
+
+//  lockScalingFlip: true // 이거 하면 상하, 좌우 반전 안됨 +  크기 더 못작아짐
 
 //  _.pipe(new fabric.Canvas('canvas'), _.async.Indent(
 //    function(canvas) { this.canvas = canvas; }, __,
@@ -34,9 +45,9 @@
 
 
 
-  fabric.Image.fromURL('image/img1.jpeg', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
-    canvas.add(img.set({ left: 300, top: 300, angle: -10 }).scale(0.5)); //angle은 왼쪽 위 기준으로
-  });
+//  fabric.Image.fromURL('image/img1.jpeg', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+//    canvas.add(img.set({ left: 300, top: 300, angle: -10 }).scale(0.5)); //angle은 왼쪽 위 기준으로
+//  });
 //
 //  fabric.Image.fromURL('image/img2.jpeg', function(img) {
 //    canvas.add(img.set({ left: 800, top: 500, angle: 20}).scale(0.25));
@@ -84,6 +95,22 @@
 //    }
 
   });
+
+
+
+
+
+
+
+
+
+  var a;
+  fabric.Image.fromURL('image/wecan.png', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+    canvas.add(img.set({ left: 200, top: 100 })); //angle은 왼쪽 위 기준으로
+    a = img;
+  });
+
+  a.drawObject();
 
 
 </script>

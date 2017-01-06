@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;"></canvas>
+
+<button id="addImage" onclick="addImage()">이미지 추가</button>
+<button id="objectMode" onclick="objectMode()">object mode</button>
+<button id="cropMode" onclick="cropMode()">crop mode</button>
+<button id="crop" onclick="crop()">crop</button>
+<br>
+<button id="filpX" onclick="flipX()">좌우반전</button>
+<button id="flipY" onclick="flipY()">상하반전</button>
+<button id="initialize" onclick="initialize()">crop 영역 초기화</button>
+
+<script>
+
+  function flipX() {
+    console.log('flipX');
+    var active = canvas.getActiveObject();
+    if (!active) return;
+    active.flipX = active.flipX ? false : true;
+
+    /////////////////////////////////////////////////
+    var origin = active._data.origin;
+    origin.flipX = origin.flipX ? false : true;
+    active._data.crop_info.flipX = active._data.crop_info.flipX ? false : true;
+    /////////////////////////////////////////////////
+
+    return canvas.renderAll();
+  }
+
+  function flipY() {
+    var active = canvas.getActiveObject();
+    if (!active) return;
+    active.flipY = active.flipY ? false : true;
+
+    /////////////////////////////////////////////////
+    var origin = active._data.origin;
+    origin.flipY = origin.flipY ? false: true;
+    active._data.crop_info.flipY = active._data.crop_info.flipY ? false : true;
+    /////////////////////////////////////////////////
+
+    return canvas.renderAll();
+  }
+
+
+
+//  var info = {
+//    left: ,
+//    top: ,
+//    width: ,
+//    height: ,
+//
+//
+    // z-index 반드시!!
+
+//    // 이하는 이미지(origin)가 담고있도록?
+//    scaleX: ,
+//    scaleY: ,
+//    flipX: ,
+//    flipY: ,
+//
+//    filter:
+//  }
+
+
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.preserveObjectStacking = true;
+
+
+  canvas.setHeight(800);
+  canvas.setWidth(800);
+
+
+//  addImage('image/wecan.png', 100, 100); // 경로, 위치x, 위치y
+  addImage('image/dog2.png', 100, 100); // 경로, 위치x, 위치y
+  addImage('image/icecream.png', 0, 0);
+
+
+  function addImage(src, x, y) {
+
+    /* 원본 */
+    fabric.Image.fromURL(src, function(origin) { // fabric image 객체
+      origin.set({
+//        left: 0,
+//        top: 0,
+        //width: 400,
+        //height: 400,
+        scaleX: 1,
+        scaleY: 1
+      });
+//    canvas.add(origin);
+
+      /* cropped */
+      var tmp = { // crop 정보
+        top: 0,
+        left: 0,
+        width: origin.width,
+        height: origin.height,
+        //        multiplier: 2 // scale
+//        flipX: false,
+//        flipY: false
+      };
+      fabric.Image.fromURL(origin.toDataURL(tmp), function(cropped) {
+        cropped.set({
+          left: x,
+          top: y,
+          lockScalingFlip: true,
+//          flipX: origin.flipX,
+//          flipY: origin.flipY,
+          /*, angle:origin.angle */
+        });
+        canvas.add(cropped).setActiveObject(cropped);
+        cropped._data.crop_info = tmp;
+
+        /* cropper */
+        var cropper = new fabric.Rect({
+          top: cropped.top,
+          left: cropped.left,
+          width: cropped.width,
+          height: cropped.height,
+          fill: 'rgba(100, 100, 100, 0.2)',
+//          fill: 'rgba(0,0,0,0)',
+//          scaleX: img.scaleX,
+//          scaleY: img.scaleY,
+          borderColor: 'black',
+          cornerColor: 'black',
+          cornerSize: 8,
+          borderDashArray: [5, 5],
+          transparentCorners: false,
+          hasRotatingPoint: false,
+        globalCompositeOperation: 'lighter'
+        });
+
+        cropped._data.origin = origin;
+        cropped._data.cropper = cropper;
+
+
+      });
+
+
+    }); // 이미지 로드(+ 콜백) 끝
+
+  } // add Image 함수 끝
+
+
+
+  function cropMode() {
+    console.log("crop mode!");
+
+
+    var cropped = canvas.getActiveObject();
+    var crop_info = cropped._data.crop_info;
+
+
+    var origin = cropped._data.origin;
+    var cropper = cropped._data.cropper;
+    var crop_info = cropped._data.crop_info;
+
+
+
+    var idx = canvas.getObjects().indexOf(cropped);
+    cropper._data.idx = idx;
+    console.log("==================", idx);
+
+
+    canvas.remove(cropped);
+
+
+
+    origin.set({ // 원본 이미지
+      top: cropped.top - crop_info.top,
+      left: cropped.left - crop_info.left,
+      scaleX: cropped.scaleX,
+      scaleY: cropped.scaleY,
+//      width: , // 둘은 반드시 그대로 유지
+//      height: ,
+      angle: cropped.angle,
+
+//      flipX: cropped.flipX, // 지워버리기
+//      flipY: cropped.flipY,
+//      flipX: crop_info.flipX,
+//      flipY: crop_info.flipY,
+    });
+
+    if (crop_info.flipX) {
+      console.log("뒤집힌 상태!");
+      var tmp = origin.left;
+      origin.left = cropper.left - ((tmp+origin.width*origin.scaleX) - (cropper.left+cropper.width*cropper.scaleX));
+    }
+    if (crop_info.flipY) {
+      console.log("뒤집힌 상태!");
+      var tmp = origin.top;
+      origin.top = cropper.top - ((tmp+origin.height*origin.scaleY) - (cropper.top+cropper.height*cropper.scaleY));
+    }
+
+
+
+    cropper.set({ // 자르기
+      top: cropped.top,
+      left: cropped.left,
+      width: cropped.width, // 여기는 상관x. 어짜피 다시 셋팅해줄 거니까
+      height: cropped.height,
+      scaleX: cropped.scaleX,
+      scaleY: cropped.scaleY,
+
+      angle: cropped.angle // 왜 안먹지?
+    });
+
+    cropper._data.cropped = cropped;
+    cropper._data.origin = origin;
+
+    canvas.add(origin);
+    canvas.add(cropper);
+    canvas.setActiveObject(cropper);
+    canvas.renderAll();
+
+  }
+
+
+
+
+
+  function crop() { // 오기 전에 cropped의 idx를 알고 있어야 함!!
+    console.log("crop!");
+
+    var cropper = canvas.getActiveObject();
+    var origin = cropper._data.origin;
+    var cropped = cropper._data.cropped;
+    var sX = cropped.scaleX, sY = cropped.scaleY; // 나중에 더 깔끔하게 없애버리기
+
+    origin.set({
+      angle: 0, // crop할 때에는 다시 원위치로 시켜줘야 pattern이 이 origin 사용해서 알아서 잘 매핑함
+      scaleX: cropped.scaleX,
+      scaleY: cropped.scaleY,
+//      flipX: cropped.flipX,
+//      flipY: cropped.flipY,
+
+    }); // 안해주면 패턴 씌울 때 기운 채로 매핑됨. (각도*2) 만큼
+
+    // cropper 세팅
+    cropper.set({
+      width: cropper.width * cropper.scaleX, //this.width * this.scaleX
+      height: cropper.height * cropper.scaleY,
+      scaleX: 1,
+      scaleY: 1
+    });
+
+    console.log("==================", canvas.getObjects().indexOf(cropped));
+    var idx = canvas.getObjects().indexOf(cropped);
+    canvas.remove(cropped); //cropped = null;
+
+    // cropped 지우고 새로 생성
+    fabric.Image.fromURL(origin.toDataURL({
+      top: cropper.top-origin.top, // 크롬 위치 지정
+      left: cropper.left-origin.left,
+      width: cropper.width,
+      height: cropper.height,
+    }), function(cropped) {
+      cropped.set({
+        left: cropper.left,
+        top: cropper.top,
+        angle: cropper.angle,
+        lockScalingFlip: true,
+//        flipX: origin.flipX,
+//        flipY: origin.flipY,
+
+        scaleX: sX,
+        scaleY: sY,
+
+        width: cropper.width/sX, // width*sX = cropper.width // width = cropper.width/sX
+        height: cropper.height/sY
+      });
+//      canvas.add(cropped).setActiveObject(cropped);
+      canvas.insertAt(cropped, cropper.idx).setActiveObject(cropped);
+
+      cropped._data.cropper = cropper;
+      cropped._data.origin = origin;
+
+      // 추가
+      cropped._data.crop_info = {
+        top: cropper.top - origin.top,
+        left: cropper.left - origin.left,
+        width: cropper.width,
+        height: cropper.height,
+
+//        flipX: origin.flipX, // 별도로 해주어야 함
+//        flipY: origin.flipY
+
+      };
+
+
+//      origin.set({ // 이거 왜있는거지????????
+//        top: cropped.top - (cropper.top - origin.top),
+//        left: cropped.left - (cropper.left - origin.left),
+//      });
+
+
+      canvas.remove(cropper);
+      canvas.remove(origin);
+
+      canvas.add(cropped);
+      canvas.setActiveObject(cropped);
+
+      canvas.renderAll();
+
+      console.log("crop 완료!");
+
+
+    })
+
+  }
+
+
+
+  function initialize() { // 이미지 처음 가져올 때랑 똑같음! - cropper 설정하고, flip, angle값만 바꾸고 다시 크롭!?!!!
+    console.log("원본으로 복구!");
+
+    var cropped = canvas.getActiveObject();
+
+
+
+    // 아니면 cropped 설정 변경
+    // - crop 함수에 인자 전달해주면 초기화 하도록 (=> 처음 로드할 때 같은 소스로 쓸 수 있음)
+
+
+
+
+  }
+
+</script>
+
+</body>
+</html>

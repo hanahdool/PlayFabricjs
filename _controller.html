@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body>
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+<script>
+
+
+
+  var canvas = new fabric.Canvas('canvas');
+
+  var rect = new fabric.Rect({
+    left: 150,
+    top: 200,
+    originX: 'left',
+    originY: 'top',
+    width: 150,
+    height: 120,
+    angle: -10,
+    fill: 'rgba(255,0,0,0.5)',
+
+    hasControls: true,
+    hasBorders: true,
+    hasRotatingPoint: true, // 꼭지점 유무
+    visible: true,
+    selectable: true,
+    evented: true,
+    transparentCorners: false,
+    centeredScaling: false,
+    centeredRotation: false,  // 뒤집기 이걸로 하면 되지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 좌우반전
+
+    padding: 0,
+    cornerSize: 13,
+    rotatingPointOffset: 30, // 그 꼭지점으로부터의 길이!
+    borderColor: "rgba(102,153,255,0.75)", // selector 테두리 '#ffffff' 'green' 이런 형태도 가능
+    cornerColor: "rgba(102,153,255,0.5)" // selector 작은사각형 9개 테두리
+//    setControlVisible: 함수,
+
+  });
+
+
+/*
+//  rect.setControlVisible('mt', false);
+  rect.setControlsVisibility({
+    bl: true, // 왼쪽 아래
+    br: false, // 오른쪽 아래
+    mb: , // 아래 중앙
+    ml: , // 왼쪽 중앙
+    mr: , // 오른쪽 중앙
+    mt: , // 위 중앙
+    tl: , // 왼쪽 위
+    tr: , // 오른쪽 위
+    mtr: // 꼭지점
+  })
+*/
+
+
+
+  // 이미지 scaling 비율 지켜 하고 싶으면
+  // obj.setControlsVisibility({mb:false, ml:false, mr:false, mt:false})
+  // 이렇게 하기!!
+
+
+
+  canvas.add(rect).setActiveObject(rect);
+
+
+
+/*
+
+  function observeBoolean(property) {
+    document.getElementById(property).onclick = function() {
+      canvas.item(0)[property] = this.checked;
+      canvas.renderAll();
+    };
+  }
+
+  function observeNumeric(property) {
+    document.getElementById(property).onchange = function() {
+      canvas.item(0)[property] = this.value;
+      canvas.renderAll();
+    };
+  }
+
+  function observeOptionsList(property) {
+    var list = document.querySelectorAll('#' + property +
+      ' [type="checkbox"]');
+    for (var i = 0, len = list.length; i < len; i++) {
+      list[i].onchange = function() {
+        canvas.item(0)[property](this.name, this.checked);
+        canvas.renderAll();
+      };
+    };
+  }
+
+  observeBoolean('hasControls');
+  observeBoolean('hasBorders');
+  observeBoolean('hasRotatingPoint');
+  observeBoolean('visible');
+  observeBoolean('selectable');
+  observeBoolean('evented');
+  observeBoolean('transparentCorners');
+  observeBoolean('centeredScaling');
+  observeBoolean('centeredRotation');
+
+  observeNumeric('padding');
+  observeNumeric('cornerSize');
+  observeNumeric('rotatingPointOffset');
+  observeNumeric('borderColor');
+  observeNumeric('cornerColor');
+
+  observeOptionsList('setControlVisible');
+*/
+
+
+
+</script>
+</body>
+</html>

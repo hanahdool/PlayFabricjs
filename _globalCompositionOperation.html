@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;"></canvas>
+<button id="cropMode" onclick="objectMode()">object mode</button>
+<button id="objectMode" onclick="cropMode()">crop mode</button>
+<button id="crop" onclick="crop()">crop</button>
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+//  canvas.top = 100;
+//  canvas.left = 100;
+
+  var img_src = 'image/wecan.png';
+  canvas.setHeight(600);
+  canvas.setWidth(600);
+
+//  var rect = new fabric.Rect({ width:200, height:200, fill: 'rgba(255, 255, 0, 0.2)', left:100, top:100 });
+
+
+  var i, c;
+
+
+  fabric.Image.fromURL(img_src, function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+    canvas.add(img.set({
+      left: 100,
+      top: 100,
+      selectable: false,
+      evented: false
+    }));
+
+    i = img;
+
+//    var rect = new fabric.Rect({ width:img.width, height:img.height, fill: 'rgba(0, 0, 0, 0.2)', left:100, top:100 });
+//    var rect = new fabric.Rect({ width:200, height:200, fill: 'rgba(0, 0, 0, 0.2)', left:100, top:100 });
+//    canvas.add(rect);
+
+
+    var cropper = new fabric.Rect({
+      width: 200,
+      height: 200,
+      top: 100,
+      left: 100,
+//      fill: 'rgba(0, 0, 0, 1)',
+      fill: 'rgba(100, 100, 100, 0.2)',
+//      fill: 'rgba(255, 255, 255, 0.1)',
+      borderColor: 'black',
+      cornerColor: 'black',
+      cornerSize: 8,
+      borderDashArray: [5, 5],
+      transparentCorners: false,
+      hasRotatingPoint: false,
+
+
+//      centeredScaling: true
+      // 좌표도 cente
+
+    });
+    cropper.globalCompositeOperation = 'lighter'; // 바로 밑에 있는 거만 취급
+    canvas.setActiveObject(cropper);
+    canvas.add(cropper);
+    c = cropper;
+
+
+    canvas.on({
+      'object:moving': limitMoving,
+      'object:scaling' : limitScaling
+    });
+
+
+    function limitMoving(e) {
+      console.log("moving");
+      var obj = e.target;
+      obj.setCoords(); // ??
+
+      var t = img.top, l = img.left, h = img.height, w = img.width;
+
+//      // top-left  cornerd
+//      if (obj.getBoundingRect().top <= t || obj.getBoundingRect().left <= l) {
+//        obj.top = Math.max(obj.top, t);
+//        obj.left = Math.max(obj.left, l);
+//      }
+//      // bot-right corner
+//      if (obj.getBoundingRect().top+obj.getBoundingRect().height >= h+t || obj.getBoundingRect().left+obj.getBoundingRect().width >= w+l) {
+//        obj.top = Math.min(obj.top, t + h - obj.height * obj.scaleY);
+//        obj.left = Math.min(obj.left, l + w - obj.width * obj.scaleX);
+//      }
+
+      obj.top = Math.min(Math.max(obj.top, t), t + h - obj.height * obj.scaleY);
+      obj.left = Math.min(Math.max(obj.left, l), l + w - obj.width * obj.scaleX);
+
+    }
+
+    function limitScaling(e) {
+      console.log("scaling");
+      var obj = e.target;
+      var t = img.top, l = img.left, h = img.height, w = img.width;
+      var corner = e.e.corner;
+
+      if (corner === 'tl' || corner === 'mt' || corner === 'tr') { // 위로
+        obj.top = Math.max(obj.top, t);
+        obj.scaleY = Math.min(obj.scaleY, (obj.oCoords.mb.y-t)/obj.height);
+
+      } else if (corner === 'bl' || corner === 'mb' || corner === 'br') { // 아래로
+        obj.scaleY = Math.min(obj.scaleY, (t+h - obj.oCoords.mt.y)/obj.height);
+      }
+
+      if (corner === 'tl' || corner === 'ml' || corner === 'bl') { // 왼쪽
+        obj.left = Math.max(obj.left, l);
+        obj.scaleX = Math.min(obj.scaleX, (obj.oCoords.mr.x-l)/obj.width);
+
+      } else if (corner === 'tr' || corner === 'mr' || corner === 'br') { // 오른쪽
+        obj.scaleX = Math.min(obj.scaleX, (l+w - obj.oCoords.ml.x)/obj.width);
+      }
+    }
+
+  });
+
+
+
+
+  function crop() { // 나중에 메모리릭 생각해서 다시 정리하기
+    console.log("crop!");
+
+    var cropper = canvas.getActiveObject();
+
+    var origin = i; // 위의 cropper가 종속되어있는 이미지 객체
+//    var origin = cropper._data.origin;
+
+
+    var cropped = new fabric.Rect({
+      width: cropper.width*cropper.scaleX,
+      height: cropper.height*cropper.scaleY,
+//      width: cropper.width,
+//      height: cropper.height,
+//      scaleX: cropper.scaleX,
+//      scaleY: cropper.scaleY,
+//      scaleX: 1,
+//      scaleY: 1,
+
+      left: cropper.left,
+      top: cropper.top
+    });
+
+    fabric.util.loadImage(img_src/*origin.src*/, function(img) {
+      cropped.setPatternFill({
+        source: img,
+        repeat: 'no-repeat',
+        offsetX: origin.left - cropper.left,
+        offsetY: origin.top - cropper.top
+      });
+      canvas.renderAll(); // 위치가...?
+    });
+    canvas.add(cropped);
+    canvas.setActiveObject(cropped);
+
+    cropped._data = { origin: origin, cropper: cropper }; // cropper안에 어짜피 origin 있는뎅
+    console.log(cropped._data);
+
+//    cropper.visible = false;
+//    origin.visible = false;
+    canvas.remove(cropper);
+    canvas.remove(origin);
+  }
+
+
+
+  function cropMode() {
+    console.log("crop mode!");
+    var cropped = canvas.getActiveObject();
+    cropped.visible = false; // remove()?
+
+    var origin = cropped._data.origin;
+    var cropper = cropped._data.cropper;
+
+
+    origin.set({
+      top: cropped.top - (cropper.top - origin.top),
+      left: cropped.left - (cropper.left - origin.left),
+      scaleX: cropped.scaleX,
+      scaleY: cropped.scaleY,
+//      width: cropped.width,
+//      height: cropped.height
+    });
+
+    cropper.set({
+      top: cropped.top,
+      left: cropped.left,
+      width: cropped.width,
+      height: cropped.height,
+      scaleX: cropped.scaleX,
+      scaleY: cropped.scaleY
+    });
+
+//    origin.visible = true;
+//    cropper.visible = true;
+    canvas.add(origin);
+    canvas.add(cropper);
+
+    canvas.setActiveObject(cropper);
+    canvas.renderAll();
+  }
+
+//  객체가 정보를 가지고 있을 지, 전역에 모든 이미지의 crop정보를 배열로 가지고 있을 지
+
+
+  function objectMode() {
+    console.log("object mode!");
+    // crop 취소했을 경우!
+    // cropper 정보 이전꺼로 되돌리고,
+    // origin은 그대로 있을꺼고,
+    // cropped 다시 불러와서 셋팅하기!
+
+  }
+
+
+
+
+
+</script>
+
+</body>
+</html>

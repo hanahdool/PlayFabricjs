@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <link rel="stylesheet" href="_CUSTOMIZE.css">
-  <script src = "js/fabric.min.js"></script>
+  <script src = "js/fabric.js"></script>
   <script src = "js/underscore.js"></script>
   <script src = "js/jquery.js"></script>
 
@@ -16,8 +16,10 @@
     <h3>MAPPLER TOOL</h3>
   </div>
   <div id="do">
-    <img src="image/redo.png"/>
-    <img src="image/undo.png"/>
+    <!--<img src="image/undo.png" id="undo"/>-->
+    <!--<img src="image/redo.png" id="redo"/>-->
+    <button id="undo" disabled>undo</button>
+    <button id="redo" disabled>redo</button>
   </div>
 
   <div id="icon">
@@ -48,26 +50,46 @@
 
   </div>
   <div id="canvas-wrapper">
-    <canvas id="canvas" width="730px" height="730px"></canvas>
+    <!--<canvas id="canvas" width="730px" height="730px"></canvas>-->
+    <canvas id="canvas"></canvas>
   </div>
 
-  <div id="editor">
-    <div id="stateBar">
-      <span>editor</span>
-    </div>
-    <div id="edit_object" hidden>
-      <button onclick="bringFront()">앞으로</button>
-      <button onclick="bringBack()">뒤로</button>
-      <button onclick="bringVeryFront()">맨 앞으로</button>
-      <button onclick="bringVeryBack()">맨 뒤로</button>
-      <br>
-      <button onclick="bringCenter()">가운데 정렬</button>
-      <button onclick="remove()">지우기</button>
-      <button onclick="remove()">자르기</button>
+
+  <div id="edit-wrapper">
+
+    <div id="edit_object" class="editing" hidden>
+      <div class="stateBar">
+        <span>editor</span>
+      </div>
+
+      <div>
+        <button onclick="bringFront()">앞으로</button>
+        <button onclick="bringBack()">뒤로</button>
+        <button onclick="bringVeryFront()">맨 앞으로</button>
+        <button onclick="bringVeryBack()">맨 뒤로</button>
+        <br>
+        <button onclick="bringCenter()">가운데 정렬</button>
+        <button onclick="remove_active()">지우기</button>
+        <br>
+        <button onclick="crop()">자르기</button>
+        <button onclick="grouping()">그룹 묶기</button>
+        <button onclick="ungrouping()">그룹 해제</button>
+        <br>
+        <span>좌우반전</span>
+        <input type="checkbox" id="horizontalCheckbox" onclick="flip()">
+        <span>상하반전</span>
+        <input type="checkbox" id="verticalCheckbox" onclick="flip()">
+        <br>
+
+      </div>
     </div>
 
-    <div id="edit_text" hidden>
-      <hr>
+    <!--<div id="edit_text" hidden>-->
+    <div id="edit_text" class="editing" hidden>
+      <div class="stateBar">
+        <span>text</span>
+      </div>
+      <!--<hr>-->
       <input type="color" id="textColor"> <!-- value="#ff0000" 초기 색깔 -->
       <button>글씨체</button>
       <br>
@@ -84,65 +106,86 @@
 
     </div>
 
+    <div id="edit_filter" class="editing" hidden>
+
+      <div class="stateBar">
+        <span>filter</span>
+      </div>
+
+      <div id="filterImages" hidden>
+
+        <div class="filterImage">
+          <img src=""/>
+          <br>
+          <span> grayscale </span>
+        </div>
+
+        <div class="filterImage">
+          <img src=""/>
+          <br>
+          <span> invert </span>
+        </div>
+
+        <div class="filterImage">
+          <img src=""/>
+          <br>
+          <span> sepia </span>
+        </div>
+
+        <div class="filterImage">
+          <img src=""/>
+          <br>
+          <span> sepia2 </span>
+        </div>
+
+        <div class="filterImage">
+          <img src=""/>
+          <br>
+          <span> sepia2 </span>
+        </div>
+
+        <div class="filterImage">
+          <img src=""/>
+          <br>
+          <span> sepia2 </span>
+        </div>
+
+
+      </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
   </div>
 
 
-  <!--</div>-->
 
 
 </div>
 
 <div id="bottom">
-  <div id="filterImages" hidden>
-
-    <div class="filterImage">
-      <img src=""/>
-      <br>
-      <span> grayscale </span>
-    </div>
-
-    <div class="filterImage">
-      <img src=""/>
-      <br>
-      <span> invert </span>
-    </div>
-
-    <div class="filterImage">
-      <img src=""/>
-      <br>
-      <span> sepia </span>
-    </div>
-
-    <div class="filterImage">
-      <img src=""/>
-      <br>
-      <span> sepia2 </span>
-    </div>
-
-    <div class="filterImage">
-      <img src=""/>
-      <br>
-      <span> sepia2 </span>
-    </div>
-
-    <div class="filterImage">
-      <img src=""/>
-      <br>
-      <span> sepia2 </span>
-    </div>
-
-
-  </div>
 
 </div>
 
 
 <script>
 
+  var CANVAS_WIDTH = 730;
+  var CANVAS_HEIGHT = 730;
+
   var canvas = new fabric.Canvas('canvas'
-//    , { backgroundColor: 'skyblue' } // 배경을 지정하면 globalCompositeOperation이 안먹음..
+//    , { backgroundColor: '#ffffff' } // 배경을 지정하면 globalCompositeOperation이 안먹음..
 //    , { backgroundImage: 'image/T.png' }  // error
+    , { selectable:false, evented:false, width:CANVAS_WIDTH, height:CANVAS_HEIGHT }
   );
+//  canvas.getContext('2d').globalCompositeOperation = "source-atop"; // canvas에 먹일 때
 
 //  canvas.setBackgroundImage('image/T.png', canvas.renderAll.bind(canvas), {
 //    scaleY: canvas.height,
@@ -158,6 +201,7 @@
   canvas.preserveObjectStacking = true; // 객체 선택 관련 설정
 
 
+
   // 이거 안됨ㅜ
 //  canvas.setBackgroundImage('image/T.png', canvas.renderAll.bind(canvas), {
 ////    backgroundImageOpacity: 0.5,
@@ -166,18 +210,23 @@
 
 
   fabric.Image.fromURL('image/T_crop.png', function(img) {
-    img.set({selectable: false, evented: false});
+//    img.set({selectable: false, evented: false});
 
+    // 여기서 다 셋팅해줘야 undo state 의도대로 됨!!
+//    canvas.setHeight();
+//    canvas.setWidth();
     canvas.setBackgroundImage(img.scale(1.2)); // 이렇게! http://stackoverflow.com/questions/33459355/fabric-js-clip-object-to-background-image
     canvas.renderAll();
 
-//
 //    var rect = new fabric.Rect({ width: 400, height: 600, top: 250, left: 250, fill: 'rgba(255, 255, 255, 0.1)' });
 //    rect.set({selectable: false});
 //    rect.globalCompositeOperation = "source-atop";
 //    canvas.add(rect);
 
 //    canvasStack[i++] = JSON.stringify(canvas);
+
+
+    save();
 
   });
 
@@ -190,32 +239,40 @@
 
   function objectMode() {
     $('#edit_object').show();
-    $('#filterImages').show();
+    $('#edit_filter').show();
     $('#edit_text').hide();
   }
 
 
   function textMode() {
     $('#edit_object').show();
-    $('#filterImages').show();
+    $('#edit_filter').hide();
     $('#edit_text').show();
   }
 
 
   function noMode() {
     $('#edit_object').hide();
-    $('#filterImages').hide();
+    $('#edit_filter').hide();
     $('#edit_text').hide();
   }
 
 
   canvas.on({
     'mouse:up' : function() {
-      if (canvas.getActiveGroup()) return objectMode();
-      if (canvas.getActiveObject())
-        return canvas.getActiveObject().isType('i-text') ? textMode() : objectMode();
+      console.log("!!!!!!!!!mouse up!!!!!!!!!!");
+      var active = canvas.getActiveGroup() || canvas.getActiveObject();
+      if (active) {
+        console.log("~~~~~~~~~~~~~~~~~", active.type);
+        return active.isType('i-text') ? textMode() : objectMode();
+
+      }
       return noMode();
     },
+
+    'object:added': save, // undo & redo
+    'object:modified' : save
+
 //     'object:selected' : function(o) {
 //       var activeObject = o.target;
 //       if(activeObject.isType('text')){
@@ -226,6 +283,44 @@
 //       }
 //     }
   });
+
+  var g;
+
+  function grouping() {
+    var activegroup = canvas.getActiveGroup();
+    if (!activegroup) return;
+    var objectsInGroup = activegroup.getObjects();
+    activegroup.clone(function(newgroup) { // clone하는 부분에서 문제가 발생하는 듯!
+      canvas.discardActiveGroup();
+      objectsInGroup.forEach(function(object) {
+        canvas.remove(object);
+      });
+      g = newgroup;
+//      newgroup._objects.forEach(function(o) {
+      newgroup.getObjects().forEach(function(o) {
+        console.log("돌긴 하나", o.globalCompositeOperation);
+//        각각의 o는 다 source-atop으로 되어 있음 이미..
+      });
+      newgroup.globalCompositeOperation = "source-atop"; // 해도 소용없어 ㅜㅜ...
+
+      canvas.add(newgroup);
+                                          //      canvas.setActiveObject(newgroup); // 그룹 묶고 그 그룹 선택되어있게
+    });
+  }
+
+  function ungrouping() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject.type == "group") {
+      var items = activeObject._objects;
+      activeObject._restoreObjectsState();
+      canvas.remove(activeObject);
+      for (var i = 0; i < items.length; i++) {
+        canvas.add(items[i]);
+        canvas.item(canvas.size() - 1).hasControls = true;
+      }
+      canvas.renderAll();
+    }
+  }
 
   ///////////////////////////////////////////////////////////////// _final.html 기능 추가 시작
 
@@ -313,7 +408,7 @@
       case 39 : e.preventDefault(); active.set('left', active.get('left') + movementDelta); break;
       case 38 : e.preventDefault(); active.set('top', active.get('top') - movementDelta); break;
       case 40 : e.preventDefault(); active.set('top', active.get('top') + movementDelta); break;
-      case 46 : e.preventDefault(); active.remove();
+      case 46 : e.preventDefault(); remove_active();
     }
     active.setCoords() && canvas.renderAll(); // setCoords() 결과가 falsy 값을 뱉을 수도 있는지 반드시 확인!
   };
@@ -343,8 +438,29 @@
   }
 
   // 삭제
-  function remove() {
-    (canvas.getActiveObject() || canvas.getActiveGroup()).remove();
+//  function remove() {
+//    (canvas.getActiveObject() || canvas.getActiveGroup()).remove();
+//  }
+
+  function remove_active() {
+    var active = canvas.getActiveGroup() || canvas.getActiveObject();
+    if (!active) return ;
+
+    if (active.isType('group')) {
+      console.log("그룹");
+      active._objects.forEach(function(obj) {
+        canvas.remove(obj);
+        active.removeWithUpdate(obj);
+      });
+      canvas.remove(active); // 하나의 object 타입이 group일 경우만
+      canvas.discardActiveGroup();
+      canvas.renderAll();
+    }
+    else  {
+      console.log("안그룹");
+
+      active.remove();
+    }
   }
 
 
@@ -359,9 +475,15 @@
     fabric.Image.fromURL('image/dog.png', function(img) {
       getFilterImage(img);
 
-      img.globalCompositeOperation = "source-atop";
+      img.set({
+        left: 220,
+        top: 270,
+//        lockScalingFlip: true // 이거 하면 상하, 좌우 반전 안됨 +  크기 더 못작아짐
+      });
+      img.globalCompositeOperation = "source-atop"; // 이것땜에 그룹묶으면 안보여 ㅜㅜ
+//      img.globalCompositeOperation = "lighter"; // 이것땜에 그룹묶으면 안보여 ㅜㅜ
 //      img.center(); img.setCoords(); // 이건 왜 안먹지
-      img.set({ left: 220, top: 270 });
+
       canvas.add(img);
       canvas.renderAll();
 
@@ -408,6 +530,62 @@
 
   // ------------------------------------------------------------------- 필터링 end
 
+
+  // undo & redo
+  var state;
+  var undo = [];
+  var redo = [];
+
+
+  //  state = '{"objects":[{"type":"image","originX":"left","originY":"top","left":0,"top":0,"width":607,"height":603,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeLineJoin":"miter","strokeMiterLimit":10,"scaleX":1.5,"scaleY":1.5,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-over","transformMatrix":null,"skewX":0,"skewY":0,"crossOrigin":"","alignX":"none","alignY":"none","meetOrSlice":"meet","src":"http://localhost:63342/PlayFabricjs/image/T_crop.png","filters":[],"resizeFilters":[]},{"type":"rect","originX":"left","originY":"top","left":250,"top":250,"width":400,"height":600,"fill":"rgba(255, 255, 255, 0.1)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeLineJoin":"miter","strokeMiterLimit":10,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-atop","transformMatrix":null,"skewX":0,"skewY":0,"rx":0,"ry":0}],"background":""}'
+  function save() {
+    // clear the redo stack
+    console.log("save!");
+    redo = [];
+    $('#redo').prop('disabled', true);
+    // initial call won't have a state
+    if (state) {
+      undo.push(state);
+      $('#undo').prop('disabled', false);
+    }
+//    state = JSON.stringify(canvas);
+    state = canvas.toObject();
+    console.log(state);
+  }
+
+  function replay(playStack, saveStack, buttonsOn, buttonsOff) {
+    saveStack.push(state);
+    state = playStack.pop();
+    var on = $(buttonsOn);
+    var off = $(buttonsOff);
+    // turn both buttons off for the moment to prevent rapid clicking
+    on.prop('disabled', true);
+    off.prop('disabled', true);
+//    canvas.clear();
+    var new_canvas = new fabric.Canvas();
+    new_canvas.setWidth(CANVAS_WIDTH);
+    new_canvas.setHeight(CANVAS_HEIGHT);
+    new_canvas.loadFromJSON(state, function() {
+      $(new_canvas.wrapperEl).appendTo('#canvas-wrapper');
+      $(canvas.wrapperEl).remove(); //canvas.clearContext(); 아니넹..
+      canvas.dispose();
+      canvas = new_canvas;
+//      canvas.renderAll();
+      // now turn the buttons back on if applicable
+      on.prop('disabled', false);
+      if (playStack.length) {
+        off.prop('disabled', false);
+      }
+    });
+  }
+
+
+  $('#undo').click(function() {
+    replay(undo, redo, '#redo', this);
+  });
+  $('#redo').click(function() {
+    replay(redo, undo, '#undo', this);
+  });
 
 </script>
 </body>

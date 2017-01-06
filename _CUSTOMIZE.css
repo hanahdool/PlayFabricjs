@@ -5,6 +5,15 @@ body {
 
 div {
   /*border: 1px solid white;*/
+  /*border: 1px solid blue;*/
+}
+
+#edit-wrapper {
+  /*border: 1px solid red;*/
+  width: 500px;
+  height: 700px;
+  /*position: relative;*/
+  position: absolute;
 }
 
 #canvas-wrapper {
@@ -73,42 +82,112 @@ div {
   vertical-align: top;
 }
 
-#body #editor {
+#body #edit-wrapper {
   display: inline-block;
+  /*border: 3px solid white;*/
+  margin-left: 10px;
+  background-color: #eeeeee;
+  height: 730px;
+}
+
+
+#edit-wrapper .editing {
+
   margin: 10px;
-  vertical-align: top;
-  background-color: whitesmoke;
-  box-shadow: 1px 1px 4px 4px #666666;
-  width: 500px;
-  margin: 30px;
-  border: 1px solid #444444;
-  position: absolute;
-  top: 400px;
+  min-height: 200px;
+
 }
 
-#editor #edit_object, #editor #edit_text {
-  padding: 15px 7px;
+#edit {
+
 }
 
-#editor #stateBar {
-  background-color: #333333;
-  color: whitesmoke;
-  padding: 3px 5px;
-}
-
-#editor button {
-
-  border-style: none;
+.stateBar {
   /*background-color: #333333;*/
-  border-radius: 3px;
+  border-bottom: 1px solid #333333;
   /*color: white;*/
-  font-size: 13px;
   font-weight: bold;
-  margin: 3px;
-  padding: 3px 10px;
-  width: 80px;
-  height: 25px;
 }
+
+#body #edit-wrapper #filter {
+  /*height: auto;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*#body #editor {*/
+
+  /*margin: 10px;*/
+  /*vertical-align: top;*/
+  /*background-color: whitesmoke;*/
+  /*background-color: dimgrey;*/
+  /*box-shadow: 1px 1px 4px 4px #666666;*/
+  /*width: 500px;*/
+  /*margin: 30px;*/
+  /*border: 1px solid #444444;*/
+  /*position: absolute;*/
+  /*top: 50px;*/
+
+
+  /*height: 300px;*/
+/*}*/
+
+/*#body #filter {*/
+
+  /*margin: 10px;*/
+  /*vertical-align: top;*/
+  /*background-color: whitesmoke;*/
+  /*box-shadow: 1px 1px 4px 4px #666666;*/
+  /*width: 500px;*/
+  /*margin: 30px;*/
+  /*border: 1px solid #444444;*/
+  /*position: absolute;*/
+  /*top: 370px;*/
+/*}*/
+
+
+
+
+/*#editor #edit_object, #editor #edit_text {*/
+  /*padding: 15px 7px;*/
+/*}*/
+
+/*.stateBar {*/
+  /*background-color: #333333;*/
+  /*color: whitesmoke;*/
+  /*padding: 3px 5px;*/
+/*}*/
+
+/*#editor button {*/
+
+  /*border-style: none;*/
+  /*!*background-color: #333333;*!*/
+  /*border-radius: 3px;*/
+  /*!*color: white;*!*/
+  /*font-size: 13px;*/
+  /*font-weight: bold;*/
+  /*margin: 3px;*/
+  /*padding: 3px 10px;*/
+  /*width: 80px;*/
+  /*height: 25px;*/
+/*}*/
 
 
 
@@ -116,8 +195,12 @@ div {
 .scene {
   /*padding: 5px;*/
   margin: 5px;
-  padding: 5px;
   background-color: white;
+}
+
+.scene img {
+  /*width: 30px;*/
+  /*height: 30px;*/
 }
 
 #canvas-wrapper {
@@ -126,14 +209,9 @@ div {
 }
 
 #canvas {
-  /*height: 610px;*/
-  /*width: 610px;*/
+/*background-color: white;*/
 }
 
-#canvas {
-  background-color: white;
-
-}
 
 
 
@@ -150,18 +228,18 @@ div {
 
 }
 
-#bottom #filterImages {
+#filterImages {
   /*overflow-x: scroll;*/
   /*overflow-y: scroll;*/
 
-  margin-left: 200px;
+  /*margin-left: 200px;*/
 }
 
-#bottom img {
+#filterImages img {
   padding: 5px;
 }
 
-#bottom #filterImages .filterImage{
+#filterImages .filterImage{
   display: inline-block;
   text-align: center; /* 해당 div안의 span문자열 가운데 정렬 */
 }

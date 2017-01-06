@@ -11,14 +11,30 @@
 <canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
 <button id="group"> 그룹 묶기 </button>
 <button id="ungroup"> 그룹 풀기 </button>
+<button id="remove"> 제거하기 </button>
 <script>
+
+
+  // 그룹 한번에 remove도 여기에 (그룹으로 묶여있는 애들은 그룹이 아니라 하나의 객체처럼 취급됨)
 
   var canvas = new fabric.Canvas('canvas');
 
-  // 도형끼리 그룹핑
-  // 사진끼리 그룹핑
-  // 텍스트 그룹핑
-  // 도형-사진-텍스트 같이 그룹핑
+  /* 그룹핑 관련 꼭!!!
+
+  두개의 다른 객체를 드래그 했을 때 :  canvas.getActiveGroup.type === 'group'
+  그룹핑한 하나의 객체를 선택했을 때 :  canvas.getActiveObject.type === 'group' -> 제거 문제
+
+
+  globalCompositeOperation='source-atop' 상태에서 그룹핑 안보임ㅜㅜ 처리해줘야됨
+   canvas.getActiveGroup().getObjects()
+   canvas.getActiveGroup()._objects
+   둘다 같은 거!
+
+
+  */
+
+
+  canvas.getContext().globalCompositieOperation = "source-atop";
 
 
   var rect1 = new fabric.Rect({ width: 100, height: 100, top: 100, left: 100, fill: 'pink' });
@@ -27,6 +43,13 @@
   var rect2 = new fabric.Rect({ width:50, height:50, top:200, left:100, fill:'grey' });
   canvas.add(rect2);
 
+  var rect2 = new fabric.Rect({ width:50, height:50, top:250, left:100, fill:'skyblue' });
+  canvas.add(rect2);
+
+
+  fabric.Image.fromURL('image/img1.jpeg', function(img) {
+    canvas.add(img.set({ left: 300, top: 300, angle: -10 }).scale(0.5));
+  });
 
 
   $("#group").on('click', function() {
@@ -55,6 +78,86 @@
       canvas.renderAll();
     }
   });
+
+//  $('#remove').click(function() {
+//    var o = canvas.getActiveGroup();
+//    o._objects.forEach(function(obj, key) {
+//      canvas.remove(obj);
+//      o.removeWithUpdate(obj);// 이건 뭐하는거지? - 없어두 되긴 되는
+//    });
+//    canvas.discardActiveGroup();
+//    canvas.renderAll();
+//  });
+
+
+  $('#remove').click(function() {
+
+    remove_obj_or_group();
+
+  });
+
+
+  function remove_obj_or_group() { // 그룹핑 해서 하나가 된 객체는 삭제 안됨
+    if (canvas.getActiveObject()) {
+      canvas.getActiveObject().remove();
+    }
+    else if (canvas.getActiveGroup()) {
+      var o = canvas.getActiveGroup();
+      o._objects.forEach(function(obj, key) {
+        canvas.remove(obj);
+        o.removeWithUpdate(obj);// 이건 뭐하는거지?
+      });
+      canvas.discardActiveGroup();
+      canvas.renderAll();
+    }
+
+  }
+
+
+
+  function remove_obj_or_group() { // 완벽한 removing
+//    if (canvas.getActiveGroup() || (canvas.getActiveObject().type=='group')) {
+    if (canvas.getActiveGroup() || canvas.getActiveObject().isType('group')) {
+      var o = canvas.getActiveGroup() || canvas.getActiveObject();
+      o._objects.forEach(function(obj) {
+        canvas.remove(obj);
+        o.removeWithUpdate(obj);
+      });
+      canvas.remove(o); // 내가 추가한 거. 이게 있어야 깔끔하게 제거됨 - object group일 경우만
+      canvas.discardActiveGroup();
+      canvas.renderAll();
+    }
+    else if (canvas.getActiveObject()) {
+      canvas.getActiveObject().remove();
+//      canvas.remove(canvas.getActiveObject());
+    }
+  }
+
+
+  function remove_active() {
+
+    var active = canvas.getActiveGroup() || canvas.getActiveObject();
+    if (!active) return ;
+
+    if (active.isType('group')) {
+      active._objects.forEach(function(obj) {
+        canvas.remove(obj);
+        active.removeWithUpdate(obj);
+      });
+      canvas.remove(active); // 하나의 object 타입이 group일 경우만
+      canvas.discardActiveGroup();
+      canvas.renderAll();
+    }
+    else {
+      active.remove();
+    }
+
+  }
+
+
+
+
+
 
 
 </script>

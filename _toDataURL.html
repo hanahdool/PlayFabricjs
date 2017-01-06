@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;"></canvas>
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.preserveObjectStacking = true;
+
+  canvas.setHeight(800);
+  canvas.setWidth(800);
+
+  var src = 'image/dog2.png';
+
+
+    /* 원본 */
+  fabric.Image.fromURL(src, function(img) { // fabric image 객체
+    img.set({
+        left: 200,
+        top: 100,
+      //width: 400,
+      //height: 400,
+//      scaleX: 1.5,
+//      scaleY: 1.5
+//      centeredRotation: true,
+//      angle: 30
+
+    });
+
+    canvas.add(img);
+
+    /* cropped */
+    var tmp = { // crop 정보
+      top: 0,
+      left: 0,
+      width: img.width,
+      height: img.height,
+      //        multiplier: 2 // scale
+    };
+    fabric.Image.fromURL(img.toDataURL(tmp), function(cropped) {
+      cropped.set({
+        left: 200,
+        top: 100,
+        lockScalingFlip: true,
+//          flipX: img.flipX,
+//          flipY: img.flipY,
+        /*, angle:img.angle */
+//        angle: 30
+      });
+      canvas.add(cropped).setActiveObject(cropped);
+      cropped._data.crop_info = tmp;
+
+      cropped._data.img = img;
+
+    });
+
+  });
+
+
+
+</script>
+
+</body>
+</html>

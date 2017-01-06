@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/partial.js"></script>
+  <script src = "js/jquery.js"></script>
+
+</head>
+<body>
+<canvas id="canvas" width="800" height="800" style="border: 1px solid black"></canvas>
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.preserveObjectStacking = true;
+
+  var rect = new fabric.Rect({ width:300, height:300, left:100, top:100, fill:'rgba(0,0,0,1)' });
+  canvas.add(rect);
+
+  var i;
+  fabric.Image.fromURL('image/icecream.png', function(img) {
+    i = img.set({
+      left: 100,
+      top: 100,
+      selectable: false,
+      evented: false,
+      globalCompositeOperation: 'source-atop'
+    });
+    canvas.add(img); //angle은 왼쪽 위 기준으로
+  });
+
+
+
+  canvas.on({
+    'object:moving': moving,
+    'object:scaling' : scaling
+  });
+
+
+  function moving(e) {
+    var obj = e.target;
+    i.set({
+      top: obj.top,
+      left: obj.left
+    });
+    canvas.renderAll();
+  }
+
+  function scaling(e) {
+    var obj = e.target;
+    i.set({
+      scaleX: obj.scaleX,
+      scaleY: obj.scaleY
+    });
+    canvas.renderAll();
+  }
+
+
+
+</script>
+
+</body>
+</html>

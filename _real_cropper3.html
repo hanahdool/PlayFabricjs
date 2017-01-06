@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;"></canvas>
+
+<button id="addImage" onclick="addImage()">이미지 추가</button>
+<button id="cropMode" onclick="objectMode()">object mode</button>
+<button id="objectMode" onclick="cropMode()">crop mode</button>
+<button id="crop" onclick="crop()">crop</button>
+<button id="initialize" onclick="initialize()">원본으로 복구</button>
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.preserveObjectStacking = true;
+
+
+  canvas.setHeight(800);
+  canvas.setWidth(800);
+
+
+  addImage('image/icecream.png');
+  addImage('image/wecan.png');
+
+  var imgg;
+  function addImage(src) {
+    fabric.Image.fromURL(src, function(img) { // fabric image 객체
+
+      // 이미지 셋팅
+      img.set({
+        left: 0,
+        top: 0,
+//        width: 400,
+//        height: 400,
+        scaleX: 1,
+        scaleY: 1,
+      });
+
+      imgg = img;
+      // 패턴 생성
+      var pattern = new fabric.Pattern({ // 이미지 처음 추가한 딱 그 크기가 무조건 기준. scale은 모두 1로 초기화.
+        source: function() {
+          var patternSourceCanvas = new fabric.StaticCanvas();
+          patternSourceCanvas.add(img);
+
+          patternSourceCanvas.setDimensions({
+//            width: img.width * img.scaleX,
+//            height: img.height * img.scaleY,
+            width: 800, // 헐 이거 뭐지!!!!!!!!!!!!!!!?????????
+            height: 800, // 이 범위 벗어나면 짤림!!!!!!!!!!!!!!!
+            scaleX: 1,
+            scaleY: 1,
+          });
+          return patternSourceCanvas.getElement();
+        },
+//        source: img,
+        repeat: 'no-repeat',
+//        offsetX: ,
+//        offsetY
+      });
+
+
+      // cropped rect 생성(패턴 씌운)
+      var cropped = new fabric.Rect({
+        width: img.width,
+        height: img.height,
+        fill: pattern
+//        scaleX: 1, // 기본 셋티일 거고
+//        scaleY: 1,
+      });
+      console.log("여기!~!~!!~!~!~!");
+      console.log(cropped.width, cropped.height);
+
+      // cropper 생성
+      var cropper = new fabric.Rect({
+        width: img.width,
+        height: img.height,
+        top: img.top,
+        left: img.left,
+        scaleX: img.scaleX,
+        scaleY: img.scaleY,
+//        fill: 'rgba(100, 100, 100, 0.2)',
+        fill: 'rgba(100, 100, 100, 0)',
+        borderColor: 'black',
+        cornerColor: 'black',
+        cornerSize: 8,
+        borderDashArray: [5, 5],
+        transparentCorners: false,
+        hasRotatingPoint: false,
+//        globalCompositeOperation: 'lighter'
+      });
+
+      canvas.add(img);
+      canvas.add(cropper);
+      canvas.setActiveObject(cropper);
+
+
+      // 초기 이미지 일반화 과정
+      cropper._data.img = img;
+      cropper._data.cropped = cropped;
+      cropper._data.pattern = pattern;
+      crop();
+
+
+
+    }); // 이미지 로드(+ 콜백) 끝
+
+  } // add Image 함수 끝
+
+
+
+  function crop() {
+    console.log("crop!");
+
+    var cropper = canvas.getActiveObject();
+    var img = cropper._data.img;
+    var cropped = cropper._data.cropped;
+    var pattern = cropper._data.pattern;
+
+    img.set({
+      angle: 0, // crop할 때에는 다시 원위치로 시켜줘야 pattern이 이 img 사용해서 알아서 잘 매핑함
+      scaleX: cropped.scaleX,
+      scaleY: cropped.scaleY
+    }); // 안해주면 패턴 씌울 때 기운 채로 매핑됨. (각도*2) 만큼
+
+    // cropper 세팅
+    cropper.set({
+      width: cropper.width * cropper.scaleX, //this.width * this.scaleX
+      height: cropper.height * cropper.scaleY,
+      scaleX: 1,
+      scaleY: 1
+    });
+
+
+    pattern.offsetX = - cropper.left;
+    pattern.offsetY =  - cropper.top;
+//    img.setAngle(cropper.angle);
+//    img.setAngle();
+//    img.scaleToWidth();
+
+
+//    console.log("=============================");
+//    console.log(cropped.width, cropped.height);
+//    console.log(cropped.scaleX, cropped.scaleY);
+
+    // cropped 이미지 세팅
+    cropped.set({
+//      width: cropper.width,
+//      height: cropper.height,
+//      width: cropped.width,
+//      height: cropped.height,
+      width: cropper.width/img.scaleX, // cropped.width * cropper.width = img.scaleX;
+      height: cropper.height/img.scaleY, // 이게 왜안되지??????
+
+      left: cropper.left,
+      top: cropper.top,
+      scaleX: img.scaleX, // 기본 셋팅이 1
+      scaleY: img.scaleY,
+//      angle: cropper.angle // 되어있음
+    });
+
+    cropped._data.cropper = cropper;
+    cropped._data.img = img;
+    cropped._data.pattern = pattern;
+
+    canvas.remove(cropper);
+    canvas.remove(img);
+
+    canvas.add(cropped);
+    canvas.setActiveObject(cropped);
+
+    canvas.renderAll();
+
+    console.log("crop 완료!");
+
+  }
+
+
+
+  function cropMode() {
+    console.log("crop mode!");
+
+    var cropped = canvas.getActiveObject();
+    canvas.remove(cropped); //cropped.visible = false;
+
+    var img = cropped._data.img;
+    var cropper = cropped._data.cropper;
+    var pattern = cropped._data.pattern;
+
+
+    img.set({ // 원본 이미지
+      top: cropped.top - (cropper.top - img.top) * cropped.scaleY,
+      left: cropped.left - (cropper.left - img.left) * cropped.scaleX,
+      scaleX: cropped.scaleX,
+      scaleY: cropped.scaleY,
+//      width: , // 둘은 반드시 그대로 유지
+//      height: ,
+
+      angle: cropped.angle
+    });
+
+
+    cropper.set({ // 자르기
+      top: cropped.top,
+      left: cropped.left,
+      width: cropped.width, // 여기는 상관x. 어짜피 다시 셋팅해줄 거니까
+      height: cropped.height,
+      scaleX: cropped.scaleX,
+      scaleY: cropped.scaleY,
+
+      angle: cropped.angle // 왜 안먹지?
+    });
+
+
+    cropper._data.cropped = cropped;
+    cropper._data.img = img;
+
+    canvas.add(img);
+    canvas.add(cropper);
+    canvas.setActiveObject(cropper);
+    canvas.renderAll();
+
+
+  }
+
+
+
+
+
+  function initialize() {
+    console.log("원본으로 복구!");
+
+    var cropped = canvas.getActiveObject();
+
+    // 이미지 처음 가져올 때 설정
+
+    // 아니면 cropped 설정 변경
+    // - crop 함수에 인자 전달해주면 초기화 하도록 (=> 처음 로드할 때 같은 소스로 쓸 수 있음)
+
+  }
+
+</script>
+
+</body>
+</html>

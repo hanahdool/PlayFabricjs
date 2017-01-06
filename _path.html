@@ -42,6 +42,29 @@
 
   canvas.add(path);
 
+  function rpath() {
+    var path = new fabric.Path(_.reduce(_.values(_.pick(_.extend(canvas.getActiveObject().oCoords), 'tl', 'tr', 'br', 'bl')), function(memo, v, i, l) {
+      if (i == 0) return 'M ' + v.x + ' ' + v.y + ' ';
+      return memo + 'L ' + v.x + ' ' + v.y + ' ' + (l.length-1 == i ? 'z' : '');
+    }, ''), {
+      left: 0,
+      top: 0,
+      stroke: 'red',
+      strokeWidth: 2,
+      fill: false,
+      originX: 'left',
+      originY: 'top'
+      //angle: 45
+    });
+    canvas.add(path);
+  }
+
+  function crop() {
+
+  }
+
+
+
 
 </script>
 </body>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+<script>
+
+    var canvas = new fabric.Canvas('canvas');
+
+
+//    var context = canvas.getContext('2d');
+//    var imageObj = new Image();
+//    imageObj.onload = function() {
+//      context.drawImage(this, 0, 0);
+//    };
+//    imageObj.src = 'image/wecan.png'
+
+
+
+
+
+
+    fabric.Image.fromURL('image/wecan.png', function(img) {
+//      img.set({ left: 200, top: 100 });
+//      canvas.add(img).setActiveObject(img);
+      canvas.add(img);
+    });
+
+
+    fabric.Image.fromURL('image/wecan.png', function(img) {
+//      img.set({ left: 530, top: 100,
+//        clipTo: function (ctx) {
+//          ctx.rect(-100,-100,200,200);
+//        }
+//      });
+
+      fabric.Image.fromURL(img.toDataURL({
+        top: 50,
+        left: 50,
+        width:150,
+        height:150,
+//        multiplier: 2 // scale
+      }), function(img2) {
+        img2.set({ left: 100, top: 450, /*angle:30, flipX: true*/ });
+//        canvas.add(img2).setActiveObject(img2);
+        canvas.add(img2);
+      });
+
+
+
+//      canvas.add(img).setActiveObject(img);
+    });
+
+
+
+</script>
+
+</body>
+</html>

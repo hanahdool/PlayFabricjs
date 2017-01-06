@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<div style="width:100px; height: 100px"> ~~ </div>
+<canvas id="canvas" style="width: 500px; height: 500px; border: 1px solid black;"></canvas>
+
+<script>
+
+  // drah limit
+  // http://jsfiddle.net/gaz704v7/
+
+
+  var canvas = new fabric.Canvas('canvas');
+//  canvas.top = 100;
+//  canvas.left = 100;
+
+  canvas.setHeight(500);
+  canvas.setWidth(500);
+
+  var crit = new fabric.Rect({ width: 300, height: 300, top: 100, left: 100, fill: 'rgba(255, 0, 0, 1)', evented:false });
+  canvas.add(crit);
+
+
+  canvas.on({
+    'object:moving': prevent1,
+//    'object:scaling' : prevent2
+    'object:scaling' : prevent3
+  });
+
+
+
+
+
+  function prevent1(e) {
+    console.log("moving");
+    var obj = e.target;
+    // if object is too big ignore - 이부분 나중에 생각!
+//    if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+//      console.log(obj.currentHeight, obj.canvas.height, obj.currentHeight > obj.canvas.height);
+//      console.log(obj.currentWidth, obj.canvas.width, obj.currentWidth > obj.canvas.width);
+//      console.log("==============================================");
+//      return;
+//    }
+//    obj.setCoords(); // ??
+
+    obj.set({ lockScalingY: false });
+
+    // top-left  cornerd
+    var t = crit.top, l = crit.left, h = crit.height, w = crit.width;
+
+//    if (obj.getBoundingRect().top = t || obj.getBoundingRect().left < l) {
+//      obj.top = Math.max(obj.top, t);
+//      obj.left = Math.max(obj.left, l);
+//    }
+    // bot-right corner
+//    if (obj.getBoundingRect().top+obj.getBoundingRect().height > h+t || obj.getBoundingRect().left+obj.getBoundingRect().width > w+l) {
+      obj.top = Math.min(Math.max(obj.top, t), obj.canvas.height - obj.getBoundingRect().height - t);
+      obj.left = Math.min(Math.max(obj.left, l), obj.canvas.width - obj.getBoundingRect().width - l);
+//    }
+  }
+
+  function prevent2(e) { // _.throttle
+    console.log("scaling");
+    var obj = e.target;
+//    obj.setCoords(); // 이거 있으면 절대. 안됨
+    var t = crit.top, l = crit.left, h = crit.height, w = crit.width;
+
+    if (obj.getBoundingRect().top < t) {
+      console.log("위로!");
+      obj.top = Math.max(obj.top, t);
+      obj.scaleY = Math.min(obj.scaleY, (obj.oCoords.mb.y-t)/obj.height);
+    } else if (obj.getBoundingRect().top+obj.getBoundingRect().height > h+t ) {
+      console.log('아래로!');
+      obj.scaleY = Math.min(obj.scaleY, (t+h - obj.oCoords.mt.y)/obj.height);
+    }
+
+    if (obj.getBoundingRect().left < l) {
+      console.log('왼쪽!');
+      obj.left = Math.max(obj.left, l);
+      obj.scaleX = Math.min(obj.scaleX, (obj.oCoords.mr.x-l)/obj.width);
+    } else if (obj.getBoundingRect().left+obj.getBoundingRect().width > w+l) {
+      console.log('오른쪽!');
+      // obj.scaleX*obj.width = l+w-obj.oCoords.ml.x
+      obj.scaleX = Math.min(obj.scaleX, (l+w - obj.oCoords.ml.x)/obj.width);
+    }
+
+  }
+
+
+
+  function prevent3(e) {
+    console.log("scaling");
+    var obj = e.target;
+//    obj.setCoords(); //??
+    var t = crit.top, l = crit.left, h = crit.height, w = crit.width;
+    var corner = e.e.corner;
+
+    if (corner === 'tl' || corner === 'mt' || corner === 'tr') { // 위로
+      console.log("위로!");
+//      obj.top = Math.max(obj.top, t);
+      obj.scaleY = Math.min(obj.scaleY, (obj.oCoords.mb.y-t)/obj.height);
+
+    } else if (corner === 'bl' || corner === 'mb' || corner === 'br') { // 아래로
+      obj.scaleY = Math.min(obj.scaleY, (t+h - obj.oCoords.mt.y)/obj.height);
+    }
+
+    if (corner === 'tl' || corner === 'ml' || corner === 'bl') { // 왼쪽
+//      obj.left = Math.max(obj.left, l);
+      obj.scaleX = Math.min(obj.scaleX, (obj.oCoords.mr.x-l)/obj.width);
+
+    } else if (corner === 'tr' || corner === 'mr' || corner === 'br') { // 오른쪽
+      obj.scaleX = Math.min(obj.scaleX, (l+w - obj.oCoords.ml.x)/obj.width);
+    }
+
+  }
+
+
+  var a;
+
+//  var text = new fabric.IText('hanah');
+//  text.set({
+//    left: 200,
+//    top: 200,
+//    hasRotatingPoint: false
+//  }); // 이거 뒤집기 막아두기. - 옵션이 어딨드라 ㅜㅜ
+////  text.mtr = false; // 꼭지점 없애는 게 뭐더라... 이미지랑 다른가?
+//  canvas.add(text);
+
+  var rect = new fabric.Rect({
+    width: 100,
+    height: 100,
+    top: 100,
+    left: 100,
+    fill: 'rgba(200, 200, 200, 0.5)',
+    hasRotationPoint: false });
+  canvas.add(rect);
+
+
+  canvas.setActiveObject(rect);
+
+
+</script>
+
+</body>
+</html>

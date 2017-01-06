@@ -16,6 +16,31 @@
   // 한 단계 앞,뒤로 보내기
   // 가운데 정렬 - 좌표 관련
 
+
+
+
+  /* 인데스 관련  */
+  //  canvas.insertAt(new fabric.Circle({ radius: 50, fill: 'pink', top: 100, left: 100 }), 2); // obj, index
+
+  //  canvas.getObjects().length; will return the number of objects. If you want to use it inside a loop use canvas.getObjects().length-1;
+
+  //  canvas.moveTo(object, index);
+  //  object.moveTo(index); - 이거 쓰자
+
+  // canvas.getObjects().indexOf(obj) // obj의 인덱스 가져오기
+  //  인덱스 클수록 앞쪽에 위치(추가된 순서)
+
+
+
+//  canvas.sendBackwards
+//  canvas.sendToBack
+//  canvas.bringForward
+//  canvas.bringToFront.
+
+
+
+
+
   var canvas = new fabric.Canvas('canvas');
 
   canvas.preserveObjectStacking = true; // 선택된 객체 무조건 앞 아니게!!! 순서대로!

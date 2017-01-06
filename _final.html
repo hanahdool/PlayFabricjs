@@ -63,7 +63,7 @@
 
 <script>
 
-  var canvas = new fabric.Canvas('canvas'
+  window.canvas = new fabric.Canvas('canvas'
 //    , { backgroundColor: 'skyblue' } // 배경을 지정하면 globalCompositeOperation이 안먹음..
 //    , { backgroundImage: 'image/T.png' }  // error
   );
@@ -97,9 +97,11 @@
 
 
     var rect = new fabric.Rect({ width: 400, height: 600, top: 250, left: 250, fill: 'rgba(255, 255, 255, 0.1)' });
-    rect.set({selectable: false});
+    rect.set({ selectable: false });
     rect.globalCompositeOperation = "source-atop";
     canvas.add(rect);
+//    save();
+
 
 //    canvasStack[i++] = JSON.stringify(canvas);
 
@@ -336,8 +338,10 @@
       undo.push(state);
       $('#undo').prop('disabled', false);
     }
-    state = JSON.stringify(canvas);
+//    state = JSON.stringify(canvas);
+    state = canvas.toObject();
     console.log(state);
+//    console.log(state);
   }
 
   function replay(playStack, saveStack, buttonsOn, buttonsOff) {
@@ -348,9 +352,17 @@
     // turn both buttons off for the moment to prevent rapid clicking
     on.prop('disabled', true);
     off.prop('disabled', true);
-    canvas.clear();
-    canvas.loadFromJSON(state, function() {
-      canvas.renderAll();
+//    canvas.clear();
+    var new_canvas = new fabric.Canvas();
+    new_canvas.setWidth(910);
+    new_canvas.setHeight(1000);
+    new_canvas.loadFromJSON(state, function() {
+      $(new_canvas.wrapperEl).appendTo('#canvas-wrapper');
+      $(canvas.wrapperEl).remove(); //canvas.clearContext(); 아니넹..
+      canvas.dispose();
+      canvas = new_canvas;
+      initCanvas();
+//      canvas.renderAll();
       // now turn the buttons back on if applicable
       on.prop('disabled', false);
       if (playStack.length) {
@@ -361,10 +373,13 @@
 
 //  $(function() {
 
-  canvas.on({
-    'object:modified' : save // 잘 안되는것 같음. 텍스트 색깔 변경했을 때!! -> 버튼 누를 때마다도 save해줘야 할듯!
-  });
-
+  function initCanvas() {
+    canvas.on({
+      'selection:created': save,
+      'object:modified' : save // 잘 안되는것 같음. 텍스트 색깔 변경했을 때!! -> 버튼 누를 때마다도 save해줘야 할듯!
+    });
+  }
+  initCanvas();
 
 
   $('#undo').click(function() {

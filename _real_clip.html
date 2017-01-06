@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<div id="canvas-wrapper" style="position:relative"> <!-- relative가 default인가? -->
+
+  <canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+
+</div>
+<script>
+
+    var canvas = new fabric.Canvas('canvas');
+//    fabric.Object.prototype.transparentCorners = false;
+
+
+    fabric.Image.fromURL('image/img1.jpeg', function(img) {
+      img.scale(0.5).set({
+        left: 200,
+        top: 100,
+        });
+
+      var ctx = canvas.getContext('2d');
+
+//      img.width = 530; img.height = 400;
+      canvas.add(img).setActiveObject(img);
+    });
+
+
+
+    var a;
+
+    fabric.Image.fromURL('image/img1.jpeg', function(img) {
+      img.scale(0.5).set({
+        left: 530,
+        top: 100,
+        clipTo: function (ctx) {
+//          ctx.arc(0, 0, radius, 0, Math.PI * 2, true);
+          ctx.rect(-260,-100,530,400); // 이미지 중앙으로부터 시작좌표 x, y, 크기 w, h
+        }
+      });
+//      img.width = 530; img.height = 400;
+
+//      img.setControlsVisibility({
+//        bl: true, // 왼쪽 아래
+//        br: false, // 오른쪽 아래
+//        mb: , // 아래 중앙
+//        ml: , // 왼쪽 중앙
+//        mr: , // 오른쪽 중앙
+//        mt: , // 위 중앙
+//        tl: , // 왼쪽 위
+//        tr: , // 오른쪽 위
+//        mtr: // 꼭지점
+//      })
+
+
+
+      console.log(img.oCoords.mt.y);
+      img.oCoords.mt.y=200;
+      img.oCoords.tl.y=200;
+      img.oCoords.tr.y=200;
+      console.log(img.oCoords.mt.y);
+
+      a = img;
+      canvas.add(img).setActiveObject(img);
+    });
+
+    canvas.on({
+      'event:selected' : function() {
+
+      }
+
+    });
+
+/*
+    fabric.Image.fromURL('image/img1.jpeg', function(img) {
+      img.scale(0.5).set({
+        left: 300,
+        top: 100,
+        clipTo: function (ctx) {
+//          ctx.arc(0, 0, radius, 0, Math.PI * 2, true);
+          ctx.rect(-260,-100,530,400); // 이미지 중앙으로부터 시작좌표 x, y, 크기 w, h
+
+        }
+      });
+      img.width = 530; img.height = 400;
+      canvas.add(img).setActiveObject(img);
+    });
+*/
+
+
+
+
+</script>
+
+</body>
+</html>

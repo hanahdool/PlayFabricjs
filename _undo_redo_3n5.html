@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+
+</head>
+<body>
+<button id="undo" disabled>undo</button>
+<button id="redo" disabled>redo</button>
+<canvas id="canvas" style="border: solid 1px black;"></canvas>
+<script>
+
+
+
+  var canvas = new fabric.Canvas('canvas');
+
+
+
+
+
+
+  function cPush() {
+    cStep++;
+    if (cStep < cPushArray.length) { cPushArray.length = cStep; }
+    cPushArray.push(document.getElementById('myCanvas').toDataURL());
+    document.title = cStep + ":" + cPushArray.length;
+  }
+  function cUndo() {
+    if (cStep > 0) {
+      cStep--;
+      var canvasPic = new Image();
+      canvasPic.src = cPushArray[cStep];
+      canvasPic.onload = function () { ctx.drawImage(canvasPic, 0, 0);
+      };
+      document.title = cStep + ":" + cPushArray.length;
+
+      myCanvas.renderAll(); // 추가
+    }
+  }
+  function cRedo() {
+    if (cStep < cPushArray.length-1) {
+      cStep++;
+      var canvasPic = new Image();
+      canvasPic.src = cPushArray[cStep];
+      canvasPic.onload = function () { ctx.drawImage(canvasPic, 0, 0); };
+      document.title = cStep + ":" + cPushArray.length;
+
+      myCanvas.renderAll(); // 추가
+    }
+  }
+
+
+
+
+
+</script>
+</body>
+</html>

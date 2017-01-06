@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.min.js"></script>
+  <script src = "js/partial.js"></script>
+  <script src = "js/jquery.js"></script>
+
+</head>
+<body>
+<canvas id="canvas" width="600" height="600" style="border: 1px solid black"></canvas>
+
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+
+
+  // drawImage로 캔버스에 그리기
+  /*
+  var img = new Image();
+  img.addEventListener('load', eventShipLoaded, false);
+  img.src = "image/icecream.png";
+
+  function eventShipLoaded() {
+    drawScreen();
+  }
+
+  function drawScreen() {
+    var context = canvas.getContext('2d');
+    context.fillStyle = "#aaaaaa";
+//    context.fillRect(0,0,100,100);
+    context.drawImage(img, 10, 10, 400, 400, 50, 50, 100, 100); // 이미지, 복사할 이미지의 위치 크기, 복사될 목표에서의 위치 크기
+  }
+*/
+
+
+
+  // setPatternFill로 객체에 그리기
+  var rect = new fabric.Rect({ width:300, height:300, left:100, top:100 });
+  fabric.util.loadImage('image/icecream.png', function(img) {
+    rect.setPatternFill({
+      source: img,
+      repeat: 'no-repeat',
+      offsetX: -100, // 패턴이 시작될 시작점 x,y
+      offsetY: -100
+    });
+    canvas.renderAll();
+  });
+  canvas.add(rect);
+
+
+
+//  var rect = new fabric.Rect({ width:300, height:300, left:100, top:100 });
+//  var cloned = rect.cloneAsImage()
+//
+//
+//  canvas.add(rect);
+
+
+//  rect.drawObject(ctx, noTransformopt);
+//  rect.drawSelectionBackground(ctx);
+//  rect.cloneAsImage(callback, optionsopt);
+//
+//
+
+
+/*
+  fabric.ClippedGroup = fabric.util.createClass(fabric.Group, {
+    type: "clipped_group",
+
+    // default clip options
+    clipTop: 0,
+    clipLeft: 0,
+    clipWidth: 0,
+    clipHeight: 0,
+
+    render: function(ctx) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(
+        this.get("clipTop"), this.get("clipLeft"), this.get("clipWidth"), this.get("clipHeight"));
+      ctx.stroke(); // debugging
+      ctx.closePath();
+      ctx.clip();
+
+      this.callSuper("render", ctx);
+
+      ctx.restore();
+    },
+
+    containsPoint: function(point) {
+      return (point.x >= this.get("clipLeft") &&
+      point.x <= this.get("clipLeft") + this.get("clipWidth") &&
+      point.y >= this.get("clipTop") &&
+      point.y <= this.get("clipTop") + this.get("clipHeight") &&
+      this.callSuper("containsPoint", point));
+    }
+  });
+
+  canvas.add(new fabric.ClippedGroup([], {
+    clipTop: 50,
+    clipLeft: 100,
+    clipWidth: 500,
+    clipHeight: 320,
+
+//    evented: true,
+//    selectable: true
+    })
+  );
+  canvas.renderAll();
+*/
+
+</script>
+
+</body>
+</html>
