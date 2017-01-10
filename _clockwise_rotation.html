@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="1000" style="border: 1px solid black"></canvas>
+<script>
+
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.preserveObjectStacking = true;
+
+
+//  var p1 = new fabric.Point(100, 100);
+//  canvas.add(p1);
+
+
+  var center = { x: 300, y: 300 };
+  canvas.add(new fabric.Line([center.x, center.y, center.x+4, center.y+4], {
+    stroke: "black",
+    strokeWidth: 5
+  }));
+
+
+
+
+  var p1 = { x: 400, y:400 };
+  canvas.add(new fabric.Line([p1.x, p1.y, p1.x+4, p1.y+4], {
+    stroke: "blue",
+    strokeWidth: 5
+  }));
+
+
+
+
+//  var p2 = { x: 50, y: 50 };
+//  var degree = Math.PI / 180 * /* 각도 : */30;
+//  p2.x = (p1.x - center.x)*Math.cos(degree) - (p1.y - center.y)*Math.sin(degree) + center.x;
+//  p2.y = (p1.x - center.x)*Math.sin(degree) + (p1.y - center.y)*Math.cos(degree) + center.y;
+
+  var p2 = rotational_displacement(p1, -10, center);
+
+
+
+  canvas.add(new fabric.Line([p2.x, p2.y, p2.x+4, p2.y+4], {
+    stroke: "red",
+    strokeWidth: 5
+  }));
+
+
+
+
+
+  function rotational_displacement(point, angle, center) { // 이동할 점, 각도, 중심점
+    // 점center를 중심으로 점point를 angle만큼 회전시킨 결과를 리턴
+    if (!center) center = { x: 0, y: 0 };
+    angle = Math.PI/180*angle;
+
+    var x, y;
+    x = (point.x - center.x)*Math.cos(angle) - (point.y - center.y)*Math.sin(angle) + center.x;
+    y = (point.x - center.x)*Math.sin(angle) + (point.y - center.y)*Math.cos(angle) + center.y;
+    return { x, y };
+  }
+
+
+
+
+</script>
+
+
+</body>
+</html>

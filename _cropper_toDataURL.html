@@ -27,48 +27,29 @@
     if (!active) return;
     active.flipX = active.flipX ? false : true;
 
-    /////////////////////////////////////////////////
-    var origin = active._data.origin;
+    var origin = active._data.origin, crop_info = active._data.crop_info;
     origin.flipX = origin.flipX ? false : true;
-    active._data.crop_info.flipX = active._data.crop_info.flipX ? false : true;
-    /////////////////////////////////////////////////
+    crop_info.flipX = crop_info.flipX ? false : true;
+//    active._data.crop_info.flipX = origin.flipX; // 이렇게 하면 안되요!
 
     return canvas.renderAll();
   }
 
   function flipY() {
+    console.log('flipY');
     var active = canvas.getActiveObject();
     if (!active) return;
     active.flipY = active.flipY ? false : true;
 
-    /////////////////////////////////////////////////
-    var origin = active._data.origin;
+    var origin = active._data.origin, crop_info = active._data.crop_info;
     origin.flipY = origin.flipY ? false: true;
-    active._data.crop_info.flipY = active._data.crop_info.flipY ? false : true;
-    /////////////////////////////////////////////////
+    crop_info.flipY = crop_info.flipY ? false : true;
 
     return canvas.renderAll();
   }
 
 
 
-//  var info = {
-//    left: ,
-//    top: ,
-//    width: ,
-//    height: ,
-//
-//
-    // z-index 반드시!!
-
-//    // 이하는 이미지(origin)가 담고있도록?
-//    scaleX: ,
-//    scaleY: ,
-//    flipX: ,
-//    flipY: ,
-//
-//    filter:
-//  }
 
 
 
@@ -81,7 +62,7 @@
 
 
 //  addImage('image/wecan.png', 100, 100); // 경로, 위치x, 위치y
-  addImage('image/dog2.png', 100, 100); // 경로, 위치x, 위치y
+//  addImage('image/dog.png', 100, 100); // 경로, 위치x, 위치y
   addImage('image/icecream.png', 0, 0);
 
 
@@ -120,6 +101,7 @@
         });
         canvas.add(cropped).setActiveObject(cropped);
         cropped._data.crop_info = tmp;
+        cropped._data.crop_info.index = canvas.getObjects().indexOf(cropped);
 
         /* cropper */
         var cropper = new fabric.Rect({
@@ -164,21 +146,28 @@
     var origin = cropped._data.origin;
     var cropper = cropped._data.cropper;
     var crop_info = cropped._data.crop_info;
+//    crop_info.index = canvas.getObjects().indexOf(cropped);
 
 
 
-    var idx = canvas.getObjects().indexOf(cropped);
-    cropper._data.idx = idx;
-    console.log("==================", idx);
-
-
-    canvas.remove(cropped);
+    canvas.remove(cropped); // 왜 제거가 불안전하게 되지?
 
 
 
+    // 원래 cropper는 여기 시점에서 아직까진 남아있음. - 근데 이동햇을 거잖아..-  그럼 crop_info!!
+
+    console.log(crop_info.left, crop_info.top);
+    var p = rotational_displacement({ x: cropped.left - crop_info.left, y: cropped.top - crop_info.top }, (cropped.angle - origin.angle), { x: cropped.left, y: cropped.top });
     origin.set({ // 원본 이미지
-      top: cropped.top - crop_info.top,
-      left: cropped.left - crop_info.left,
+//      left: cropped.left - crop_info.left,
+//      top: cropped.top - crop_info.top, // 이동만
+//      left: cropped.left - crop_info.left * (1 + cropped.scaleX - origin.scaleX), // 뭔가 부정확함..
+//      top: cropped.top - crop_info.top * (1 + cropped.scaleY - origin.scaleY), // 이동 + scaling만
+
+      left: p.x,
+      top: p.y, // 이동 + rotation만
+
+
       scaleX: cropped.scaleX,
       scaleY: cropped.scaleY,
 //      width: , // 둘은 반드시 그대로 유지
@@ -191,16 +180,21 @@
 //      flipY: crop_info.flipY,
     });
 
+
+    // 회전했을 경우에는 또 여기에 회전한 만큼 값 이동시켜서 적용..
     if (crop_info.flipX) {
-      console.log("뒤집힌 상태!");
-      var tmp = origin.left;
-      origin.left = cropper.left - ((tmp+origin.width*origin.scaleX) - (cropper.left+cropper.width*cropper.scaleX));
+      console.log("좌우 뒤집힌 상태!");
+
+      origin.left = cropper.left - ((cropper.left+cropper.width*cropper.scaleX) - (origin.left+origin.width*origin.scaleX));
+
     }
     if (crop_info.flipY) {
-      console.log("뒤집힌 상태!");
-      var tmp = origin.top;
-      origin.top = cropper.top - ((tmp+origin.height*origin.scaleY) - (cropper.top+cropper.height*cropper.scaleY));
+      console.log("위아래 뒤집힌 상태!");
+
+      origin.top = cropper.top - ((origin.top+origin.height*origin.scaleY) - (cropper.top+cropper.height*cropper.scaleY));
+
     }
+
 
 
 
@@ -217,6 +211,7 @@
 
     cropper._data.cropped = cropped;
     cropper._data.origin = origin;
+    cropper._data.crop_info = crop_info;
 
     canvas.add(origin);
     canvas.add(cropper);
@@ -229,7 +224,7 @@
 
 
 
-  function crop() { // 오기 전에 cropped의 idx를 알고 있어야 함!!
+  function crop() {
     console.log("crop!");
 
     var cropper = canvas.getActiveObject();
@@ -254,17 +249,19 @@
       scaleY: 1
     });
 
-    console.log("==================", canvas.getObjects().indexOf(cropped));
-    var idx = canvas.getObjects().indexOf(cropped);
     canvas.remove(cropped); //cropped = null;
 
-    // cropped 지우고 새로 생성
-    fabric.Image.fromURL(origin.toDataURL({
-      top: cropper.top-origin.top, // 크롬 위치 지정
-      left: cropper.left-origin.left,
+    var np = rotational_displacement({ x: cropper.left, y: cropper.top}, -cropper.angle, { x: origin.left, y: origin.top});
+    var crop_info = {
+//      top: cropper.top-origin.top, // 크롬 위치 지정
+//      left: cropper.left-origin.left,
+      top: np.y - origin.top,
+      left: np.x - origin.left,
       width: cropper.width,
       height: cropper.height,
-    }), function(cropped) {
+    };
+
+    fabric.Image.fromURL(origin.toDataURL(crop_info), function(cropped) {
       cropped.set({
         left: cropper.left,
         top: cropper.top,
@@ -280,34 +277,29 @@
         height: cropper.height/sY
       });
 //      canvas.add(cropped).setActiveObject(cropped);
-      canvas.insertAt(cropped, cropper.idx).setActiveObject(cropped);
+      canvas.insertAt(cropped, cropper._data.crop_info.index, false).setActiveObject(cropped); // obj, num, nonSplicing
+
 
       cropped._data.cropper = cropper;
       cropped._data.origin = origin;
 
       // 추가
-      cropped._data.crop_info = {
-        top: cropper.top - origin.top,
-        left: cropper.left - origin.left,
-        width: cropper.width,
-        height: cropper.height,
 
-//        flipX: origin.flipX, // 별도로 해주어야 함
-//        flipY: origin.flipY
 
-      };
+      crop_info.index = cropper._data.crop_info.index;
+      cropped._data.crop_info = crop_info;
 
 
 //      origin.set({ // 이거 왜있는거지????????
 //        top: cropped.top - (cropper.top - origin.top),
-//        left: cropped.left - (cropper.left - origin.left),
+//        left: cropped.left - (cropper.left - ori origin.left),
 //      });
 
 
       canvas.remove(cropper);
       canvas.remove(origin);
 
-      canvas.add(cropped);
+//      canvas.add(cropped);
       canvas.setActiveObject(cropped);
 
       canvas.renderAll();
@@ -320,12 +312,46 @@
   }
 
 
+//  function expected_point(p, degree, a) { // rotational displacement
+//
+//    console.log(" 좌표 (전) : ", a.x, a.y);
+//    p.y = -p.y;
+//    a.y = -a.y;
+//
+//    var degree = Math.PI / 180 * degree; // 라디안 각도로 변환
+//    var x, y;
+//
+//    x = (a.x - p.x)*Math.cos(degree) + (a.y - p.y)*Math.sin(degree) + p.x; // 행렬 곱하는 함수 있을 것 같음
+//    y = (a.x - p.x)*Math.sin(degree) + (a.y - p.y)*Math.cos(degree) + p.y;
+//
+//
+//    console.log(" 좌표 (후) : ", x, -y);
+//
+//    return { x: x, y: -y };
+//
+//  }
+
+  function rotational_displacement(point, angle, center) { // 이동할 점, 각도, 중심점
+    // 점center를 중심으로 점point를 angle만큼 회전시킨 결과를 리턴
+    if (!center) center = { x: 0, y: 0 };
+    angle = Math.PI/180*angle;
+
+    var x, y;
+    x = (point.x - center.x)*Math.cos(angle) - (point.y - center.y)*Math.sin(angle) + center.x;
+    y = (point.x - center.x)*Math.sin(angle) + (point.y - center.y)*Math.cos(angle) + center.y;
+    return { x, y };
+  }
+
+
+
+
+
+
 
   function initialize() { // 이미지 처음 가져올 때랑 똑같음! - cropper 설정하고, flip, angle값만 바꾸고 다시 크롭!?!!!
     console.log("원본으로 복구!");
 
     var cropped = canvas.getActiveObject();
-
 
 
     // 아니면 cropped 설정 변경

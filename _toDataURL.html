@@ -35,17 +35,48 @@
 
     });
 
-    canvas.add(img);
+//    canvas.add(img);
 
-    /* cropped */
-    var tmp = { // crop 정보
-      top: 0,
-      left: 0,
-      width: img.width,
-      height: img.height,
-      //        multiplier: 2 // scale
-    };
-    fabric.Image.fromURL(img.toDataURL(tmp), function(cropped) {
+    // 자른 후 크기 조절하기
+    fabric.Image.fromURL(img.toDataURL({ // crop 정보
+        top: 0,
+        left: 0,
+        width: img.width,
+        height: img.height,
+      }), function(cropped) {
+      cropped.set({
+        left: 200,
+        top: 100,
+        lockScalingFlip: true,
+//          flipX: img.flipX,
+//          flipY: img.flipY,
+        /*, angle:img.angle */
+//        angle: 30
+      });
+      cropped.scaleX = 0.5;
+      cropped.scaleY = 0.5;
+      canvas.add(cropped).setActiveObject(cropped);
+
+      cropped._data.img = img;
+
+    });
+
+
+
+
+
+
+
+
+
+    // 크기 조절 후 자르기
+
+    img.scaleX = 0.5;
+    img.scaleY = 0.5;
+    fabric.Image.fromURL(img.toDataURL({
+      width: img.width/2,
+      height: img.height/2
+    }), function(cropped) {
       cropped.set({
         left: 200,
         top: 100,
@@ -61,6 +92,9 @@
       cropped._data.img = img;
 
     });
+
+
+
 
   });
 

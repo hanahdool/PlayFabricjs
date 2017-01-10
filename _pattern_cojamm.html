@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+<script>
+
+//  var pai = {
+//    width: ,
+//    height: ,
+//    pattern_width_percent: ,
+//    pattern_height_percent: ,
+//  };
+//
+  var $canvas = $('#canvas');//document.getElementById('canvas');
+  var $canvas2 = $('#canvas2');//document.getElementById('canvas2');
+//
+//  var view;
+
+
+  var p_width = pai.width * 8 / pai.col;
+  var p_height = pai.height * 8 / pai.row;
+
+  $canvas.attr('width', width);
+  $canvas.attr('height', height);
+  $canvas.attr('width', pai.width * 8);
+  $canvas.attr('height', pai.height * 8);
+  console.log(p_width, p_height);
+
+  var canvas = $canvas[0];
+  var context = canvas.getContext('2d');
+  var image = new Image();
+  img.crossOrigin = 'Anonymous';
+  image.onload = function() {
+    var pi_width = p_width * pai.pattern_width_percent / 100;
+    var pi_height = p_height * pai.pattern_height_percent / 100;
+    context.drawImage(image,
+      (p_width - pi_width)/2, (p_height - pi_height)/2,
+      pi_width, pi_height);
+    console.log((p_width - pi_width)/2, (p_height - pi_height)/2, pi_width, pi_height);
+
+    var canvas2 = $canvas2[0];
+    var context2 = canvas2.getContext('2d');
+    var pattern = context2.createPattern(canvas, 'repeat');
+    context2.fillStyle = pattern;
+    context2.fillRect(0, 0, pai.width * 8, pai.height* 8);
+    console.log(pai.width * 8, pai.height* 8);
+    $canvas.remove();
+    $canvas2.remove();
+
+    var url = canvas2.toDataURL();
+    view.$('.img_url').attr('src', url);
+    view.$('.file a.base').attr('href', url);
+
+  }
+
+
+</script>
+
+
+</body>
+</html>
