@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+  <script src="js/mousetrap.js"></script>
+</head>
+<body>
+
+<div id="canvas-wrapper">
+  <canvas id="canvas" width="1200" height="800" style="border: 1px solid black"></canvas>
+</div>
+
+<button id="grouping" onclick="grouping()">grouping</button>
+<button id="ungrouping" onclick="ungrouping()">ungrouping</button>
+<script>
+
+  var canvas = new fabric.Canvas('canvas', { backgroundColor: 'rgba(255, 255, 255, 0)' });
+
+  var rect = new fabric.Rect({ width: 100, height: 100, top: 100, left: 100, fill: 'pink' });
+  canvas.add(rect);
+
+  canvas.add(new fabric.Rect({ width:50, height:50, top:200, left:100, fill:'grey' }));
+  canvas.add(new fabric.Rect({ width:50, height:50, top:200, left:200, fill:'grey' }));
+
+  fabric.Image.fromURL('image/dog2.png', function(img) {
+    canvas.add(img.set({ left: 300, top: 100 }));
+  });
+
+  fabric.Image.fromURL('image/dice.png', function(img) {
+    canvas.add(img.set({ left: 700, top: 100 }));
+  });
+
+  //
+//  var processKeys = function(e) {
+//    e = e || window.event;
+//
+//    var movementDelta = 2;
+//    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+//
+//    switch (e.keyCode) {
+//
+//      case 37 : {
+//        e.preventDefault(); // 이것도 밑에 공통 if부분에 넣을 수 있는지.
+//        if (active) active.set('left', active.get('left') - movementDelta);
+//        break;
+//      }
+//      case 39 : {
+//        e.preventDefault();
+//        if (active) active.set('left', active.get('left') + movementDelta);
+//        break;
+//      }
+//      case 38 : {
+//        e.preventDefault();
+//        if (active) active.set('top', active.get('top') - movementDelta);
+//        break;
+//      }
+//      case 40 : {
+//        e.preventDefault();
+//        if (active) active.set('top', active.get('top') + movementDelta);
+//        break;
+//      }
+//    }
+//
+//    if (active) active.setCoords() && canvas.renderAll(); // setCoords() 결과가 falsy 값을 뱉을 수도 있는지 반드시 확인!
+//
+//  };
+//
+//  var canvasWrapper = document.getElementById('canvas-wrapper');
+//  canvasWrapper.tabIndex = 1000;
+//  canvasWrapper.addEventListener("keydown", processKeys, false);
+//  canvasWrapper.style.outline = "none";
+
+
+
+  // 상하좌우 이동
+  var movementDelta = 2;
+  Mousetrap.bind('left', function(e) {
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    active.set('left', active.get('left') - movementDelta);
+    active.setCoords() && canvas.renderAll();
+  });
+  Mousetrap.bind('right', function(e) {
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    active.set('left', active.get('left') + movementDelta);
+    active.setCoords() && canvas.renderAll();
+  });
+  Mousetrap.bind('up', function(e) {
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    active.set('top', active.get('top') - movementDelta);
+    active.setCoords() && canvas.renderAll();
+  });
+  Mousetrap.bind('down', function(e) {
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    active.set('top', active.get('top') + movementDelta);
+    active.setCoords() && canvas.renderAll();
+  });
+
+
+
+
+
+
+  // 타입이 group인(그룹으로 묶어놓은 여러개의 object들) object도 되는지 체크
+  var tmp, cnt=0; // 아니면 캔버스 객체에 담아놓기??
+
+
+  Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
+    console.log("복사");
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    tmp = active; cnt = 0;
+  });
+
+  Mousetrap.bind(['command+v', 'ctrl+v'], function(e) {
+    console.log("붙여넣기");
+    e.preventDefault();
+    if (!tmp) return;
+
+    tmp.clone(function(cloned) {
+      cnt++;
+      canvas.add(cloned.set({ left: cloned.left + cnt*10, top: cloned.top + cnt*10 }));
+      canvas.setActiveObject(cloned);
+    });
+  });
+
+  Mousetrap.bind(['command+x', 'ctrl+x'], function(e) {
+    console.log("잘라내기");
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+
+    tmp = active; cnt = 0;
+//    canvas.remove(active);
+    active.remove();
+  });
+
+  Mousetrap.bind('del', function(e) {
+    console.log("삭제/제거");
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+
+    remove_obj_or_group();
+  });
+
+  Mousetrap.bind(['command+d', 'ctrl+d'], function(e) { // 키노트엔 없는뎅
+    console.log("복제하기");
+    e.preventDefault();
+    var active = canvas.getActiveObject();
+    if (!active) return;
+
+    active.clone(function(cloned) {
+      cnt++;
+      canvas.add(cloned.set({ left: cloned.left + cnt*10, top: cloned.top + cnt*10 }));
+      canvas.setActiveObject(cloned);
+    });
+  });
+
+
+
+
+
+/*
+  // undo, redo
+  Mousetrap.bind(['command+z', 'ctrl+z'], function() { // crop mode 상태일때랑 구분되게 돌아가야 될것 같음..
+
+    console.log("undo");
+  });
+  Mousetrap.bind(['command+shift+z', 'ctrl+shift+z'], function() {
+    var active = canvas.getActiveObject();
+    console.log("redo");
+  });
+*/
+
+
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  function remove_obj_or_group() { // 완벽한 removing
+    // getActiveObject() || getActiveGroup() 있는지 없는지 체크 안함
+    if (canvas.getActiveGroup() || canvas.getActiveObject().isType('group')) {
+      var o = canvas.getActiveGroup() || canvas.getActiveObject();
+      o._objects.forEach(function(obj) {
+        canvas.remove(obj);
+        o.removeWithUpdate(obj);
+      });
+      canvas.remove(o); // 내가 추가한 거. 이게 있어야 깔끔하게 제거됨 - object group일 경우만
+      canvas.discardActiveGroup();
+      canvas.renderAll();
+    }
+    else if (canvas.getActiveObject()) {
+      canvas.getActiveObject().remove();
+    }
+  }
+
+  function grouping() {
+    var activegroup = canvas.getActiveGroup();
+    if (!activegroup) return;
+    var objectsInGroup = activegroup.getObjects();
+    activegroup.clone(function(newgroup) {
+      canvas.discardActiveGroup();
+      objectsInGroup.forEach(function(object) {
+        canvas.remove(object);
+      });
+      canvas.add(newgroup);
+    });
+  }
+
+  function ungrouping() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject.type == "group") {
+      var items = activeObject._objects;
+      activeObject._restoreObjectsState();
+      canvas.remove(activeObject);
+      for (var i = 0; i < items.length; i++) {
+        canvas.add(items[i]);
+        canvas.item(canvas.size() - 1).hasControls = true;
+      }
+      canvas.renderAll();
+    }
+  }
+
+
+
+
+</script>
+
+
+
+
+</body>
+</html>
