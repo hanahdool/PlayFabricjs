@@ -113,14 +113,16 @@
 
 
   // 타입이 group인(그룹으로 묶어놓은 여러개의 object들) object도 되는지 체크
-  var tmp, cnt=0; // 아니면 캔버스 객체에 담아놓기??
+  var tmp, cnt=0, interval=10; // 아니면 캔버스 객체에 담아놓기??
 
+  // getActiveGroup인 경우가 잘 안됨
 
   Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
     console.log("복사");
     e.preventDefault();
     var active = canvas.getActiveObject() || canvas.getActiveGroup();
     if (!active) return;
+
     tmp = active; cnt = 0;
   });
 
@@ -129,9 +131,12 @@
     e.preventDefault();
     if (!tmp) return;
 
+//    cnt ++;
+//    clone_obj_or_group(cnt);
+
     tmp.clone(function(cloned) {
       cnt++;
-      canvas.add(cloned.set({ left: cloned.left + cnt*10, top: cloned.top + cnt*10 }));
+      canvas.add(cloned.set({ left: cloned.left + cnt*interval, top: cloned.top + cnt*interval }));
       canvas.setActiveObject(cloned);
     });
   });
@@ -143,7 +148,6 @@
     if (!active) return;
 
     tmp = active; cnt = 0;
-//    canvas.remove(active);
     active.remove();
   });
 
@@ -159,17 +163,49 @@
   Mousetrap.bind(['command+d', 'ctrl+d'], function(e) { // 키노트엔 없는뎅
     console.log("복제하기");
     e.preventDefault();
-    var active = canvas.getActiveObject();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
     if (!active) return;
 
-    active.clone(function(cloned) {
-      cnt++;
-      canvas.add(cloned.set({ left: cloned.left + cnt*10, top: cloned.top + cnt*10 }));
-      canvas.setActiveObject(cloned);
-    });
+//    clone_obj_or_group();
+
+    if (canvas.getActiveObject()) {
+      active.clone(function(cloned) {
+        canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
+        canvas.setActiveObject(cloned);
+      });
+    } else { // canvas.getActiveGroup()일 경우
+
+
+      // 방법 1 - 이게 왜 안되!!!!!!!!!!!!!!!??
+      grouping(function(newgroup) {
+//        canvas.getActiveObject().clone(function(cloned) {
+        newgroup.clone(function(cloned) {
+          canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
+          ungrouping();
+
+//          _.each(canvas.getActiveGroup()._objects, function(o) { o.active = false; });
+          canvas.setActiveObject(cloned); // 여기가 문제!
+          ungrouping();
+
+          canvas.renderAll();
+        });
+      });
+/*
+      // 방법 2
+      var objs = canvas.getActiveGroup()._objects;
+      // 비동기 복제
+      _.map(objs, function(obj) { // 비동기 map
+        obj.clone(function(cloned) {
+
+        })
+      });
+*/
+
+    }
   });
 
 
+  // 붙여넣기, 잘라내기, 복제하기 하나로 통일하기!
 
 
 
@@ -192,12 +228,12 @@
 
 
   function remove_obj_or_group() { // 완벽한 removing
-    // getActiveObject() || getActiveGroup() 있는지 없는지 체크 안함
+    // getActiveObject() || getActiveGroup() 있는 경우에만 와야함!
     if (canvas.getActiveGroup() || canvas.getActiveObject().isType('group')) {
       var o = canvas.getActiveGroup() || canvas.getActiveObject();
       o._objects.forEach(function(obj) {
         canvas.remove(obj);
-        o.removeWithUpdate(obj);
+        o.removeWithUpdate(obj); // 뭐지? group.addWithUpdate() 도 있는데
       });
       canvas.remove(o); // 내가 추가한 거. 이게 있어야 깔끔하게 제거됨 - object group일 경우만
       canvas.discardActiveGroup();
@@ -208,7 +244,26 @@
     }
   }
 
-  function grouping() {
+//  function clone_obj_or_group(cnt) {
+//    cnt = cnt || 0;
+//
+//    // 붙여넣기
+//    tmp.clone(function(cloned) {
+//      cnt++;
+//      canvas.add(cloned.set({ left: cloned.left + cnt*interval, top: cloned.top + cnt*interval }));
+//      canvas.setActiveObject(cloned);
+//    });
+//
+//    // 복제
+//    active.clone(function(cloned) {
+//    canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
+//    canvas.setActiveObject(cloned);
+//    });
+//
+//  }
+
+  function grouping(cb) { // 비동기
+    console.log("grouping!");
     var activegroup = canvas.getActiveGroup();
     if (!activegroup) return;
     var objectsInGroup = activegroup.getObjects();
@@ -218,22 +273,40 @@
         canvas.remove(object);
       });
       canvas.add(newgroup);
+      canvas.setActiveObject(newgroup);
+      if (cb) cb(newgroup);
     });
   }
 
+  var its;
   function ungrouping() {
+    console.log("ungrouping!");
     var activeObject = canvas.getActiveObject();
     if (activeObject.type == "group") {
       var items = activeObject._objects;
-      activeObject._restoreObjectsState();
+      activeObject._restoreObjectsState(); // remove the original group & add all items back to the canvas
       canvas.remove(activeObject);
       for (var i = 0; i < items.length; i++) {
         canvas.add(items[i]);
-        canvas.item(canvas.size() - 1).hasControls = true;
+        canvas.item(canvas.size() - 1).hasControls = true; // 이거 뭐하는거지???
+        items[i].active = true;
       }
-      canvas.renderAll();
+      its = items;
+      console.log(items[0].left, items[0].top);
+      console.log(items[1].left, items[1].top);
+
+      // 여기서 문제..? - 하고나서 원본 각각 객체의 좌표가 엉망됨
+      var group = new fabric.Group(items/*, { left: activeObject.left, top: activeObject.top }*/); // ungroup 후 각각의 객체들 선택된 상태로 두는 것
+//      console.log(group.top, group.left);
+      console.log(items[0].left, items[0].top);
+      console.log(items[1].left, items[1].top);
+//      canvas.add(group);
+      canvas.setActiveGroup(group.setCoords()).renderAll();
+//      canvas.setActiveGroup(group).renderAll();
+
     }
   }
+
 
 
 
