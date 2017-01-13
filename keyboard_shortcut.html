@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+  <script src="js/mousetrap.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;" width="1000" height="800"></canvas>
+
+<button id="addImage" onclick="addImage()">이미지 추가</button>
+<button id="initialize" onclick="initialize()">이미지 원상태로 복구</button>
+<button id="cropMode" onclick="cropMode()">crop mode</button>
+<button id="crop" onclick="crop()">crop</button>
+<br>
+<button id="filpX" onclick="flipX()">좌우반전</button>
+<button id="flipY" onclick="flipY()">상하반전</button>
+<button id="cancelCrop" onclick="cancelCrop()">crop 취소</button>
+
+
+<script>
+
+
+  var canvas = new fabric.Canvas('canvas', { backgroundColor: 'rgba(255, 255, 255, 0)' });
+  canvas.preserveObjectStacking = true;
+
+  var rect = new fabric.Rect({ width: 100, height: 100, top: 100, left: 100, fill: 'pink' });
+  canvas.add(rect);
+
+  canvas.add(new fabric.Rect({ width:50, height:50, top:200, left:100, fill:'grey' }));
+  canvas.add(new fabric.Rect({ width:50, height:50, top:200, left:200, fill:'grey' }));
+
+  fabric.Image.fromURL('image/dog2.png', function(img) {
+    canvas.add(img.set({ left: 300, top: 100 }));
+  });
+
+  fabric.Image.fromURL('image/dice.png', function(img) {
+    canvas.add(img.set({ left: 700, top: 100 }));
+  });
+
+  //
+  //  var processKeys = function(e) {
+  //    e = e || window.event;
+  //
+  //    var movementDelta = 2;
+  //    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+  //
+  //    switch (e.keyCode) {
+  //
+  //      case 37 : {
+  //        e.preventDefault(); // 이것도 밑에 공통 if부분에 넣을 수 있는지.
+  //        if (active) active.set('left', active.get('left') - movementDelta);
+  //        break;
+  //      }
+  //      case 39 : {
+  //        e.preventDefault();
+  //        if (active) active.set('left', active.get('left') + movementDelta);
+  //        break;
+  //      }
+  //      case 38 : {
+  //        e.preventDefault();
+  //        if (active) active.set('top', active.get('top') - movementDelta);
+  //        break;
+  //      }
+  //      case 40 : {
+  //        e.preventDefault();
+  //        if (active) active.set('top', active.get('top') + movementDelta);
+  //        break;
+  //      }
+  //    }
+  //
+  //    if (active) active.setCoords() && canvas.renderAll(); // setCoords() 결과가 falsy 값을 뱉을 수도 있는지 반드시 확인!
+  //
+  //  };
+  //
+  //  var canvasWrapper = document.getElementById('canvas-wrapper');
+  //  canvasWrapper.tabIndex = 1000;
+  //  canvasWrapper.addEventListener("keydown", processKeys, false);
+  //  canvasWrapper.style.outline = "none";
+
+
+
+  // 상하좌우 이동
+  var movementDelta = 2;
+  Mousetrap.bind('left', function(e) {
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    active.set('left', active.get('left') - movementDelta);
+    active.setCoords() && canvas.renderAll();
+  });
+  Mousetrap.bind('right', function(e) {
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    active.set('left', active.get('left') + movementDelta);
+    active.setCoords() && canvas.renderAll();
+  });
+  Mousetrap.bind('up', function(e) {
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    active.set('top', active.get('top') - movementDelta);
+    active.setCoords() && canvas.renderAll();
+  });
+  Mousetrap.bind('down', function(e) {
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+    active.set('top', active.get('top') + movementDelta);
+    active.setCoords() && canvas.renderAll();
+  });
+
+
+
+
+
+
+  // 타입이 group인(그룹으로 묶어놓은 여러개의 object들) object도 되는지 체크
+  var tmp, type, cnt=0, interval=10; // 아니면 캔버스 객체에 담아놓기??
+
+  // getActiveGroup인 경우가 잘 안됨
+
+  Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
+    console.log("복사");
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+
+    tmp = active; cnt = 0;
+
+    type = canvas.getActiveGroup() ? "group" : "object";
+  });
+
+  Mousetrap.bind(['command+v', 'ctrl+v'], function(e) {
+    console.log("붙여넣기");
+    e.preventDefault();
+    if (!tmp) return;
+
+
+//    cnt ++;
+//    clone_obj_or_group(cnt);
+
+
+//    tmp.clone(function(cloned) {
+//      cnt++;
+//      canvas.add(cloned.set({ left: cloned.left + cnt*interval, top: cloned.top + cnt*interval }));
+//      canvas.setActiveObject(cloned);
+//    });
+
+
+
+    cnt++;
+    ///////////////////////////////////////////////// 복제 시작 //////////////////////////
+    if (type == 'object') {
+      tmp.clone(function(cloned) {
+        canvas.add(cloned.set({ left: cloned.left + interval * cnt, top: cloned.top + interval * cnt }));
+        canvas.setActiveObject(cloned);
+      });
+    } else { // type이 'group'일 경우
+      canvas.setActiveGroup(tmp);
+      grouping(function(newgroup) {
+//        canvas.getActiveObject().clone(function(cloned) {
+        newgroup.clone(function(cloned) {
+          canvas.add(cloned.set({ left: cloned.left + interval * cnt, top: cloned.top + interval * cnt }));
+          ungrouping();
+
+          canvas.discardActiveGroup(); // 이거 하고나서 아랫줄 해줘야 안문제!!!!
+          canvas.setActiveObject(cloned);
+          ungrouping();
+
+          canvas.renderAll();
+        });
+      });
+    }
+    ///////////////////////////////////////////////// 복제 끝 //////////////////////////
+
+
+  });
+
+  Mousetrap.bind(['command+x', 'ctrl+x'], function(e) {
+    console.log("잘라내기");
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+
+    tmp = active; cnt = 0;
+    active.remove();
+  });
+
+  Mousetrap.bind('del', function(e) {
+    console.log("삭제/제거");
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+
+    remove_obj_or_group();
+  });
+
+  Mousetrap.bind(['command+d', 'ctrl+d'], function(e) {
+    console.log("복제하기");
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+
+
+
+    ///////////////////////////////////////////////// 복제 시작 //////////////////////////
+    if (canvas.getActiveObject()) {
+      active.clone(function(cloned) {
+        canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
+        canvas.setActiveObject(cloned);
+      });
+    } else { // canvas.getActiveGroup()일 경우
+      grouping(function(newgroup) {
+//        canvas.getActiveObject().clone(function(cloned) {
+        newgroup.clone(function(cloned) {
+          canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
+          ungrouping();
+
+          canvas.discardActiveGroup(); // 이거 하고나서 아랫줄 해줘야 안문제!!!!
+          canvas.setActiveObject(cloned);
+          ungrouping();
+
+          canvas.renderAll();
+        });
+      });
+    }
+    ///////////////////////////////////////////////// 복제 끝 //////////////////////////
+
+
+
+
+  });
+
+
+  // 붙여넣기, 잘라내기, 복제하기 하나로 통일하기!
+
+
+
+  /*
+   // undo, redo
+   Mousetrap.bind(['command+z', 'ctrl+z'], function() { // crop mode 상태일때랑 구분되게 돌아가야 될것 같음..
+
+   console.log("undo");
+   });
+   Mousetrap.bind(['command+shift+z', 'ctrl+shift+z'], function() {
+   var active = canvas.getActiveObject();
+   console.log("redo");
+   });
+   */
+
+
+  Mousetrap.bind(['command+a', 'ctrl+a'], function(e) {
+    console.log("전체선택");
+    e.preventDefault();
+
+//    selectAllCanvasObjects();
+    canvas.discardActiveObject().discardActiveGroup();
+    var items = _.map(canvas.getObjects(), function(o) { o.active = true; return o;});
+//    canvas._activeObject = null; // 이건 왜넣는거지??
+    canvas.setActiveGroup((new fabric.Group(items)).setCoords()).renderAll();
+//    canvas.setActiveGroup(new fabric.Group(items)).renderAll();
+//    canvas.setActiveGroup(group.setCoords()).renderAll();
+//    canvas.renderAll();
+  });
+
+
+  Mousetrap.bind(['command+g', 'ctrl+g'], function(e) {
+    console.log("그룹핑");
+    e.preventDefault();
+    if (!canvas.getActiveGroup()) return;
+
+    grouping();
+  });
+
+  Mousetrap.bind(['command+shift+g', 'ctrl+shift+g'], function(e) {
+    console.log("언그룹핑");
+    e.preventDefault();
+    if (!canvas.getActiveObject()) return;
+    if (!(canvas.getActiveObject().type == 'group')) return;
+
+    ungrouping();
+  });
+
+
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  function remove_obj_or_group() { // 완벽한 removing
+    console.log(canvas);
+    // getActiveObject() || getActiveGroup() 있는 경우에만 와야함!
+    if (canvas.getActiveGroup() || canvas.getActiveObject().isType('group')) { // 여러개의 객체를 선택하고 한꺼번에 지우려는 경우 안됨!! // 그룹핑된 객체는 됨
+      console.log("그룹 경우");
+      var o = canvas.getActiveGroup() || canvas.getActiveObject();
+      console.log(o);
+      o._objects.forEach(function(obj) {
+        canvas.remove(obj);
+        o.removeWithUpdate(obj); // 뭐지? group.addWithUpdate() 도 있는데
+      });
+      canvas.remove(o); // 내가 추가한 거. 이게 있어야 깔끔하게 제거됨 - object group일 경우만
+      canvas.discardActiveGroup();
+      canvas.renderAll();
+    }
+    else if (canvas.getActiveObject()) {
+      canvas.getActiveObject().remove();
+    }
+  }
+
+
+  function remove_obj_or_group() { // 완벽한 removing
+    // getActiveObject() || getActiveGroup() 있는 경우에만 와야함! - 아직 상관 없음
+    if (canvas.getActiveObject() && canvas.getActiveObject().isType('group')) {
+      var o = canvas.getActiveObject();
+      o._objects.forEach(function(obj) {
+        canvas.remove(obj);
+        o.removeWithUpdate(obj); // 뭐지? group.addWithUpdate() 도 있는데
+      });
+      canvas.remove(o); // 내가 추가한 거. 이게 있어야 깔끔하게 제거됨 - object group일 경우만
+      canvas.discardActiveGroup();
+      canvas.renderAll();
+    } else if (canvas.getActiveObject()) {
+      canvas.getActiveObject().remove();
+    } else if (canvas.getActiveGroup()) { // 여러개의 객체를 선택하고 한꺼번에 지우려는 경우 안됨!! // 그룹핑된 객체는 됨
+      var group = canvas.getActiveGroup();
+
+//      group._objects.forEach(function(obj) { // 왜 한번밖에 안돌지?
+//        console.log("몇번 도나", obj);
+//        group.removeWithUpdate(obj); // 뭐지? group.addWithUpdate() 도 있는데 - 여기서는 이거 먼저하면 안에러!
+//        canvas.remove(obj);
+//      });
+
+      _.clone(group._objects).forEach(function(obj) { // clone으로 싸야지 됨!
+        group.removeWithUpdate(obj);
+        canvas.remove(obj);
+      });
+
+    }
+
+  }
+
+
+
+  //  function clone_obj_or_group(cnt) {
+  //    cnt = cnt || 0;
+  //
+  //    // 붙여넣기
+  //    tmp.clone(function(cloned) {
+  //      cnt++;
+  //      canvas.add(cloned.set({ left: cloned.left + cnt*interval, top: cloned.top + cnt*interval }));
+  //      canvas.setActiveObject(cloned);
+  //    });
+  //
+  //    // 복제
+  //    active.clone(function(cloned) {
+  //    canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
+  //    canvas.setActiveObject(cloned);
+  //    });
+  //
+  //  }
+
+  function grouping(cb) { // 비동기 지원, 날아오는 객체가 있으면 그것을 그룹화..?
+    console.log("grouping!");
+    var activegroup = canvas.getActiveGroup();
+    if (!activegroup) return;
+    var objectsInGroup = activegroup.getObjects();
+    activegroup.clone(function(newgroup) {
+      canvas.discardActiveGroup();
+      objectsInGroup.forEach(function(object) {
+        canvas.remove(object);
+      });
+      canvas.add(newgroup);
+      canvas.setActiveObject(newgroup);
+      if (cb) cb(newgroup);
+    });
+  }
+
+  function ungrouping() {
+    console.log("ungrouping!");
+    var activeObject = canvas.getActiveObject();
+    if (activeObject.type == "group") {
+      var items = activeObject._objects;
+      activeObject._restoreObjectsState(); // remove the original group & add all items back to the canvas - 그룹핑 전 객체들의 정보를 다시 넣는건가봄 ㅇㅅㅇ
+      canvas.remove(activeObject);
+      for (var i = 0; i < items.length; i++) {
+        canvas.add(items[i]);
+        canvas.item(canvas.size() - 1).hasControls = true; // 이거 뭐하는거지???
+        items[i].active = true;
+      }
+
+      var group = new fabric.Group(items); // ungroup 후 각각의 객체들 선택된 상태로 두는 것
+      canvas.setActiveGroup(group.setCoords()).renderAll();
+//      canvas.setActiveGroup(group).renderAll();
+
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

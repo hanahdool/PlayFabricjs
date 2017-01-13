@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" width="1000" height="1000" style="border: 1px solid black"></canvas>
+<script>
+
+  var canvas = new fabric.Canvas('canvas');
+
+
+  var i;
+
+  fabric.Image.fromURL('image/Disneyland.png', function(img) {
+    img.set({ scaleX: 0.5, scaleY: 0.5 });
+    canvas.add(img);
+
+
+//    fabric.Image.fromURL(img.toDataURL({ // 이건 완벽한 clone이 아니지..
+//      top: 0,
+//      left: 0,
+//      width: img.width * img.scaleX,
+//      height: img.height * img.scaleY,
+//    }), function(cropped) {
+//      cropped.set({
+//        left: 200,
+//        top: 100,
+//      });
+//      canvas.add(cropped).setActiveObject(cropped);
+//    });
+
+
+    img.clone(function(cloned) { // 이걸로 복제하면.. 객체가 뭔가 더 커지고, cid도 복제되어버림 ㅜㅜ
+      canvas.add(cloned.set({ left: cloned.left + 10, top: cloned.top + 10 }));
+      canvas.setActiveObject(cloned);
+    });
+
+
+    i = img;
+
+    console.log(img);
+
+
+
+
+//    fabric.util.object.clone();
+
+
+    toObject
+
+
+
+
+  });
+
+
+  canvas.renderAll();
+
+
+
+</script>
+
+
+<script>
+
+
+
+</script>
+
+</body>
+</html>
