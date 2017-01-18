@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;" width="800" height="800"></canvas>
+<span>가로(col)</span><input type="number" id="col" value="1" min="1"/>
+<br>
+<span>세로(row)</span><input type="number" id="row" value="1" min="1"/>
+<br>
+<span>패딩</span><input type="number" id="padding" value="0" min="0"/>
+<br>
+<!--<span>격자무늬</span><input type="checkbox" id="plaid"/>-->
+<button id="plaid">격자무늬</button>
+
+<br>
+<button id="origin_rate">원본 비율로</button>
+
+
+<script>
+
+  // pattern 에서 화질 안깨지게!
+
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.setWidth(800);
+  canvas.setHeight(800);
+//  var i = 'image/space_pattern.png';
+  var i = 'image/tiger.png';
+//  var i = 'image/rudolf.png';
+//  var i = 'image/wecan.png';
+
+
+  var img, ptn;
+  var padding = 0;
+
+  fabric.Image.fromURL(i, function(image) {
+//    image.scaleToWidth(400);
+//    image.scaleX = 0.5;
+//    image.scaleY = 0.5;
+    var patternSourceCanvas = new fabric.StaticCanvas();
+    patternSourceCanvas.add(image);
+    var pattern = new fabric.Pattern({
+      source: function() {
+        console.log("pattern.source함수 실행~~~~~~~~~");
+        patternSourceCanvas.setDimensions({
+          width: image.getWidth() + padding, //*2,
+          height: image.getHeight() + padding //*2
+        });
+        return patternSourceCanvas.getElement();
+      },
+      repeat: 'repeat'
+    });
+
+
+    var rect = new fabric.Rect({
+      left: 0,
+      top: 0,
+      width: image.width,
+      height: image.height,
+      fill: pattern,
+      objectCaching: false
+    });
+
+    canvas.add(rect).setActiveObject(rect);
+
+
+
+    img = image, ptn = pattern;
+
+
+
+
+    $('#col').on('input', function(e) { // 가로 갯수
+      var col = e.target.value;
+      var active = canvas.getActiveObject();
+      var row = $('#row')[0].value;
+
+      var length = active.width * active.scaleX;
+      var origin_sX = active.scaleX;
+      active.width = img.width*img.scaleX*col + padding*(col-1);
+      active.scaleX = length / active.width; // length == new_width * active.scaleX;
+      // active.scaleY = active.scaleX; // 정비율로만 조절할 때
+      active.scaleY = active.scaleX * active.scaleY / origin_sX; // origin_sX : active.scaleX = active.scaleY : ?
+
+      canvas.renderAll();
+    });
+
+    $('#row').on('input', function(e) {
+      var row = e.target.value;
+      var active = canvas.getActiveObject();
+
+      active.height = img.height * img.scaleY * row   + padding * (row-1);
+      canvas.renderAll();
+    });
+
+    $('#padding').on('input', function(e) {
+      padding = parseInt(e.target.value, 10); // 안하면 스트링됨
+      var col = $('#col')[0].value;
+      var row = $('#row')[0].value;
+      var active = canvas.getActiveObject();
+
+      // padding이 전체 크기에 영향을 미칠 때
+//      active.width = img.width * img.scaleX * col   + padding * (col-1);
+//      active.height = img.height * img.scaleY * row   + padding * (row-1);
+
+      // 전체 크기는 그대로 둘 때
+      var w_length = active.width * active.scaleX;
+      var h_length = active.height * active.scaleY;
+      active.width = img.width * img.scaleX * col   + padding * (col-1);
+      active.height = img.height * img.scaleY * row   + padding * (row-1);
+      active.scaleX = w_length / active.width; // active.width * active.scaleX = w_length
+      active.scaleY = h_length / active.height; // active.aheight * active.scaleY = h_length
+
+      canvas.renderAll();
+    });
+
+
+
+
+
+    $('#plaid').on('click', function(e) {
+      var active = canvas.getActiveObject();
+
+      console.log("격자무늬~");
+
+
+    });
+
+
+    $('#origin_rate').on('click', function() {
+      var active = canvas.getActiveObject();
+      active.scaleY = active.scaleX;
+      canvas.renderAll();
+    });
+
+
+    // checkbox
+    $('#plaid').on('click', function(e) { // change ?
+      if (e.checked == true) { // e.target.checked
+
+      }
+
+    })
+
+
+
+  });
+
+
+
+
+
+</script>
+
+</body>
+</html>

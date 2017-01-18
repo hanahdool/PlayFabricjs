@@ -7,9 +7,9 @@
 
 
 <body>
-<canvas id="canvas" width="320" height="319" style="width: 320px; height: 319px;">
+<canvas id="canvas" width="600" height="600" style="width: 320px; height: 319px; border: 1px solid black">
 </canvas>
-<canvas id="canvas2" width="500" height="500">
+<canvas id="canvas2" width="500" height="500" style="border: 1px solid black">
 </canvas>
 
 </body>
@@ -20,7 +20,8 @@
 
   var imageObj = new Image();
   imageObj.onload = function() {
-    context.drawImage(imageObj, 0, 0, 320, 319);
+//    context.drawImage(imageObj, 0, 0, 320, 319);
+    context.drawImage(imageObj, 0, 0, 400, 400);
 
     var canvas2 = document.getElementById('canvas2');
     var context2 = canvas2.getContext('2d');
@@ -29,14 +30,14 @@
     context2.fillRect(0, 0, 500, 500);
 
 //    setTimeout(function() {
-      console.log(canvas2.toDataURL());
+//      console.log(canvas2.toDataURL());
 //    }, 500)
 
   };
   imageObj.src = './image/wecan.png';
 
   setTimeout(function() {
-    console.log(canvas2.toDataURL('image/png'));
+//    console.log(canvas2.toDataURL('image/png'));
   }, 500)
 
 

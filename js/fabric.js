@@ -12235,12 +12235,13 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
       if (options) {
         this.setOptions(options);
       }
-      if (this.objectCaching) {
+      if (this.objectCaching) { // 이미지일 떄는 여기에 안옴!
         this._createCacheCanvas();
         this.setupState({ propertySet: 'cacheProperties' });
       }
       this.cid = _.uniqueId('c');
       this._data = {};
+      console.log("==========================================", this.cid);
     },
 
     data: function(key, val) {
@@ -12919,8 +12920,12 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
      * @return {fabric.Object} clone of an instance
      */
     clone: function(callback, propertiesToInclude) {
+      console.log("복제~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
       if (this.constructor.fromObject) {
         return this.constructor.fromObject(this.toObject(propertiesToInclude), callback);
+        //var tmp = this.constructor.fromObject(this.toObject(propertiesToInclude), callback); // fromObject에서 나뉨
+        //console.log("tmp :: ", tmp);
+        //return tmp;
       }
       return new fabric.Object(this.toObject(propertiesToInclude));
     },
@@ -16199,6 +16204,7 @@ fabric.util.object.extend(fabric.Object.prototype, /** @lends fabric.Object.prot
    */
   fabric.Rect.fromObject = function(object, callback) {
     var rect = new fabric.Rect(object);
+    console.log("Rect fromObject (cid): ", rect.cid);
     callback && callback(rect);
     return rect;
   };
@@ -19117,7 +19123,10 @@ fabric.util.object.extend(fabric.Object.prototype, /** @lends fabric.Object.prot
         object.filters = filters || [];
         fabric.Image.prototype._initFilters.call(object, object.resizeFilters, function(resizeFilters) {
           object.resizeFilters = resizeFilters || [];
-          return new fabric.Image(img, object, callback);
+          var obj = new fabric.Image(img, object, callback); // 콜백함수
+          console.log("Image fromObject (cid): ", obj.cid);
+          return obj;
+          //return new fabric.Image(img, object, callback);
         });
       });
     }, null, object.crossOrigin);

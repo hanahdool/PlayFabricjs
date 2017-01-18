@@ -159,7 +159,7 @@
       tmp.clone(function(cloned) {
         canvas.add(cloned.set({ left: cloned.left + interval * cnt, top: cloned.top + interval * cnt }));
         canvas.setActiveObject(cloned);
-      });
+      }, '_data');
     } else { // type이 'group'일 경우
       canvas.setActiveGroup(tmp);
       grouping(function(newgroup) {
@@ -173,7 +173,7 @@
           ungrouping();
 
           canvas.renderAll();
-        });
+        }, '_data');
       });
     }
     ///////////////////////////////////////////////// 복제 끝 //////////////////////////
@@ -210,10 +210,12 @@
 
     ///////////////////////////////////////////////// 복제 시작 //////////////////////////
     if (canvas.getActiveObject()) {
+
       active.clone(function(cloned) {
+        console.log("복제된 : ", cloned);
         canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
         canvas.setActiveObject(cloned);
-      });
+      }, '_data'); // propertiesToInclude: 복제할 요소!
     } else { // canvas.getActiveGroup()일 경우
       grouping(function(newgroup) {
 //        canvas.getActiveObject().clone(function(cloned) {
@@ -226,7 +228,7 @@
           ungrouping();
 
           canvas.renderAll();
-        });
+        }, '_data');
       });
     }
     ///////////////////////////////////////////////// 복제 끝 //////////////////////////

@@ -543,6 +543,48 @@
 
 
 
+
+
+
+
+  // 복제 test
+/*
+  var tmp, type, cnt=0, interval=10; // 아니면 캔버스 객체에 담아놓기??
+
+  Mousetrap.bind(['command+d', 'ctrl+d'], function(e) {
+    console.log("복제하기");
+    e.preventDefault();
+    var active = canvas.getActiveObject() || canvas.getActiveGroup();
+    if (!active) return;
+
+    ///////////////////////////////////////////////// 복제 시작 //////////////////////////
+    if (canvas.getActiveObject()) {
+
+      active.clone(function(cloned) {
+        console.log("복제된 : ", cloned);
+        canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
+        canvas.setActiveObject(cloned);
+      }, '_data'); // propertiesToInclude: 복제할 요소!
+    } else { // canvas.getActiveGroup()일 경우
+      grouping(function(newgroup) {
+//        canvas.getActiveObject().clone(function(cloned) {
+        newgroup.clone(function(cloned) {
+          canvas.add(cloned.set({ left: cloned.left + interval, top: cloned.top + interval }));
+          ungrouping();
+
+          canvas.discardActiveGroup(); // 이거 하고나서 아랫줄 해줘야 안문제!!!!
+          canvas.setActiveObject(cloned);
+          ungrouping();
+
+          canvas.renderAll();
+        }, '_data');
+      });
+    }
+    ///////////////////////////////////////////////// 복제 끝 //////////////////////////
+
+  });
+*/
+
 </script>
 
 </body>
