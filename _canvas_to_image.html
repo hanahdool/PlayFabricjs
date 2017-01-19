@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;" width="800" height="800"></canvas>
+<canvas id="canvas2" style="border: 1px solid black;" width="800" height="800"></canvas>
+
+<script>
+
+
+
+
+  var canvas = new fabric.Canvas('canvas');
+  var canvas2 = new fabric.Canvas('canvas2');
+//  var canvas = document.getElementById('canvas');
+  canvas.setWidth(500);
+  canvas.setHeight(500);
+
+  var ctx = canvas.getContext("2d");
+
+//  canvas.setBackgroundColor('skyblue');
+//  canvas2.setBackgroundColor('pink');
+
+
+  //  var i = 'image/space_pattern.png';
+//  var i = 'image/red.png';
+//  var i = 'image/tiger.png';
+  var i = 'image/rudolf.png';
+//  var i = 'image/wecan.png';
+
+
+  var a = function() { return canvas.getActiveObject(); };
+  var r = function() { return canvas.renderAll(); };
+  var a2 = function() { return canvas2.getActiveObject(); };
+  var r2 = function() { return canvas2.renderAll(); };
+
+  var img = new Image();
+  img.src = i;
+
+
+  var origin_canvas = _.clone(canvas); // var origin_ctx = _.clone(ctx);
+
+  // canvas 크기 알맞게 set 하기!!
+//  ctx.drawImage(img, 50, 20); // 이걸로 하나하나씩 다 그리면 되겠넹 - 이미지 원본 크기로 그린 후, 이미지 만들고 나서! scale로 조절하기
+//  ctx.drawImage(img, 300, 20);
+  ctx.drawImage(img, 550, 20);
+  ctx.drawImage(img, 800, 20);
+
+
+//  fabric.Image.fromURL(i, function(img) {
+//    canvas.add(img);
+//    canvas.renderAll();
+//  })
+
+
+//  fabric.Image.fromURL( canvas.toDataURL("image/png"), function(img) {
+//    console.log("img 출력 : ", img);
+//    canvas2.add(img);
+//    canvas2.renderAll();
+//  });
+
+
+//  fabric.Image.fromURL(i, function(image) {
+//    img = image;
+////    ctx.drawImage(image, 10, 30);
+//
+//  });
+
+
+//  var aaa = new  fabric.Image(canvas.toDataURL("image/png"));
+//  canvas2.add(aaa);
+
+
+//  var aaa = new Image();
+//  aaa.src = canvas.toDataURL("image/png");
+//  canvas2.add(aaa); // load로 해야지만 되나봄
+
+
+
+</script>
+
+</body>
+</html>

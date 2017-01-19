@@ -16,7 +16,13 @@
 <span>패딩</span><input type="number" id="padding" value="0" min="0"/>
 <br>
 <!--<span>격자무늬</span><input type="checkbox" id="plaid"/>-->
-<button id="plaid">격자무늬</button>
+<!--<button id="plaid">격자무늬</button>-->
+<select id="type">
+  <option value="repeat">반복</option>
+  <option value="plaid1">격자1</option>
+  <option value="plaid2">격자2</option>
+</select>
+
 
 <br>
 <button id="origin_rate">원본 비율로</button>
@@ -31,27 +37,37 @@
   canvas.setWidth(800);
   canvas.setHeight(800);
 //  var i = 'image/space_pattern.png';
+//  var i = 'image/red.png';
   var i = 'image/tiger.png';
 //  var i = 'image/rudolf.png';
 //  var i = 'image/wecan.png';
 
 
+  var a = function() { return canvas.getActiveObject(); }
+  var r = function() { return canvas.renderAll(); }
+
   var img, ptn;
+//  var bp = 3; // base padding
   var padding = 0;
 
+/*
   fabric.Image.fromURL(i, function(image) {
 //    image.scaleToWidth(400);
 //    image.scaleX = 0.5;
 //    image.scaleY = 0.5;
     var patternSourceCanvas = new fabric.StaticCanvas();
-    patternSourceCanvas.add(image);
+    patternSourceCanvas.add(image); // 이미지를 바꾸거나
+//    patternSourceCanvas.add(_.clone(image).set({left:400, top:400})); // 이미지를 바꾸거나
+    console.log(patternSourceCanvas);
     var pattern = new fabric.Pattern({
-      source: function() {
+      source: function() { // 이 함수 안에서 어떻게 하거나
         console.log("pattern.source함수 실행~~~~~~~~~");
         patternSourceCanvas.setDimensions({
-          width: image.getWidth() + padding, //*2,
-          height: image.getHeight() + padding //*2
+          width: image.getWidth() + padding,
+          height: image.getHeight() + padding
         });
+//        patternSourceCanvas.setOverlayImage(image); //??
+
         return patternSourceCanvas.getElement();
       },
       repeat: 'repeat'
@@ -151,6 +167,133 @@
 
 
   });
+*/
+
+
+  fabric.Image.fromURL(i, function(image) {
+    fabric.Image.fromURL(i, function(image2) { //clone으로 복제를 할까..
+      var patternSourceCanvas = new fabric.StaticCanvas();
+
+      // 격자 1
+//      patternSourceCanvas.add(image); // 이미지를 바꾸거나
+//      patternSourceCanvas.add(image2.set({ left: image.width, top: image.height })); // 패턴 깔끔하게 안잘림....ㅜㅜ 옮길때마다 생겼다가.. 없어졌다가.. - 상하좌우를 조금씩 잘라주도록...?
+
+      // 격자 2 - 1개만 있을 때, 패딩 줬을 때
+      patternSourceCanvas.add(image.set({ left: image.width })); // image의 scale이 1이라는 가정 하에 (그리고 이래야 화질 손실 없음)
+      patternSourceCanvas.add(image2.set({ top: image.height }));
+
+
+      var pattern = new fabric.Pattern({
+        source: function() { // 이 함수 안에서 어떻게 하거나
+          console.log("pattern.source함수 실행~~~~~~~~~");
+          patternSourceCanvas.setDimensions({
+            width: (image.getWidth() + padding) * 2,
+            height: (image.getHeight() + padding) * 2
+          });
+
+          return patternSourceCanvas.getElement();
+        },
+        repeat: 'repeat'
+      });
+
+
+      var rect = new fabric.Rect({
+        left: 0,
+        top: 0,
+        width: image.width,
+        height: image.height,
+        fill: pattern,
+        objectCaching: false
+      });
+
+      canvas.add(rect).setActiveObject(rect);
+
+
+
+      img = image, ptn = pattern;
+
+
+
+
+      $('#col').on('input', function(e) { // 가로 갯수
+        var col = e.target.value;
+        var active = canvas.getActiveObject();
+        var row = $('#row')[0].value;
+
+        var length = active.width * active.scaleX;
+        var origin_sX = active.scaleX;
+        active.width = img.width*img.scaleX*col + padding*(col-1);
+        active.scaleX = length / active.width; // length == new_width * active.scaleX;
+        // active.scaleY = active.scaleX; // 정비율로만 조절할 때
+        active.scaleY = active.scaleX * active.scaleY / origin_sX; // origin_sX : active.scaleX = active.scaleY : ?
+
+        canvas.renderAll();
+      });
+
+      $('#row').on('input', function(e) {
+        var row = e.target.value;
+        var active = canvas.getActiveObject();
+
+        active.height = img.height * img.scaleY * row   + padding * (row-1);
+        canvas.renderAll();
+      });
+
+      $('#padding').on('input', function(e) {
+        padding = parseInt(e.target.value, 10); // 안하면 스트링됨
+        var col = $('#col')[0].value;
+        var row = $('#row')[0].value;
+        var active = canvas.getActiveObject();
+
+        // padding이 전체 크기에 영향을 미칠 때
+//      active.width = img.width * img.scaleX * col   + padding * (col-1);
+//      active.height = img.height * img.scaleY * row   + padding * (row-1);
+
+        // 전체 크기는 그대로 둘 때
+
+        // 격자 1
+//        image2.set({ left: image.width + padding, top: image.height + padding }); // 이거 뿐만아니라 이미지 크기도 조절해줘야함...
+
+        // 격자 2
+        image.set({ left: image.width + padding });
+        image2.set({ top: image.height + padding });
+
+        var w_length = active.width * active.scaleX;
+        var h_length = active.height * active.scaleY;
+        active.width = img.width * img.scaleX * col   + padding * (col-1);
+        active.height = img.height * img.scaleY * row   + padding * (row-1);
+        active.scaleX = w_length / active.width; // active.width * active.scaleX = w_length
+        active.scaleY = h_length / active.height; // active.aheight * active.scaleY = h_length
+
+
+        canvas.renderAll();
+      });
+
+
+
+
+
+      $('#type').on('change', function(e) {
+        var type = e.target.value; // repeat, plaid1, plaid2
+        var active = canvas.getActiveObject();
+
+
+      });
+
+
+      $('#origin_rate').on('click', function() {
+        var active = canvas.getActiveObject();
+        active.scaleY = active.scaleX;
+        canvas.renderAll();
+      });
+
+
+
+    })
+
+
+  });
+
+
 
 
 
