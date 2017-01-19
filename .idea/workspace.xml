@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76b478c1-26dd-40a6-aea4-1bd8d37df9da" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/image/red.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_canvas_to_image.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_pattern2.html" afterPath="$PROJECT_DIR$/_pattern2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_canvas_to_image.html" afterPath="$PROJECT_DIR$/_canvas_to_image.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/fabric.js" afterPath="$PROJECT_DIR$/js/fabric.js" />
     </list>
     <ignored path="PlayFabricjs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="fabric.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="fabric.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/fabric.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.740741">
-              <caret line="8350" column="30" selection-start-line="8350" selection-start-column="30" selection-end-line="8350" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.21192053">
+              <caret line="5835" column="12" selection-start-line="5835" selection-start-column="12" selection-end-line="5835" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -44,6 +43,16 @@
               <folding>
                 <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_pattern_cojamm.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_pattern_cojamm.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.87931">
+              <caret line="48" column="44" selection-start-line="48" selection-start-column="43" selection-end-line="48" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -70,11 +79,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_canvas_to_image.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="_canvas_to_image.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_canvas_to_image.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.4923439">
-              <caret line="85" column="0" selection-start-line="13" selection-start-column="8" selection-end-line="85" selection-end-column="0" />
+            <state vertical-scroll-proportion="-5.7619047">
+              <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -109,7 +118,7 @@
         <entry file="file://$PROJECT_DIR$/_cropper_toDataURL.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-5.0172415">
-              <caret line="95" column="43" selection-start-line="95" selection-start-column="34" selection-end-line="95" selection-end-column="43" />
+              <caret line="26" column="11" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -184,14 +193,14 @@
         <option value="$PROJECT_DIR$/cropper.html" />
         <option value="$PROJECT_DIR$/_keyboard_shortcut.html" />
         <option value="$PROJECT_DIR$/cropper_and_shortcut.html" />
-        <option value="$PROJECT_DIR$/js/fabric.js" />
         <option value="$PROJECT_DIR$/_cropper_toDataURL.html" />
         <option value="$PROJECT_DIR$/keyboard_shortcut.html" />
-        <option value="$PROJECT_DIR$/_pattern_cojamm.html" />
         <option value="$PROJECT_DIR$/canvas_fill_pattern.html" />
         <option value="$PROJECT_DIR$/_pattern.html" />
         <option value="$PROJECT_DIR$/_pattern2.html" />
         <option value="$PROJECT_DIR$/_canvas_to_image.html" />
+        <option value="$PROJECT_DIR$/_pattern_cojamm.html" />
+        <option value="$PROJECT_DIR$/js/fabric.js" />
       </list>
     </option>
   </component>
@@ -288,7 +297,7 @@
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../mousetrap" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../partial.js" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="ignore_missing_gitignore" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Apple JS" />
@@ -501,7 +510,13 @@
       <option name="project" value="LOCAL" />
       <updated>1484736027082</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary=".">
+      <created>1484817994472</created>
+      <option name="number" value="00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1484817994472</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1162,14 +1177,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_pattern_cojamm.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7323009">
-          <caret line="52" column="42" selection-start-line="52" selection-start-column="42" selection-end-line="52" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/keyboard_shortcut.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.7096774">
@@ -1210,14 +1217,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/fabric.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.740741">
-          <caret line="8350" column="30" selection-start-line="8350" selection-start-column="30" selection-end-line="8350" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/_pattern2.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.645162">
@@ -1234,14 +1233,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_cropper_toDataURL.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.0172415">
-          <caret line="95" column="43" selection-start-line="95" selection-start-column="34" selection-end-line="95" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/clone.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.806452">
@@ -1252,12 +1243,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_canvas_to_image.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.4923439">
-          <caret line="85" column="0" selection-start-line="13" selection-start-column="8" selection-end-line="85" selection-end-column="0" />
+        <state vertical-scroll-proportion="-5.7619047">
+          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
           <folding>
             <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_pattern_cojamm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.87931">
+          <caret line="48" column="44" selection-start-line="48" selection-start-column="43" selection-end-line="48" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_cropper_toDataURL.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.0172415">
+          <caret line="26" column="11" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/fabric.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21192053">
+          <caret line="5835" column="12" selection-start-line="5835" selection-start-column="12" selection-end-line="5835" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>

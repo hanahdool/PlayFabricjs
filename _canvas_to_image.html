@@ -44,13 +44,14 @@
   img.src = i;
 
 
-  var origin_canvas = _.clone(canvas); // var origin_ctx = _.clone(ctx);
+//  var origin_canvas = _.clone(canvas);
+//   var origin_ctx = _.clone(ctx);
 
   // canvas 크기 알맞게 set 하기!!
-//  ctx.drawImage(img, 50, 20); // 이걸로 하나하나씩 다 그리면 되겠넹 - 이미지 원본 크기로 그린 후, 이미지 만들고 나서! scale로 조절하기
-//  ctx.drawImage(img, 300, 20);
-  ctx.drawImage(img, 550, 20);
-  ctx.drawImage(img, 800, 20);
+  ctx.drawImage(img, 50, 20); // 이걸로 하나하나씩 다 그리면 되겠넹 - 이미지 원본 크기로 그린 후, 이미지 만들고 나서! scale로 조절하기
+  ctx.drawImage(img, 300, 20);
+//  ctx.drawImage(img, 550, 20);
+//  ctx.drawImage(img, 800, 20);
 
 
 //  fabric.Image.fromURL(i, function(img) {
