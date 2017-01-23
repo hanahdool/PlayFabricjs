@@ -175,12 +175,12 @@
       var patternSourceCanvas = new fabric.StaticCanvas();
 
       // 격자 1
-//      patternSourceCanvas.add(image); // 이미지를 바꾸거나
-//      patternSourceCanvas.add(image2.set({ left: image.width, top: image.height })); // 패턴 깔끔하게 안잘림....ㅜㅜ 옮길때마다 생겼다가.. 없어졌다가.. - 상하좌우를 조금씩 잘라주도록...?
+      patternSourceCanvas.add(image); // 이미지를 바꾸거나
+      patternSourceCanvas.add(image2.set({ left: image.width, top: image.height })); // 패턴 깔끔하게 안잘림....ㅜㅜ 옮길때마다 생겼다가.. 없어졌다가.. - 상하좌우를 조금씩 잘라주도록...?
 
       // 격자 2 - 1개만 있을 때, 패딩 줬을 때
-      patternSourceCanvas.add(image.set({ left: image.width })); // image의 scale이 1이라는 가정 하에 (그리고 이래야 화질 손실 없음)
-      patternSourceCanvas.add(image2.set({ top: image.height }));
+//      patternSourceCanvas.add(image.set({ left: image.width })); // image의 scale이 1이라는 가정 하에 (그리고 이래야 화질 손실 없음)
+//      patternSourceCanvas.add(image2.set({ top: image.height }));
 
 
       var pattern = new fabric.Pattern({
@@ -251,11 +251,11 @@
         // 전체 크기는 그대로 둘 때
 
         // 격자 1
-//        image2.set({ left: image.width + padding, top: image.height + padding }); // 이거 뿐만아니라 이미지 크기도 조절해줘야함...
+        image2.set({ left: image.width + padding, top: image.height + padding }); // 이거 뿐만아니라 이미지 크기도 조절해줘야함...
 
         // 격자 2
-        image.set({ left: image.width + padding });
-        image2.set({ top: image.height + padding });
+//        image.set({ left: image.width + padding });
+//        image2.set({ top: image.height + padding });
 
         var w_length = active.width * active.scaleX;
         var h_length = active.height * active.scaleY;

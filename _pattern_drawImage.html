@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+<canvas id="canvas" style="border: 1px solid black;" width="800" height="800"></canvas>
+<!--<canvas id="sCanvas" style="border: 1px solid black;"></canvas>-->
+<canvas id="sCanvas" hidden></canvas>
+
+<span>가로(col)</span><input type="number" id="col" value="1" min="1"/>
+<br>
+<span>세로(row)</span><input type="number" id="row" value="1" min="1"/>
+<br>
+<span>패딩</span><input type="number" id="padding" value="0" min="0"/>
+<br>
+<!--<span>격자무늬</span><input type="checkbox" id="plaid"/>-->
+<!--<button id="plaid">격자무늬</button>-->
+<select id="type">
+  <option value="repeat">반복</option>
+  <option value="plaid1">격자1</option>
+  <option value="plaid2">격자2</option>
+</select>
+
+
+<br>
+<button id="origin_rate">원본 비율로</button>
+
+
+<script>
+
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.setWidth(800);
+  canvas.setHeight(800);
+//  var i = 'image/space_pattern.png';
+//  var i = 'image/red.png';
+  var i = 'image/tiger.png';
+//  var i = 'image/rudolf.png';
+//  var i = 'image/wecan.png';
+
+  var a = function() { return canvas.getActiveObject(); };
+  var r = function() { return canvas.renderAll(); };
+
+
+
+  // sCanvas에 그려서, canvas에 이미지로 뿌릴 거임
+  var sCanvas = new fabric.StaticCanvas(); // Static이랑 아닌거랑 뭔차이..
+  var sCanvas = document.getElementById('sCanvas'); // 숨긴 캔버스가 있어야 하는건가???? - hidden 해놓고 해도 되긴 됨
+  // 이미지 크기, 행열 갯수, 패딩 계산
+
+
+  var image = new Image();
+  image.src = i;
+
+
+
+
+
+
+  // 처음 셋팅 - col 1개, row 1개일 경우
+  sCanvas.width = image.width;
+  sCanvas.height = image.height;
+
+  sCanvas.getContext('2d').drawImage(image, 0, 0);
+
+  fabric.Image.fromURL(sCanvas.toDataURL("image/png" /*{ format: 'png' }*/), function(img) {
+    canvas.add(img);
+
+    canvas.setActiveObject(img);
+    canvas.renderAll();
+  });
+
+
+
+
+
+
+  $('#col').on('input', function(e) { // 가로 갯수
+    var col = e.target.value;
+    var active = canvas.getActiveObject();
+    var row = $('#row')[0].value;
+    var origin_width = active.width * active.scaleX;
+    var rate = active.scaleY / active.scaleX; //가로 세로 스케일 비율
+    var origin_left = active.left;
+    var origin_top = active.top;
+    var padding = parseInt($('#padding')[0].value);
+
+    // 이미지 src는 _data에 담고 있어야 할 듯! - 나중에 하기
+
+    sCanvas.width = image.width * col + padding * (col - 1);
+    sCanvas.height = image.height * row + padding * (row - 1);
+
+
+    // 기본
+//    for (var i=0; i<row; i++) {
+//      for (var j=0; j<col; j++) {
+//        sCanvas.getContext('2d').drawImage(image, (image.width + padding) * j, (image.height + padding) * i);
+//      }
+//    }
+
+    // 격자
+    for (var i=0; i<row; i++) {
+      for (var j=i%2; j<col; j+=2) {
+        sCanvas.getContext('2d').drawImage(image, (image.width + padding) * j, (image.height + padding) * i);
+      }
+    }
+
+
+    fabric.Image.fromURL(sCanvas.toDataURL("image/png" /*{ format: 'png' }*/), function(img) {
+      canvas.add(img);
+
+      img.scaleX = origin_width / img.width; // origin_width = img.scaleX * img.width
+      img.scaleY = img.scaleX * rate;
+
+      img.set({
+        left: origin_left,
+        top: origin_top
+      });
+
+      active.remove(); // 원래꺼 지움
+      canvas.setActiveObject(img);
+      canvas.renderAll();
+    });
+
+
+    canvas.renderAll();
+  });
+
+  $('#row').on('input', function(e) {
+    var row = e.target.value;
+    var active = canvas.getActiveObject();
+    var col = $('#col')[0].value;
+    var origin_width = active.width * active.scaleX;
+    var rate = active.scaleY / active.scaleX; //가로 세로 스케일 비율
+    var origin_left = active.left;
+    var origin_top = active.top;
+    var padding = parseInt($('#padding')[0].value);
+
+    sCanvas.height = image.height * row + padding * (row - 1);
+
+
+    // 기본
+//    for (var i = 0; i < row; i++) {
+//      for (var j = 0; j < col; j++) {
+//        sCanvas.getContext('2d').drawImage(image, (image.width + padding) * j, (image.height + padding) * i);
+//      }
+//    }
+
+    // 격자
+    for (var i=0; i<row; i++) {
+      for (var j=i%2; j<col; j+=2) { // 격자2 j=(i+1)%2 - 0일때도 그리도록
+        sCanvas.getContext('2d').drawImage(image, (image.width + padding) * j, (image.height + padding) * i);
+
+      }
+    }
+
+
+
+    fabric.Image.fromURL(sCanvas.toDataURL("image/png" /*{ format: 'png' }*/), function (img) {
+      canvas.add(img);
+
+      img.scaleX = origin_width / img.width; // origin_width = img.scaleX * img.width
+      img.scaleY = img.scaleX * rate;
+
+      img.set({
+        left: origin_left,
+        top: origin_top
+      });
+
+      active.remove(); // 원래꺼 지움
+      canvas.setActiveObject(img);
+      canvas.renderAll();
+
+
+    });
+  });
+
+  $('#padding').on('input', function(e) {
+//    padding = parseInt(e.target.value, 10); // 안하면 스트링됨
+//    var col = $('#col')[0].value;
+//    var row = $('#row')[0].value;
+//    var active = canvas.getActiveObject();
+
+    canvas.renderAll();
+  });
+
+
+/*
+  $('#type').on('change', function(e) {
+    var type = e.target.value; // repeat, plaid1, plaid2
+    var active = canvas.getActiveObject();
+  });
+
+
+  $('#origin_rate').on('click', function() {
+    var active = canvas.getActiveObject();
+    active.scaleY = active.scaleX;
+    canvas.renderAll();
+  });
+*/
+
+
+
+  function drawPatternActive(active, image, col, row, left, top, rate, origin_width) {
+
+
+  }
+
+
+
+
+
+</script>
+
+</body>
+</html>

@@ -8,7 +8,7 @@
   <script src = "js/jquery.js"></script>
 </head>
 <body style="position:absolute">
-<canvas id="canvas" style="border: 1px solid black;" width="800" height="800"></canvas>
+<canvas id="canvas" style="border: 1px solid black;" width="600" height="600" hidden></canvas>
 <canvas id="canvas2" style="border: 1px solid black;" width="800" height="800"></canvas>
 
 <script>
@@ -16,11 +16,21 @@
 
 
 
-  var canvas = new fabric.Canvas('canvas');
+  /*  이렇게!!!!!!!!!! */
+/*
+  var canvas = document.getElementById("canvas");
+  var img    = canvas.toDataURL("image/png");
+
+  fabric.Image.fromURL(img, function(zzz){ canvas2.add(zzz); })
+
+*/
+
+
+  var canvas = new fabric.StaticCanvas('canvas');
   var canvas2 = new fabric.Canvas('canvas2');
 //  var canvas = document.getElementById('canvas');
-  canvas.setWidth(500);
-  canvas.setHeight(500);
+//  canvas.setWidth(600);
+//  canvas.setHeight(600);
 
   var ctx = canvas.getContext("2d");
 
