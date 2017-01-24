@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76b478c1-26dd-40a6-aea4-1bd8d37df9da" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_pattern_drawImage.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_pattern_drawImage2.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_canvas_to_image.html" afterPath="$PROJECT_DIR$/_canvas_to_image.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_pattern2.html" afterPath="$PROJECT_DIR$/_pattern2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_coordinate.html" afterPath="$PROJECT_DIR$/_coordinate.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_filtering.html" afterPath="$PROJECT_DIR$/_filtering.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_object.html" afterPath="$PROJECT_DIR$/_object.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_pattern_drawImage2.html" afterPath="$PROJECT_DIR$/_pattern_drawImage2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_text.html" afterPath="$PROJECT_DIR$/_text.html" />
     </list>
     <ignored path="PlayFabricjs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,54 +28,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="keyboard_shortcut.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/keyboard_shortcut.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.7096774">
-              <caret line="234" column="0" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
-              <folding>
-                <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_pattern_cojamm.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_pattern_cojamm.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.0172415">
-              <caret line="37" column="6" selection-start-line="37" selection-start-column="6" selection-end-line="37" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_dynamic_pattern.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_dynamic_pattern.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.290323">
-              <caret line="91" column="9" selection-start-line="91" selection-start-column="9" selection-end-line="91" selection-end-column="9" />
-              <folding>
-                <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_pattern2.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_pattern2.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-85.344826">
-              <caret line="241" column="26" selection-start-line="241" selection-start-column="18" selection-end-line="241" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="_pattern_drawImage.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_pattern_drawImage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.547619">
+            <state vertical-scroll-proportion="-101.48387">
               <caret line="143" column="60" selection-start-line="143" selection-start-column="60" selection-end-line="143" selection-end-column="60" />
               <folding>
                 <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -83,12 +40,55 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_pattern_drawImage2.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="_pattern_drawImage2.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_pattern_drawImage2.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.63414633">
-              <caret line="59" column="16" selection-start-line="59" selection-start-column="16" selection-end-line="59" selection-end-column="16" />
+            <state vertical-scroll-proportion="-6.1896553">
+              <caret line="86" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_coordinate.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_coordinate.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="21" column="38" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_text.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/_text.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.32300884">
+              <caret line="108" column="11" selection-start-line="108" selection-start-column="11" selection-end-line="108" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_CUSTOMIZE.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_CUSTOMIZE.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-22.0">
+              <caret line="105" column="0" selection-start-line="92" selection-start-column="6" selection-end-line="105" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_filtering.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_filtering.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.7096774">
+              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+              <folding>
+                <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -96,8 +96,8 @@
       <file leaf-file-name="_canvas_to_image.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_canvas_to_image.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.392857">
-              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -109,7 +109,7 @@
       <file leaf-file-name="_pattern.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_pattern.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.064516">
+            <state vertical-scroll-proportion="0.0">
               <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -118,21 +118,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_object.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_object.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.161291">
-              <caret line="24" column="103" selection-start-line="24" selection-start-column="77" selection-end-line="24" selection-end-column="103" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="_cropper_toDataURL.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_cropper_toDataURL.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.083333">
-              <caret line="114" column="28" selection-start-line="114" selection-start-column="28" selection-end-line="114" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="418" column="0" selection-start-line="418" selection-start-column="0" selection-end-line="419" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -154,10 +144,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/_convert.html" />
-        <option value="$PROJECT_DIR$/_zoom.html" />
-        <option value="$PROJECT_DIR$/dragging.html" />
-        <option value="$PROJECT_DIR$/_undo_redo_3n5.html" />
         <option value="$PROJECT_DIR$/_undo_redo5.html" />
         <option value="$PROJECT_DIR$/_mirroring.html" />
         <option value="$PROJECT_DIR$/_mirroring2.html" />
@@ -166,7 +152,6 @@
         <option value="$PROJECT_DIR$/_real_clip.html" />
         <option value="$PROJECT_DIR$/_bounding.html" />
         <option value="$PROJECT_DIR$/_path.html" />
-        <option value="$PROJECT_DIR$/_object.html" />
         <option value="$PROJECT_DIR$/_preserve_range.html" />
         <option value="$PROJECT_DIR$/_cropping.html" />
         <option value="$PROJECT_DIR$/_final.html" />
@@ -204,7 +189,12 @@
         <option value="$PROJECT_DIR$/_canvas_to_image.html" />
         <option value="$PROJECT_DIR$/_pattern2.html" />
         <option value="$PROJECT_DIR$/_pattern_drawImage.html" />
+        <option value="$PROJECT_DIR$/_object.html" />
         <option value="$PROJECT_DIR$/_pattern_drawImage2.html" />
+        <option value="$PROJECT_DIR$/_coordinate.html" />
+        <option value="$PROJECT_DIR$/_filtering.html" />
+        <option value="$PROJECT_DIR$/_make_logo.html" />
+        <option value="$PROJECT_DIR$/_text.html" />
       </list>
     </option>
   </component>
@@ -214,7 +204,7 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1920" />
+    <option name="x" value="-3840" />
     <option name="y" value="-132" />
     <option name="width" value="1920" />
     <option name="height" value="1053" />
@@ -245,6 +235,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -293,7 +284,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -308,13 +298,13 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/marpple/WebstormProjects/PlayFabricjs/image/heart.png" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/image" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/js" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/image" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug._globalCompositionOperation.html">
@@ -526,16 +516,21 @@
       <option name="project" value="LOCAL" />
       <updated>1484822645460</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary=".">
+      <created>1485137033316</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1485137033316</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1920" y="-132" width="1920" height="1053" extended-state="6" />
+    <frame x="-3840" y="-132" width="1920" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.120589785" sideWeight="0.49635795" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32953367" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -544,6 +539,7 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.120589785" sideWeight="0.503642" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39958376" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="-1820" y="-32" width="1720" height="853" />
@@ -898,35 +894,11 @@
           <option name="timeStamp" value="178" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="182" />
+      <option name="time" value="183" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/_image.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6989738">
-          <caret line="110" column="5" selection-start-line="110" selection-start-column="5" selection-end-line="110" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_cropping.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41371682">
-          <caret line="211" column="9" selection-start-line="211" selection-start-column="9" selection-end-line="211" selection-end-column="9" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fabricjs_mask_hakon.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.025085518">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/_real_cropper2.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="9.935484">
@@ -969,13 +941,6 @@
     <entry file="file://$PROJECT_DIR$/image/wecan.png">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_filtering.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.7096774">
-          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/_real_cropper3.html">
@@ -1028,7 +993,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1039,19 +1003,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_CUSTOMIZE.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="302" column="9" selection-start-line="302" selection-start-column="9" selection-end-line="302" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/_grouping.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="78" column="5" selection-start-line="68" selection-start-column="0" selection-end-line="78" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1059,7 +1014,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="2" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1067,7 +1021,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1082,7 +1035,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.85365856">
           <caret line="35" column="7" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1097,7 +1049,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="60" column="26" selection-start-line="60" selection-start-column="26" selection-end-line="60" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1120,7 +1071,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="300" column="0" selection-start-line="300" selection-start-column="0" selection-end-line="300" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1128,7 +1078,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5735462">
           <caret line="74" column="34" selection-start-line="74" selection-start-column="34" selection-end-line="74" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1136,10 +1085,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.60205245">
           <caret line="27" column="48" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
-          <folding>
-            <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1152,7 +1097,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1160,9 +1104,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33295324">
           <caret line="73" column="14" selection-start-line="73" selection-start-column="10" selection-end-line="73" selection-end-column="14" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1180,7 +1121,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.584">
           <caret line="32" column="25" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1188,7 +1128,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.806452">
           <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1205,16 +1144,8 @@
         <state vertical-scroll-proportion="-0.7096774">
           <caret line="234" column="0" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
           <folding>
-            <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_object.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.161291">
-          <caret line="24" column="103" selection-start-line="24" selection-start-column="77" selection-end-line="24" selection-end-column="103" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1223,7 +1154,7 @@
         <state vertical-scroll-proportion="-21.290323">
           <caret line="91" column="9" selection-start-line="91" selection-start-column="9" selection-end-line="91" selection-end-column="9" />
           <folding>
-            <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1232,13 +1163,56 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.0172415">
           <caret line="37" column="6" selection-start-line="37" selection-start-column="6" selection-end-line="37" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_pattern2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="241" column="26" selection-start-line="241" selection-start-column="18" selection-end-line="241" selection-end-column="26" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_object.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.8387096">
+          <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_pattern_drawImage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-101.48387">
+          <caret line="143" column="60" selection-start-line="143" selection-start-column="60" selection-end-line="143" selection-end-column="60" />
+          <folding>
+            <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_coordinate.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="38" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_canvas_to_image.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/_pattern.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.064516">
+        <state vertical-scroll-proportion="0.0">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1248,45 +1222,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_cropper_toDataURL.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.083333">
-          <caret line="114" column="28" selection-start-line="114" selection-start-column="28" selection-end-line="114" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="418" column="0" selection-start-line="418" selection-start-column="0" selection-end-line="419" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_canvas_to_image.html">
+    <entry file="file://$PROJECT_DIR$/_filtering.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.392857">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.7096774">
+          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding>
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_pattern2.html">
+    <entry file="file://$PROJECT_DIR$/_CUSTOMIZE.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-85.344826">
-          <caret line="241" column="26" selection-start-line="241" selection-start-column="18" selection-end-line="241" selection-end-column="26" />
+        <state vertical-scroll-proportion="-22.0">
+          <caret line="105" column="0" selection-start-line="92" selection-start-column="6" selection-end-line="105" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_pattern_drawImage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.547619">
-          <caret line="143" column="60" selection-start-line="143" selection-start-column="60" selection-end-line="143" selection-end-column="60" />
-          <folding>
-            <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/_pattern_drawImage2.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63414633">
-          <caret line="59" column="16" selection-start-line="59" selection-start-column="16" selection-end-line="59" selection-end-column="16" />
+        <state vertical-scroll-proportion="-6.1896553">
+          <caret line="86" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_text.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32300884">
+          <caret line="108" column="11" selection-start-line="108" selection-start-column="11" selection-end-line="108" selection-end-column="11" />
           <folding />
         </state>
       </provider>

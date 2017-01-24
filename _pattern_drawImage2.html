@@ -69,7 +69,6 @@
   sCanvas.height = image.height;
 
   sCanvas.getContext('2d').drawImage(image, 0, 0);
-
   fabric.Image.fromURL(sCanvas.toDataURL("image/png" /*{ format: 'png' }*/), function(img) {
     canvas.add(img);
 
@@ -99,14 +98,11 @@
   });
 
 
-  /*
-
-    $('#origin_rate').on('click', function() {
-      var active = canvas.getActiveObject();
-      active.scaleY = active.scaleX;
-      canvas.renderAll();
-    });
-  */
+  $('#origin_rate').on('click', function() {
+    var active = canvas.getActiveObject();
+    active.scaleY = active.scaleX;
+    canvas.renderAll();
+  });
 
 
 
@@ -125,25 +121,15 @@
     var type = $('#type')[0].value;
 
 
+//    여기서 이미지 crop하는거 넣어보기
+    console.log(image, image.type); // image는 태그..
+
 
     sCanvas.width = image.width * col + padding * (col-1);
     sCanvas.height = image.height * row + padding * (row-1);
 
 //    sCanvas.getContext('2d').drawImage(image, 0, 0);
 
-
-    /*
-        switch(type) {
-          case "repeat" : console.log("repeat!!!!!");
-            break;
-
-          case "plaid1" : console.log("plaid1!!!!!");
-            break;
-
-          case "plaid2" : console.log("plaid2!!!!!");
-            break;
-        }
-    */
 
     if (type == "repeat") {
       for (var i=0; i<row; i++) {
@@ -160,7 +146,7 @@
     }
 
 
-    fabric.Image.fromURL(sCanvas.toDataURL("image/png" /*{ format: 'png' }*/), function (img) {
+    fabric.Image.fromURL(sCanvas.toDataURL(/*"image/png"*/ { format: 'png', top:100, left:100, width:50, height:50 }), function (img) { // 자르는거 안먹음!!!
       canvas.add(img);
 
       img.scaleX = origin_width / img.width; // origin_width = img.scaleX * img.width

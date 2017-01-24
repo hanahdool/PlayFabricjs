@@ -3,12 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src = "js/fabric.min.js"></script>
+  <script src = "js/fabric.js"></script>
   <script src = "js/underscore.js"></script>
   <script src = "js/jquery.js"></script>
 </head>
 <body style="position:absolute">
-<canvas id="canvas" width="1500" height="1000" style="border: 1px solid black"></canvas>
+<canvas id="tCanvas" style="border: 1px solid black; width: 5cm; height: 5cm;"></canvas>
+<!--<canvas id="canvas" width="800" height="800" style="border: 1px solid black"></canvas>-->
+<canvas id="canvas" width="800" height="800" style="border: 1px solid black;"></canvas>
+
+<select id="type">
+  <option value="repeat">Original</option>
+  <option value="repeat">Grayscale</option>
+  <option value="plaid1">Invert</option>
+  <option value="plaid2">RemoveWhite</option>
+  <option value="plaid2">Sepia</option>
+  <option value="plaid2">Sepia2</option>
+</select>
+
 <script>
 
   var canvas = new fabric.Canvas('canvas');
@@ -42,10 +54,14 @@
 
 
 
-  fabric.Image.fromURL('image/Disneyland.png', function(img) { // 사진 하나당 하나씩 꼭 생성해야 하는 듯- 똑같은 사진 두번하려니 최근꺼 하나만 적용됨
+  fabric.Image.fromURL('image/Disneyland.png', function(img) {
+
+    img.width = 700;
+    img.height = 700;
 
 //    img.filters.push(new f.Grayscale);
-//    img.applyFilters(canvas.renderAll.bind(canvas));
+    img.filters.push(new f.Invert);
+    img.applyFilters(canvas.renderAll.bind(canvas));
 
     canvas.add(img);
 
