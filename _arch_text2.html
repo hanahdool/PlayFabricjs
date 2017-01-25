@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+
+<canvas id="canvas" width="800" height="600" style="border: 1px solid black"></canvas>
+
+<script>
+
+  var can = document.getElementById('canvas');
+  var ctx = can.getContext('2d');
+
+  // Debug code commented out
+
+  // Obviously this will have to change depending on the size of each glyph and the circle, etc.
+
+  CanvasRenderingContext2D.prototype.fillTextCircle = function(text,x,y,radius,startRotation){
+    var numDegreesPerLetter = 2*Math.PI / text.length;
+    this.save();
+    this.translate(x,y);
+    this.rotate(startRotation);
+
+    for(var i=0;i<text.length;i++){
+      this.save();
+      this.translate(radius, 0);
+//      if (i == 0) {
+//          this.fillStyle = 'red';
+      this.translate(10, -10);
+//          this.fillRect(0,0,4,4);
+      this.rotate(1.4)
+      this.translate(-10, 10);
+//          this.fillStyle = 'black';
+//      }
+
+//      this.fillRect(0,0,4,4);
+      this.fillText(text[i],0,0);
+      this.restore();
+      this.rotate(numDegreesPerLetter);
+    }
+    this.restore();
+  }
+
+
+  ctx.font = "bold 30px Serif";
+  ctx.fillTextCircle("Circle Text ",150,150,75,Math.PI / 2);
+
+
+</script>
+
+</body>
+</html>

@@ -14,32 +14,43 @@
   <!--<input type="color" id="textColor">-->
 <!--</div>-->
 
-<canvas id="canvas" width="800" height="800" style="border: 1px solid black"></canvas>
+<canvas id="canvas" width="800" height="600" style="border: 1px solid black"></canvas>
 
+<br>
+<label>[ 부분적용 가능 ]</label>
+<br>
 <span>글씨색</span><input type="color" id="textColor"> <!-- value="#ff0000" 초기 색깔 -->
-<span>배경색</span><input type="color" id="backgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
 <span>글씨배경색</span><input type="color" id="textBackgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
+<span>글씨크기</span><input type="number" id="textSize" value=50> <!-- value="#ff0000" 초기 색깔 -->
 <!--<button>글씨체</button>-->
 
 <br>
 <span>글자 테두리 : </span>
 <span>색깔</span><input type="color" id="textStrokeColor">
-<span>두께</span><input type="number" id="textStrokeWidth" value="0">
+<span>두께</span><input type="number" id="textStrokeWidth" value="1">
 
-<br>
-<span>padding</span><input type="number" id="padding" value="0" min="0"/> <!-- 음수값도 되긴 하넹.. -->
 <br>
 <button id="bold" onclick="fontWeight_bold()">B</button>
 <button id="italic" onclick="fontStyle_italic()">I</button>
 <br>
+<button id="underLine" onclick="textLine_under()">_</button>
+<button id="middleLine" onclick="textLine_middle()">―</button> <!-- lineThrough -->
+<button id="overLine" onclick="textLine_over()">￣</button>
+<br>
+<br>
+<label>[ 부분적용 불가능 ]</label>
+<br>
+<span>배경색</span><input type="color" id="backgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
 <button id="left" onclick="textAlign_left()">left</button>
 <button id="center" onclick="textAlign_center()">center</button>
 <button id="right" onclick="textAlign_right()">right</button>
 <br>
-<button id="underLine" onclick="textLine_under()">_</button>
-<button id="middleLine" onclick="textLine_middle()">―</button>
-<button id="overLine" onclick="textLine_over()">￣</button>
-
+<span>줄간격</span><input type="number" id="lineHeight" value="1"/>
+<span>padding</span><input type="number" id="padding" value="0" min="0"/> <!-- 음수값도 되긴 하넹.. -->
+<br>
+<button id="pattern" onclick="loadPattern()">패턴 입히기</button>
+<br>
+<span>그림자 : </span>
 
 <script>
 
@@ -57,51 +68,17 @@
   var canvas = new fabric.Canvas('canvas');
 
   // textbox, IText
-  var text = new fabric.IText('가나다라마바사\nABCdefg\n123', {
+  var text = new fabric.IText('가나다라마바사\nMARPPLE\n123450\npattern text', {
     fontSize: 50,
-    left: 50,
-    top: 0,
+    left: 100,
+    top: 200,
     lineHeight: 1,
     originX: 'left',
-    fontFamily: 'Helvetica',
+    fontFamily: 'Helvetica',   // "Cursive"
     fontWeight: 'bold',
     statefullCache: true
   });
   canvas.add(text);
-
-
-
-
-
-  // 텍스트 타입
-//  text.setFontStyle("italic"); canvas.renderAll();
-//  text.setFontStyle("normal"); canvas.renderAll();
-//  text.setFontStyle("oblique"); canvas.renderAll();
-
-  //두께
-//  text.fontWeight("normal"); canvas.renderAll();
-//  text.fontWeight("bold"); canvas.renderAll();
-
-  // 글씨체
-//  text.set({ fontFamily: "Helvetica" }); canvas.renderAll();
-//  text.set({ fontFamily: "Cursive" }); canvas.renderAll();
-//  text.set({ fontFamily: "Helvetica" }); canvas.renderAll();
-
-
-  // 정렬
-//  text.textAlign = "right"; canvas.renderAll();
-//  text
-
-
-  // line
-//  "", "underline", "overline" or "line-through".
-//  text.textDecoration = "underline"; canvas.renderAll();
-//  text.textDecoration = "overline"; canvas.renderAll();
-//  text.textDecoration = "line-through"; canvas.renderAll();
-//  text.textDecoration = ""; canvas.renderAll();
-
-
-
 
 
 
@@ -114,7 +91,7 @@
       top: 250,
       lineHeight: 1,
       originX: 'left',
-      fontFamily: 'Helvetica',
+      fontFamily: 'Helvetica',   // "Cursive"
       fontWeight: 'bold',
       statefullCache: true
     });
@@ -124,46 +101,124 @@
 
 
 
+  /* 부분적용 가능 */
+
+
   // 색깔
-  var textColor = document.getElementById("textColor");
-  textColor.addEventListener("input", function() {
-    canvas.getActiveObject().setColor(textColor.value);
+//  var textColor = document.getElementById("textColor");
+//  textColor.addEventListener("input", function() {
+//    canvas.getActiveObject().setColor(textColor.value);
+//    canvas.renderAll();
+//  });
+  $('#textColor').on('input', function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ fill: val }).setCoords();
+    else active.setColor(val).setCoords(); // active.fill = val;
     canvas.renderAll();
   });
 
-  var backgroundColor = document.getElementById('backgroundColor');
-  backgroundColor.addEventListener("input", function() {
-//    text.setBackgroundColor(backgroundColor.value);
-    canvas.getActiveObject().backgroundColor = backgroundColor.value;
+  // 글씨배경 색깔
+//  var textBackgroundColor = document.getElementById('textBackgroundColor');
+//  textBackgroundColor.addEventListener("input", function() {
+//    canvas.getActiveObject().textBackgroundColor = textBackgroundColor.value;
+//    canvas.renderAll();
+//  });
+  $('#textBackgroundColor').on('input', function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ textBackgroundColor: val }).setCoords();
+    else active.setTextBackgroundColor(val).setCoords(); // active.textBackgroundColor = val;
     canvas.renderAll();
   });
 
-  var textBackgroundColor = document.getElementById('textBackgroundColor');
-  textBackgroundColor.addEventListener("input", function() {
-    canvas.getActiveObject().textBackgroundColor = textBackgroundColor.value;
+  // 글자 크기
+  $('#textSize').on('input', function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ fontSize: val }).setCoords();
+    else active.setFontSize(val).setCoords(); // active.fontSize = val;
     canvas.renderAll();
   });
-
 
   // 글자 테두리 - 색깔
   $('#textStrokeColor').on('input', function(e) {
-    console.log("글자 테두리 색깔 변경!");
-    canvas.getActiveObject().setStroke(e.target.value);
-//    canvas.getActiveObject()._setStrokeStyles(e.target.value);
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ stroke: val }).setCoords();
+    else active.setStroke(val).setCoords(); // active.stroke = val; //_setStrokeStyles
     canvas.renderAll();
   });
 
   // 글자 테두리 - 두께
   $('#textStrokeWidth').on('input', function(e) {
-    console.log("글자 테두리 두께 변경!");
-    canvas.getActiveObject().setStrokeWidth(e.target.value);
-//    canvas.getActiveObject()._setStrokeStyles(e.target.value);
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ strokeWidth: val }).setCoords();
+    else active.setStrokeWidth(val).setCoords(); // active.strokeWidth = val; //_setStrokeStyles
     canvas.renderAll();
   });
 
 
 
-  // 정렬
+  // 스타일
+//  function fontWeight_bold() {
+//    var text = canvas.getActiveObject();
+//    text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+//    canvas.renderAll();
+//  }
+  function fontWeight_bold() {
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ fontWeight: (text.getSelectionStyles().fontWeight == "bold") ? "normal" : "bold" }).setCoords();
+    else text.setFontWeight((text.fontWeight == "bold") ? "normal" : "bold").setCoords(); // text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+    canvas.renderAll();
+  }
+
+  function fontStyle_italic() { //"oblique", "normal", ""
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ fontStyle: (text.getSelectionStyles().fontWeight == "italic") ? "normal" : "italic" }).setCoords();
+    else text.setFontStyle((text.fontStyle == "italic") ? "normal" : "italic").setCoords(); // text.fontStyle = (text.fontStyle == "italic") ? "normal" : "italic"; //_setStrokeStyles
+    canvas.renderAll();
+  } // fontStyle에도 bold가 있나??
+
+
+    // 라인
+  function textLine_under() {
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "underline") ? "" : "underline" }).setCoords();
+    else text.setTextDecoration((text.textDecoration == "underline") ? "" : "underline").setCoords();
+    canvas.renderAll();
+  }
+  function textLine_middle() {
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "line-through") ? "" : "line-through" }).setCoords();
+    else text.setTextDecoration((text.textDecoration == "line-through") ? "" : "line-through").setCoords();
+    canvas.renderAll();
+  }
+  function textLine_over() {
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "overline") ? "" : "overline" }).setCoords();
+    else text.setTextDecoration((text.textDecoration == "overline") ? "" : "overline").setCoords();
+    canvas.renderAll();
+  }
+
+
+
+
+  /* 부분적용 불가능 */
+
+  // 전체배경 색깔
+    var backgroundColor = document.getElementById('backgroundColor');
+    backgroundColor.addEventListener("input", function() {
+  //    text.setBackgroundColor(backgroundColor.value);
+      canvas.getActiveObject().backgroundColor = backgroundColor.value; // 없애려면 = ""
+      canvas.renderAll();
+    });
+//  $("#backgroundColor").on('input', function(e) {
+//    var val = e.target.value, active = canvas.getActiveObject();
+//    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ backgroundColor: val }).setCoords();
+//    else active.setBackgroundColor(val).setCoords(); // active.backgroundColor = val;
+//    canvas.renderAll();
+//  });
+
+
+
+  // 정렬 - 부분적용 안됨
   function textAlign_left() {
     canvas.getActiveObject().textAlign = "left"; canvas.renderAll();
   }
@@ -174,40 +229,73 @@
     canvas.getActiveObject().textAlign = "right"; canvas.renderAll();
   }
 
-  // 스타일
-  function fontWeight_bold() {
-    var text = canvas.getActiveObject();
-    text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
-    canvas.renderAll();
-  }
-  function fontStyle_italic() {
-    var text = canvas.getActiveObject();
-    text.setFontStyle((text.fontStyle == "italic") ? "" : "italic");
-    canvas.renderAll();
-  }
 
-  // 라인
-  function textLine_under() {
-    var text = canvas.getActiveObject();
-    text.textDecoration = (text.textDecoration == "underline") ? "" : "underline";
+  $('#lineHeight').on('input', function(e) {
+    text.lineHeight = e.target.value;
     canvas.renderAll();
-  }
-  function textLine_middle() {
-    var text = canvas.getActiveObject();
-    text.textDecoration = (text.textDecoration == "line-through") ? "" : "line-through";
-    canvas.renderAll();
-  }
-  function textLine_over() {
-    var text = canvas.getActiveObject();
-    text.textDecoration = (text.textDecoration == "overline") ? "" : "overline";
-    canvas.renderAll();
-  }
+  });
 
 
   $('#padding').on('input', function(e) { // 근데 배경은 안채워짐 ㅜㅜ 뭐야이게
     text.padding = e.target.value;
     canvas.renderAll();
   });
+
+
+  function loadPattern() {
+    fabric.util.loadImage('image/pattern.png', function(img) {
+      canvas.getActiveObject().fill = new fabric.Pattern({
+        source: img,
+        repeat: 'repeat' // 'no-repeat', 'repeat-x', 'repeat-y'
+      });
+      canvas.renderAll();
+    });
+  }
+
+
+
+
+
+///////////////////////////////////////////////////////////// 절취선 ///////////////////////////////////////////////////////////
+//  object.setSelectionStyles && object.isEditing
+
+  function setStyle(object, styleName, value) {
+    if (object.setSelectionStyles && object.isEditing) {
+      var style = { };
+      style[styleName] = value;
+      object.setSelectionStyles(style).setCoords();
+    }
+    else {
+      object[styleName] = value;
+    }
+    canvas.renderAll();
+  };
+
+
+  //text.setSelectionStyles({textBackgroundColor: "black"}).setCoords(); canvas.renderAll();
+
+
+//  var o = { color: "rgba(1,0,0,0.3)", offsetX: 5, offsetY: 5}
+
+  text.setShadow({
+    color: "rgba(255,0,0,0.3)",
+    blur: 0, // 주로 0 ~ 20
+    offsetX: 5, // 주로 0.00001 ? ~ 20
+    offsetY: 5
+  });
+
+  text.setShadow("3px 3px 0px rgba(255, 0, 0, 0.5)"); // offsetX, offsetY, blur, color
+  // 근데, shadow를 주는 방식은 어떻게 할 건지? - keynote 효과 참고!!!
+
+
+  canvas.renderAll();
+
+
+
+
+//  이렇게 해도 글자 간에 textBackgroundColor 경계 생김 ㅜㅜ
+ // text.set({styles: {0:{0:{textBackgroundColor: 'red'}, 1:{textBackgroundColor: 'red'}, 2:{textBackgroundColor: 'red'}, 3:{textBackgroundColor: 'red'}}}})
+// 그리고 기존에꺼 사라짐!!
 
 
 

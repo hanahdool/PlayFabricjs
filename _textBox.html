@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+
+<canvas id="canvas" width="800" height="600" style="border: 1px solid black"></canvas>
+
+<script>
+
+  var canvas = window._canvas = new fabric.Canvas('canvas');
+
+  var text = 'Left Aligned: Lorem ipsum ndolor sit amet.';
+
+  var styles = [[]];
+
+  styles[0][15] = {fill: 'rgb(255,0,0)'};
+
+  var a = new fabric.Textbox(text, {
+    styles: styles,
+    width: 100,
+    top: 50,
+    left: 20,
+    fontSize: 16
+  });
+
+  canvas.add(a);
+
+  document.getElementById('resize').onclick = function() {
+    a.width = 150;
+    canvas.renderAll();
+  };
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+
+<canvas id="canvas" width="800" height="600" style="border: 1px solid black"></canvas>
+
+<script>
+
+  var ctx = document.getElementById('canvas').getContext('2d');
+
+  var r = 99;
+  var space = Math.PI / 12;
+
+  ctx.beginPath();
+  ctx.arc(150, 150, r, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.fillStyle = "#F00";
+//  ctx.fill(); // 원 그리기
+
+  ctx.font = "bold 30px Courier";
+  textCircle("Half circle Text",150,150,r,space,1);
+  textCircle("Half circle Text",150,150,r,space);
+
+  function textCircle(text,x,y,radius,space,top){
+    space = space || 0;
+    var numRadsPerLetter = (Math.PI - space * 2) / text.length;
+    ctx.save();
+    ctx.translate(x,y);
+    var k = (top) ? 1 : -1;
+    ctx.rotate(-k * ((Math.PI - numRadsPerLetter) / 2 - space));
+    for(var i=0;i<text.length;i++){
+      ctx.save();
+      ctx.rotate(k*i*(numRadsPerLetter));
+      ctx.textAlign = "center";
+      ctx.textBaseline = (!top) ? "top" : "bottom";
+      ctx.fillText(text[i],0,-k*(radius));
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+
+
+
+</script>
+
+</body>
+</html>
