@@ -93,7 +93,7 @@
       originX: 'left',
       fontFamily: 'Helvetica',   // "Cursive"
       fontWeight: 'bold',
-      statefullCache: true
+      statefullCache: true,
     });
     text.globalCompositeOperation = "source-atop";
     canvas.add(text);
@@ -101,7 +101,9 @@
 
 
 
-  /* 부분적용 가능 */
+  /* 부분적용 가능
+  * 참고 https://jsfiddle.net/4nzygs8a/
+  * */
 
 
   // 색깔
@@ -257,8 +259,9 @@
 
 
 ///////////////////////////////////////////////////////////// 절취선 ///////////////////////////////////////////////////////////
-//  object.setSelectionStyles && object.isEditing
 
+  //  object.setSelectionStyles && object.isEditing
+  // 함수 합치기
   function setStyle(object, styleName, value) {
     if (object.setSelectionStyles && object.isEditing) {
       var style = { };
@@ -272,9 +275,9 @@
   };
 
 
-  //text.setSelectionStyles({textBackgroundColor: "black"}).setCoords(); canvas.renderAll();
 
 
+  // 그림자 적용 함수 - 어짜피 텍스트 뿐 아니라 모든 객체에 적용 할 것
 //  var o = { color: "rgba(1,0,0,0.3)", offsetX: 5, offsetY: 5}
 
   text.setShadow({
@@ -287,9 +290,7 @@
   text.setShadow("3px 3px 0px rgba(255, 0, 0, 0.5)"); // offsetX, offsetY, blur, color
   // 근데, shadow를 주는 방식은 어떻게 할 건지? - keynote 효과 참고!!!
 
-
   canvas.renderAll();
-
 
 
 
