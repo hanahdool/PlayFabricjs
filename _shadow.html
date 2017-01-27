@@ -14,12 +14,38 @@
   <!--<input type="color" id="textColor">-->
 <!--</div>-->
 
-<canvas id="canvas" width="800" height="500" style="border: 1px solid black"></canvas>
-
+<canvas id="canvas" width="800" height=400" style="border: 1px solid black"></canvas>
 
 <br>
-<b>테두리</b>
-<br>
+크기 조절
+<hr>
+<div id="fill">
+  <b>채우기</b>
+  <br>
+  색깔 <input class="color" type="color"/> <button id="no_fill_btn">채우기 없음</button>
+  <br>
+  불투명도 <input class="opacity_range" type="range" min="0" max="100" value="100"/><input class="opacity_number" type="number" value="100"/>
+</div>
+<hr>
+
+<div id="stroke">
+  <b>테두리</b>
+  <br>
+  스타일
+  <select id="stroke_style">
+    <option value="0">선0</option>
+    <option value="1">선1</option>
+    <option value="2">선2</option>
+    <option value=3>선3</option>
+    <option value=4>선4</option>
+    <option value=5>선5</option>
+  </select>
+
+  <br>
+  두께 <input class="range" id="width_range" type="range" min="0" max="100" value="3"/><input class="number" id="width_number" type="number" value="3"/>
+  <br>
+  색깔 <input class="color" type="color"/>
+</div>
 <hr>
 
 
@@ -39,14 +65,6 @@
 
 <hr>
 
-<div id="opacity">
-  <b>불투명도</b>
-  <br>
-  <input class="range" type="range" min="0" max="100" value="100"/><input class="number" type="number" value="100"/>
-</div>
-
-<hr>
-
 <div id="mirror">
   <del><b>반사</b></del>
   <br>
@@ -59,10 +77,24 @@
 
 
   var canvas = new fabric.Canvas('canvas');
+//  canvas.setBackgroundColor("yellow");
 
-  canvas.setBackgroundColor("yellow");
+  var rect = new fabric.Rect({
+    width: 100,
+    height: 100,
+    top: 100,
+    left: 100,
+    fill:'rgba(150, 150, 255, 1)',
+    // opacity: 1, // default
 
-  var rect = new fabric.Rect({ width: 100, height: 100, top: 100, left: 100, fill:'rgba(150, 150, 255, 1)' });
+
+    stroke: "rgb(0,0,0)",
+    strokeWidth: 3,
+//    strokeLineCap: "square", // "buff" "round" "square"  이 두개는 뭔지 모르겠음
+//    strokeLineCap: "square", // "buff" "round" "square"  이 두개는 뭔지 모르겠음a
+//    strokeLineJoin: "bevil", // "bevil" "round" "miter"
+
+  });
 
   rect.setShadow({
     color: "rgba(0,0,0,0.5)", // 그림자의 불투명도는 적당히 fix 시켜두기? 바꿀때마다.. fix가 되나? - fix 안됨 1로됨 ㅜㅜ// 불투명도 0 ~ 100
@@ -95,14 +127,21 @@
   canvas.setActiveObject(rect);
 
 
-  /* shadow 이벤트 */
+  /* 이벤트 */
 
+  // 채우기
+  synchronization('#fill .opacity_range', '#fill .opacity_number');
+
+  // 테두리
+  synchronization('#stroke #width_range', '#stroke #width_number');
+
+  // 그림자
   synchronization('#shadow #blur_range', '#shadow #blur_number');
   synchronization('#shadow #offsetX_range', '#shadow #offsetX_number');
   synchronization('#shadow #offsetY_range', '#shadow #offsetY_number');
   synchronization('#shadow #opacity_range', '#shadow #opacity_number');
 
-  synchronization('#opacity .range', '#opacity .number');
+  // 반사
   synchronization('#mirror .range', '#mirror .number');
 
   function synchronization(a, b) {
@@ -114,6 +153,51 @@
     });
   }
 
+
+
+  /* 채우기 */
+  $('#fill .opacity_range, #fill .opacity_number').on("input change", function(e) {
+    canvas.getActiveObject().opacity = (e.target.value) * 0.01;
+    canvas.renderAll();
+  });
+
+  $('#fill .color').on("input change", function(e) {
+    canvas.getActiveObject().set('fill', e.target.value);
+    canvas.renderAll();
+  });
+
+//  no_fill_btn
+  $('#fill #no_fill_btn').on("click", function(e) {
+    canvas.getActiveObject().set('fill', "rgba(0,0,0,0)");
+    canvas.renderAll();
+  });
+
+
+  /* 테두리 */
+  $('#stroke #width_range, #stroke #width_number').on("input change", function(e) {
+    canvas.getActiveObject().strokeWidth = parseInt(e.target.value);
+    canvas.renderAll();
+  });
+
+  $('#stroke .color').on("input change", function(e) {
+    canvas.getActiveObject().set('stroke', e.target.value);
+    canvas.renderAll();
+  });
+
+
+  var stroke_dash_ary = [
+    null,
+    [ 5, 10 ],
+    [ 10, 5 ],
+    [ 2, 2 ],
+    [ 5, 20, 20, 5 ],
+    [ 50, 2 ]
+  ];
+
+  $('#stroke #stroke_style').on("change", function(e) {
+    canvas.getActiveObject().set("strokeDashArray", stroke_dash_ary[ e.target.value ]);
+    canvas.renderAll();
+  });
 
 
   /* 그림자 */
@@ -141,13 +225,6 @@
 
   $('#shadow #color').on("input change", function(e) {
     canvas.getActiveObject().shadow.color = e.target.value;
-    canvas.renderAll();
-  });
-
-
-  /* 불투명도 */
-  $('#opacity .range, #opacity .number').on("input change", function(e) {
-    canvas.getActiveObject().opacity = (e.target.value) * 0.01;
     canvas.renderAll();
   });
 
