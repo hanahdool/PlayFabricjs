@@ -51,14 +51,14 @@ Color : <input type="color"  value="blue" id="fill" /><br>
         canvas.renderAll();
       }
     });
-    $('#reverse').click(function(){
+    $('#reverse').click(function() {
       var obj = canvas.getActiveObject();
       if(obj){
         obj.set('reverse',$(this).is(':checked'));
         canvas.renderAll();
       }
     });
-    $('#radius, #spacing, #fill').change(function(){
+    $('#radius, #spacing, #fill').change(function() {
       var obj = canvas.getActiveObject();
       if(obj){
         var angle = obj.get('angle');
@@ -68,7 +68,7 @@ Color : <input type="color"  value="blue" id="fill" /><br>
       }
       canvas.renderAll();
     });
-    $('#angle').change(function(){
+    $('#angle').change(function() {
       var obj = canvas.getActiveObject();
       if(obj){
         obj.set($(this).attr('id'),$(this).val());

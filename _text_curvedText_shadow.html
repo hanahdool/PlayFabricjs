@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src = "js/fabric.js"></script>
+  <script src = "js/fabric.curvedText.js"></script>
+  <script src = "js/underscore.js"></script>
+  <script src = "js/jquery.js"></script>
+</head>
+<body style="position:absolute">
+
+<!--<div id="editor" ng-show="canvas.getActiveObject()" class="ng-hide">-->
+  <!--<label style="margin-left:10px">Color : </label>-->
+  <!--<input type="color" id="textColor">-->
+<!--</div>-->
+
+<div style="display: inline-block; border: 1px solid black" >
+  <canvas id="canvas" width="800" height="800" style="border: 1px solid black"></canvas>
+</div>
+
+
+<div style="display: inline-block; border: 1px solid black; vertical-align: top">
+
+  <!-- _shadow.html -->
+<div id="basic">
+
+
+  <div id="alignment">
+    <label><b>v 정렬</b></label>
+    <br>
+    앵글 회전, 크기x 너비 , 크기y 높이, (v비율유지), 위치top, 위치left
+    뒤집기?
+    <br>
+    뒤로, 앞으로, 맨 뒤로, 맨 앞으로
+
+  </div>
+  <hr>
+  <div id="fill">
+    <label><b>v 채우기</b></label>
+    <br>
+    색깔 <input class="color" type="color"/> <button id="no_fill_btn">채우기 없음</button>
+    <br>
+    불투명도 <input class="opacity_range" type="range" min="0" max="100" value="100"/><input class="opacity_number" type="number" value="100"/>
+  </div>
+  <hr>
+
+  <div id="stroke" class="option">
+    <label><input type ="checkbox" class="checkbox"><b>테두리</b></label>
+    <div class="settings" hidden>
+      <br>
+      스타일
+      <select class="style" id="stroke_style">
+        <option value="0">선0</option>
+        <option value="1">선1</option>
+        <option value="2">선2</option>
+        <option value=3>선3</option>
+        <option value=4>선4</option>
+        <option value=5>선5</option>
+      </select>
+      <br>
+      두께 <input class="range" id="width_range" type="range" min="0" max="100" value="3"/><input class="number" id="width_number" type="number" value="3"/>
+      <br>
+      색깔 <input class="color" type="color"/>
+    </div>
+  </div>
+  <hr>
+
+
+  <div id="shadow" class="option">
+    <label><input type ="checkbox" class="checkbox"><b>그림자</b></label>
+    <div class="settings" hidden>
+      <br>
+      흐림(번짐 효과) <input id="blur_range" type="range" min="0" max="100" value="10"/><input id="blur_number" type="number" value="10"/>
+      <br>
+      오프셋X <input id="offsetX_range" type="range" min="-50" max="50" value="10"/><input id="offsetX_number" type="number" value="10"/>
+      <br>
+      오프셋Y <input id="offsetY_range" type="range" min="-50" max="50" value="10"/><input id="offsetY_number" type="number" value="10"/>
+      <br>
+      <del>불투명도</del> <input id="opacity_range" type="range" min="0" max="100" value="50"/><input id="opacity_number" type="number" value="50"/>
+      <br>
+      그림자 색깔 <input class="color" id="color" type="color"/> <!-- 직접 입력할 수도 있게? -->
+
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="mirror" class="option">
+    <label><input type ="checkbox" class="checkbox"><del><b>반사</b></del></label>
+    <div class="settings" hidden>
+      <br>
+      <input class="range" type="range" min="0" max="100" value="50"/><input class="number" type="number" value="50"/>
+    </div>
+  </div>
+
+
+
+</div>
+
+  <hr>
+  <hr>
+  <!-- ------------------------------------------------------------------------------------------------------------ -->
+
+  <label><b>텍스트</b></label>
+  <br>
+  <label>[ 부분적용 가능 ]</label>
+  <br>
+  <span>글씨색</span><input type="color" id="textColor"> <!-- value="#ff0000" 초기 색깔 -->
+  <span>글씨배경색</span><input type="color" id="textBackgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
+  <span>글씨크기</span><input type="number" id="textSize" value=50> <!-- value="#ff0000" 초기 색깔 -->
+  <!--<button>글씨체</button>-->
+
+  <br>
+  <span>글자 테두리 : </span>
+  <span>색깔</span><input type="color" id="textStrokeColor">
+  <span>두께</span><input type="number" id="textStrokeWidth" value="1">
+
+  <br>
+  <button id="bold" onclick="fontWeight_bold()">B</button>
+  <button id="italic" onclick="fontStyle_italic()">I</button>
+  <br>
+  <button id="underLine" onclick="textLine_under()">_</button>
+  <button id="middleLine" onclick="textLine_middle()">―</button> <!-- lineThrough -->
+  <button id="overLine" onclick="textLine_over()">￣</button>
+  <br>
+  <br>
+  <label>[ 부분적용 불가능 ]</label>
+  <br>
+  <span>배경색</span><input type="color" id="backgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
+  <button id="left" onclick="textAlign_left()">left</button>
+  <button id="center" onclick="textAlign_center()">center</button>
+  <button id="right" onclick="textAlign_right()">right</button>
+  <br>
+  <span>줄간격</span><input type="number" id="lineHeight" value="1"/>
+  <span>padding</span><input type="number" id="padding" value="0" min="0"/> <!-- 음수값도 되긴 하넹.. -->
+  <br>
+  <button id="pattern" onclick="loadPattern()">패턴 입히기</button>
+  <br>
+
+  <hr>
+  <label><b>워드아트</b></label>
+  <br>
+
+  <input type="text" id="text" value="CurvedText" /><br>
+  Reverse : <input type="checkbox" name="reverse" id="reverse" /><br>
+  Radius : <input type="range"  min="0" max="400" value="50" id="radius" /><br>
+  Spacing : <input type="range"  min="5" max="40" value="20" id="spacing" /><br>
+  Angle : 0 <input type="range"  min="0" max="360" value="0" id="angle" /> 360 <br>  <!-- 공통 -->
+  <!--Color : <input type="color"  value="blue" id="fill" /><br>-->
+
+  <br>
+  <button id="convert">Convert Text/Curved</button>
+
+
+  <hr>
+  v기타
+  <br>
+  그룹 묶기, 풀기
+
+
+
+
+
+</div>
+
+<br>
+<b>도형 추가</b>
+<br>
+<button id="add_rect"> 사각형 추가 </button>
+<button id="add_triangle"> 삼각형 추가 </button>
+<button id="add_circle"> 원 추가 </button>
+
+
+<script>
+
+
+  // @ Done
+  // 글씨 색 바꾸기
+  // 글씨체 바꾸기
+  // 정렬
+
+  // @ To do
+  // 전체 말고 부분적으로 속성 적용
+
+
+
+  var canvas = new fabric.Canvas('canvas');
+  canvas.preserveObjectStacking = true;
+
+
+  // textbox, IText
+  var text = new fabric.IText('가나다라마바사\nMARPPLE\n123450\npattern text', {
+    fontSize: 50,
+    left: 100,
+    top: 100,
+    lineHeight: 1,
+    originX: 'left',
+    fontFamily: 'Helvetica',   // "Cursive"
+    fontWeight: 'bold',
+    statefullCache: true
+  });
+  canvas.add(text);
+
+
+
+
+  // 텍스트 추가
+  function createText() {
+    var text = new fabric.IText('글씨를 입력해주세요.', {
+      fontSize: 50,
+      left: 250,
+      top: 150,
+      lineHeight: 1,
+      originX: 'left',
+      fontFamily: 'Helvetica',   // "Cursive"
+      fontWeight: 'bold',
+      statefullCache: true,
+    });
+    text.globalCompositeOperation = "source-atop";
+    canvas.add(text);
+  }
+
+
+
+  /* 부분적용 가능
+  * 참고 https://jsfiddle.net/4nzygs8a/
+  * */
+
+
+  // 색깔
+//  var textColor = document.getElementById("textColor");
+//  textColor.addEventListener("input", function() {
+//    canvas.getActiveObject().setColor(textColor.value);
+//    canvas.renderAll();
+//  });
+  $('#textColor').on('input', function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ fill: val }).setCoords();
+    else active.setColor(val).setCoords(); // active.fill = val;
+    canvas.renderAll();
+  });
+
+  // 글씨배경 색깔
+//  var textBackgroundColor = document.getElementById('textBackgroundColor');
+//  textBackgroundColor.addEventListener("input", function() {
+//    canvas.getActiveObject().textBackgroundColor = textBackgroundColor.value;
+//    canvas.renderAll();
+//  });
+  $('#textBackgroundColor').on('input', function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ textBackgroundColor: val }).setCoords();
+    else active.setTextBackgroundColor(val).setCoords(); // active.textBackgroundColor = val;
+    canvas.renderAll();
+  });
+
+  // 글자 크기
+  $('#textSize').on('input', function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ fontSize: val }).setCoords();
+    else active.setFontSize(val).setCoords(); // active.fontSize = val;
+    canvas.renderAll();
+  });
+
+  // 글자 테두리 - 색깔
+  $('#textStrokeColor').on('input', function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ stroke: val }).setCoords();
+    else active.setStroke(val).setCoords(); // active.stroke = val; //_setStrokeStyles
+    canvas.renderAll();
+  });
+
+  // 글자 테두리 - 두께
+  $('#textStrokeWidth').on('input', function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    console.log(e.target.value);
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ strokeWidth: val }).setCoords();
+    else active.setStrokeWidth(val).setCoords(); // active.strokeWidth = val; //_setStrokeStyles
+    canvas.renderAll();
+  });
+
+
+
+  // 스타일
+//  function fontWeight_bold() {
+//    var text = canvas.getActiveObject();
+//    text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+//    canvas.renderAll();
+//  }
+  function fontWeight_bold() {
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ fontWeight: (text.getSelectionStyles().fontWeight == "bold") ? "normal" : "bold" }).setCoords();
+    else text.setFontWeight((text.fontWeight == "bold") ? "normal" : "bold").setCoords(); // text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+    canvas.renderAll();
+  }
+
+  function fontStyle_italic() { //"oblique", "normal", ""
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ fontStyle: (text.getSelectionStyles().fontWeight == "italic") ? "normal" : "italic" }).setCoords();
+    else text.setFontStyle((text.fontStyle == "italic") ? "normal" : "italic").setCoords(); // text.fontStyle = (text.fontStyle == "italic") ? "normal" : "italic"; //_setStrokeStyles
+    canvas.renderAll();
+  } // fontStyle에도 bold가 있나??
+
+
+    // 라인
+  function textLine_under() {
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "underline") ? "" : "underline" }).setCoords();
+    else text.setTextDecoration((text.textDecoration == "underline") ? "" : "underline").setCoords();
+    canvas.renderAll();
+  }
+  function textLine_middle() {
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "line-through") ? "" : "line-through" }).setCoords();
+    else text.setTextDecoration((text.textDecoration == "line-through") ? "" : "line-through").setCoords();
+    canvas.renderAll();
+  }
+  function textLine_over() {
+    var text = canvas.getActiveObject();
+    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "overline") ? "" : "overline" }).setCoords();
+    else text.setTextDecoration((text.textDecoration == "overline") ? "" : "overline").setCoords();
+    canvas.renderAll();
+  }
+
+
+
+
+  /* 부분적용 불가능 */
+
+  // 전체배경 색깔
+    var backgroundColor = document.getElementById('backgroundColor');
+    backgroundColor.addEventListener("input", function() {
+  //    text.setBackgroundColor(backgroundColor.value);
+      canvas.getActiveObject().backgroundColor = backgroundColor.value; // 없애려면 = ""
+      canvas.renderAll();
+    });
+//  $("#backgroundColor").on('input', function(e) {
+//    var val = e.target.value, active = canvas.getActiveObject();
+//    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ backgroundColor: val }).setCoords();
+//    else active.setBackgroundColor(val).setCoords(); // active.backgroundColor = val;
+//    canvas.renderAll();
+//  });
+
+
+
+  // 정렬 - 부분적용 안됨
+  function textAlign_left() {
+//    canvas.getActiveObject().textAlign = "left"; canvas.renderAll();
+    canvas.getActiveObject().setTextAlign("left"); canvas.renderAll();
+  }
+  function textAlign_center() {
+//    canvas.getActiveObject().textAlign = "center"; canvas.renderAll();
+    canvas.getActiveObject().setTextAlign("center"); canvas.renderAll();
+  }
+  function textAlign_right() {
+//    canvas.getActiveObject().textAlign = "right"; canvas.renderAll();
+    canvas.getActiveObject().setTextAlign("right"); canvas.renderAll();
+  }
+
+
+  $('#lineHeight').on('input', function(e) {
+    canvas.getActiveObject().lineHeight = e.target.value;
+    canvas.renderAll();
+  });
+
+
+  $('#padding').on('input', function(e) { // 근데 배경은 안채워짐 ㅜㅜ 뭐야이게
+    canvas.getActiveObject().padding = e.target.value;
+    canvas.renderAll();
+  });
+
+
+  function loadPattern() {
+    fabric.util.loadImage('image/pattern.png', function(img) {
+      canvas.getActiveObject().fill = new fabric.Pattern({
+        source: img,
+        repeat: 'repeat' // 'no-repeat', 'repeat-x', 'repeat-y'
+      });
+      canvas.renderAll();
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  var CurvedText = new fabric.CurvedText('aaaaaaaaa',{
+//        width: 100,
+//        height: 20,
+    left: 400,
+    top: 350,
+    textAlign: 'center',
+    fill: '#0000FF',
+    radius: 200,
+    fontSize: 50,
+    spacing: 20,
+    angle: 0
+//        fontFamily: 'Arial'
+  });
+  canvas.add(CurvedText).renderAll();
+  canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
+  $('#text').keyup(function(){
+    var obj = canvas.getActiveObject();
+    if(obj){
+      obj.setText(this.value);
+      canvas.renderAll();
+    }
+  });
+  $('#reverse').click(function(){
+    var obj = canvas.getActiveObject();
+    if(obj){
+      obj.set('reverse',$(this).is(':checked'));
+      canvas.renderAll();
+    }
+  });
+
+//  $('#radius, #spacing, #fill').change(function(){
+//    var obj = canvas.getActiveObject();
+//    if(obj){
+//      var angle = obj.get('angle');
+//      obj.set('angle', 0);
+//      obj.set($(this).attr('id'),$(this).val());
+//      obj.set('angle', angle);
+//    }
+//    canvas.renderAll();
+//  });
+
+  $('#radius').on('input', function(e) {
+    canvas.getActiveObject().setRadius(e.target.value);
+    canvas.renderAll();
+  });
+
+  $('#spacing').on('input', function(e) {
+    canvas.getActiveObject().setSpacing(e.target.value);
+    canvas.renderAll();
+  });
+
+  $('#angle').on('input', function(e) {
+    canvas.getActiveObject().setAngle(e.target.value); // $(this).val()
+    canvas.renderAll();
+  });
+
+  //  $('#fill').change(function(){ // 중복
+//    var obj = canvas.getActiveObject();
+//    if(obj){
+//      obj.setFill($(this).val());
+//    }
+//    canvas.renderAll();
+//  });
+
+  $('#convert').click(function(){
+    var props = {};
+    var obj = canvas.getActiveObject();
+    if (obj){
+      if(/curvedText/.test(obj.type)) {
+        default_text = obj.getText();
+        props = obj.toObject();
+        delete props['type'];
+        var textSample = new fabric.Text(default_text, props);
+      }else if(/text/.test(obj.type)) {
+        default_text = obj.getText();
+        props = obj.toObject();
+        delete props['type'];
+        props['textAlign'] = 'center';
+        props['radius'] = 50;
+        props['spacing'] = 20;
+        var textSample = new fabric.CurvedText(default_text, props);
+      }
+      canvas.remove(obj);
+      canvas.add(textSample).renderAll();
+      canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
+    }
+  });
+  //  });
+
+
+
+
+
+    canvas.on('selection:cleared', onDeSelected);
+    canvas.on('object:selected', onSelected);
+    canvas.on('selection:created', onSelected);
+  var obj;
+  function onSelected(){
+    console.log("on selected!");
+    obj = canvas.getActiveObject();
+    if (!obj) return;
+
+/*
+    $('#text').val(obj.getText());
+    $('#reverse').prop('checked', obj.get('reverse'));
+    $('#radius').val(obj.get('radius'));
+    $('#angle').val(obj.get('angle'));
+    $('#spacing').val(obj.get('spacing'));
+*/
+//    $('#fill').val(obj.getFill());
+  }
+  function onDeSelected(){ // 아무것도 안눌렸을 때
+    console.log("on deSelected!");
+
+    $('.option').attr("checked", false);
+    $('.settings').hide();
+    /*
+        $('#text').val('');
+        $('#reverse').prop('checked', false);
+        $('#angle').val(obj.get(0));
+        $('#radius').val(50);
+        $('#spacing').val(20);
+    */
+//    $('#fill').val('#0000FF');
+  }
+
+  var r = function() { canvas.renderAll(); };
+  var a = function() { return canvas.getActiveObject(); };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ///////////////////////////////////////////////////////////// 절취선 ///////////////////////////////////////////////////////////
+
+  //  object.setSelectionStyles && object.isEditing 함수 합치기
+  /*
+  function setStyle(object, styleName, value) {
+    if (object.setSelectionStyles && object.isEditing) {
+      var style = { };
+      style[styleName] = value;
+      object.setSelectionStyles(style).setCoords();
+    }
+    else {
+      object[styleName] = value;
+    }
+    canvas.renderAll();
+  };
+
+*/
+
+
+  // 그림자 적용 함수 - 어짜피 텍스트 뿐 아니라 모든 객체에 적용 할 것
+//  var o = { color: "rgba(1,0,0,0.3)", offsetX: 5, offsetY: 5}
+
+  text.setShadow({
+    color: "rgba(255,0,0,0.3)",
+    blur: 0, // 주로 0 ~ 20
+    offsetX: 5, // 주로 0.00001 ? ~ 20
+    offsetY: 5
+  });
+
+  text.setShadow("3px 3px 0px rgba(255, 0, 0, 0.5)"); // offsetX, offsetY, blur, color
+  // 근데, shadow를 주는 방식은 어떻게 할 건지? - keynote 효과 참고!!!
+
+  canvas.renderAll();
+
+
+
+//  이렇게 해도 글자 간에 textBackgroundColor 경계 생김 ㅜㅜ
+ // text.set({styles: {0:{0:{textBackgroundColor: 'red'}, 1:{textBackgroundColor: 'red'}, 2:{textBackgroundColor: 'red'}, 3:{textBackgroundColor: 'red'}}}})
+// 그리고 기존에꺼 사라짐!!
+
+
+
+  //////////////////////////////////////// shadow
+
+
+  var rect = new fabric.Rect({
+    width: 100,
+    height: 100,
+    top: 400,
+    left: 100,
+    fill:'rgba(150, 150, 255, 1)',
+    // opacity: 1, // default
+
+
+    stroke: "rgb(0,0,0)",
+    strokeWidth: 3,
+//    strokeLineCap: "square", // "buff" "round" "square"  이 두개는 뭔지 모르겠음
+//    strokeLineCap: "square", // "buff" "round" "square"  이 두개는 뭔지 모르겠음a
+//    strokeLineJoin: "bevil", // "bevil" "round" "miter"
+
+  });
+
+  rect.setShadow({
+    color: "rgba(0,0,0,0.5)", // 그림자의 불투명도는 적당히 fix 시켜두기? 바꿀때마다.. fix가 되나? - fix 안됨 1로됨 ㅜㅜ// 불투명도 0 ~ 100
+    blur: 10, // 0 ~ 100
+    offsetX: 10, // -50 ~ 50
+    offsetY: 10
+  });
+
+  /*
+   // 그림자 적용 함수 - 어짜피 텍스트 뿐 아니라 모든 객체에 적용 할 것
+   //  var o = { color: "rgba(1,0,0,0.3)", offsetX: 5, offsetY: 5}
+
+   text.setShadow({
+   color: "rgba(255,0,0,0.3)",
+   blur: 0, // 주로 0 ~ 20
+   offsetX: 5, // 주로 0.00001 ? ~ 20
+   offsetY: 5
+   });
+
+   text.setShadow("3px 3px 0px rgba(255, 0, 0, 0.5)"); // offsetX, offsetY, blur, color
+   // 근데, shadow를 주는 방식은 어떻게 할 건지? - keynote 효과 참고!!!
+
+   canvas.renderAll();
+
+
+   */
+
+
+  canvas.add(rect); // 이미지, 텍스트 다 적용해보기
+  canvas.setActiveObject(rect);
+
+
+  /* 이벤트 */
+
+  // 도형 추가
+  $('#add_rect').on('click', function() {
+    var rect = new fabric.Rect({
+      width: 100,
+      height: 100,
+      top: 100,
+      left: 100,
+      fill: 'rgba(100, 100, 255, 1)'
+    });
+    canvas.add(rect).setActiveObject(rect).renderAll();
+  });
+  $('#add_triangle').on('click', function() {
+    var triangle = new fabric.Triangle({
+      width: 120,
+      height: 100,
+      top: 100,
+      left: 100,
+      fill: 'rgba(255, 100, 100, 1)'
+    });
+    canvas.add(triangle).setActiveObject(triangle).renderAll();
+  });
+  $('#add_circle').on('click', function() {
+    var circle = new fabric.Circle({
+      top: 100,
+      left: 100,
+      radius: 70,
+      fill: 'rgba(255, 255, 100, 1)'
+    });
+    canvas.add(circle).setActiveObject(circle).renderAll();
+  });
+
+
+
+  // 채우기
+  synchronization('#fill .opacity_range', '#fill .opacity_number');
+
+  // 테두리
+  synchronization('#stroke #width_range', '#stroke #width_number');
+
+  // 그림자
+  synchronization('#shadow #blur_range', '#shadow #blur_number');
+  synchronization('#shadow #offsetX_range', '#shadow #offsetX_number');
+  synchronization('#shadow #offsetY_range', '#shadow #offsetY_number');
+  synchronization('#shadow #opacity_range', '#shadow #opacity_number');
+
+  // 반사
+  synchronization('#mirror .range', '#mirror .number');
+
+  function synchronization(a, b) {
+    $(a).on("input change", function(e) {
+      $(b).val(e.target.value);
+    });
+    $(b).on("input change", function(e) {
+      $(a).val(e.target.value);
+    });
+  }
+
+
+
+  /* 채우기 */
+  $('#fill .opacity_range, #fill .opacity_number').on("input change", function(e) {
+    canvas.getActiveObject().opacity = (e.target.value) * 0.01;
+    canvas.renderAll();
+  });
+
+  $('#fill .color').on("input change", function(e) {
+    canvas.getActiveObject().set('fill', e.target.value);
+    canvas.renderAll();
+  });
+
+  //  no_fill_btn
+  $('#fill #no_fill_btn').on("click", function(e) {
+    canvas.getActiveObject().set('fill', "rgba(0,0,0,0)");
+    canvas.renderAll();
+  });
+
+
+  /* 테두리 */
+  $('#stroke #width_range, #stroke #width_number').on("input change", function(e) {
+    canvas.getActiveObject().strokeWidth = parseInt(e.target.value);
+    canvas.renderAll();
+  });
+
+  $('#stroke .color').on("input change", function(e) {
+    canvas.getActiveObject().set('stroke', e.target.value);
+    canvas.renderAll();
+  });
+
+
+  var stroke_dash_ary = [
+    null,
+    [ 5, 10 ],
+    [ 10, 5 ],
+    [ 2, 2 ],
+    [ 5, 20, 20, 5 ],
+    [ 50, 2 ]
+  ];
+
+  $('#stroke #stroke_style').on("change", function(e) {
+    canvas.getActiveObject().set("strokeDashArray", stroke_dash_ary[ e.target.value ]);
+    canvas.renderAll();
+  });
+
+
+  /* 그림자 */
+  $('#shadow #blur_range, #shadow #blur_number').on("input change", function(e) {
+    canvas.getActiveObject().shadow.blur = e.target.value;
+    canvas.renderAll();
+  });
+  $('#shadow #offsetX_range, #shadow #offsetX_number').on("input change", function(e) {
+    canvas.getActiveObject().shadow.offsetX = e.target.value;
+    canvas.renderAll();
+  });
+  $('#shadow #offsetY_range, #shadow #offsetY_number').on("input change", function(e) {
+    canvas.getActiveObject().shadow.offsetY = e.target.value;
+    canvas.renderAll();
+  });
+
+  //  $('#shadow #opacity_range, #shadow #opacity_number').on("input change", function(e) {
+  ////    canvas.getActiveObject().shadow.color = e.target.value;
+  //    var active = canvas.getActiveObject();
+  ////    active.shadow.color = (active.shadow.color).replace(//);
+  //    // rgba()일 수도, #ffffff 일 수도..  다 변환해가면서 해야하나?ㅜㅜㅜㅜㅜㅜ 255 <-> 16진수 ㅜㅜㅜㅜ
+  //
+  //    canvas.renderAll();
+  //  });
+
+  $('#shadow #color').on("input change", function(e) {
+    canvas.getActiveObject().shadow.color = e.target.value;
+    canvas.renderAll();
+  });
+
+
+
+
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+  $('#stroke .checkbox').on('click', function(e) {
+    var active = canvas.getActiveObject();
+    if (e.target.checked) {
+      $('#stroke .settings').show();
+      var style = 0, width = 2, color = "#000000";
+      // 값 초기화 셋팅
+      $('#stroke .style').val(style);
+      $('#stroke .range').val(width); $('#stroke .number').val(width);
+      $('#stroke .color').val(color); // black
+      // 값 가져와서 도형 셋팅
+      active.setStrokeDashArray(style); //---------------------------------- 이 두개 워드아트는 안먹음 ㅜㅜ
+      active.setStrokeWidth(width); //active.set("strokeWidth",width);
+      active.setStroke(color);
+
+    } else {
+      $('#stroke .settings').hide();
+      // 도형 stroke 없애기
+      active.strokeWidth = 0;
+    }
+    canvas.renderAll();
+  });
+
+  $('#shadow .checkbox').on('click', function(e) {
+    var active = canvas.getActiveObject();
+    if (e.target.checked) {
+      $('#shadow .settings').show();
+      // 값 초기화 셋팅
+      var blur = 10, offsetX = 10, offsetY = 10, opacity = 100, color = "#333333";
+      $('#shadow #blur_range').val(blur); $('#shadow #blur_number').val(blur);
+      $('#shadow #offsetX_range').val(offsetX); $('#shadow #offsetX_number').val(offsetX);
+      $('#shadow #offsetY_range').val(offsetY); $('#shadow #offsetY_number').val(offsetY);
+      $('#shadow #opacity_range').val(opacity); $('#shadow #opacity_number').val(opacity);
+      $('#shadow .color').val(color);
+      // 값 가져와서 도형 셋팅
+      active.setShadow({
+        color: color,
+        blur: blur,
+        offsetX: offsetX,
+        offsetY: offsetY
+      });
+    } else {
+      $('#shadow .settings').hide();
+      active.setShadow();
+    }
+    canvas.renderAll();
+  });
+
+  $('#mirror .checkbox').on('click', function(e) {
+    if (e.target.checked) {
+      $('#mirror .settings').show();
+    } else {
+      $('#mirror .settings').hide();
+    }
+
+  });
+
+
+
+
+</script>
+
+</body>
+</html>
