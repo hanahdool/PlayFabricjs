@@ -15,7 +15,13 @@
 <!--</div>-->
 
 <canvas id="canvas" width="800" height=400" style="border: 1px solid black"></canvas>
-
+<br>
+<b>도형 추가</b>
+<br>
+<button id="add_rect"> 사각형 추가 </button>
+<button id="add_triangle"> 삼각형 추가 </button>
+<button id="add_circle"> 원 추가 </button>
+<hr>
 <br>
 크기 조절
 <hr>
@@ -79,6 +85,8 @@
   var canvas = new fabric.Canvas('canvas');
 //  canvas.setBackgroundColor("yellow");
 
+  canvas.preserveObjectStacking = true;
+
   var rect = new fabric.Rect({
     width: 100,
     height: 100,
@@ -128,6 +136,36 @@
 
 
   /* 이벤트 */
+
+  // 도형 추가
+  $('#add_rect').on('click', function() {
+    canvas.add(new fabric.Rect({
+      width: 100,
+      height: 100,
+      top: 100,
+      left: 100,
+      fill: 'rgba(100, 100, 255, 1)'
+    })).renderAll();
+  });
+  $('#add_triangle').on('click', function() {
+    canvas.add(new fabric.Triangle({
+      width: 120,
+      height: 100,
+      top: 100,
+      left: 100,
+      fill: 'rgba(255, 100, 100, 1)'
+    })).renderAll();
+  });
+  $('#add_circle').on('click', function() {
+    canvas.add(new fabric.Circle({
+      top: 100,
+      left: 100,
+      radius: 70,
+      fill: 'rgba(255, 255, 100, 1)'
+    })).renderAll();
+  });
+
+
 
   // 채우기
   synchronization('#fill .opacity_range', '#fill .opacity_number');

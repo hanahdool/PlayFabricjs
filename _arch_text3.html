@@ -12,7 +12,7 @@
 <canvas id="c" width="800" height="600" style="border: 1px solid black"></canvas>
 <!--<canvas id="c" width="400" height="200"></canvas>-->
 <br>
-<input type="text" class="text" value="Curved text"><br>
+<input type="text" class="text" value="MAPPLE"><br>
 글자간 간격 : <input type="range"  min="0" max="500" value="50" class="radius" /><br>
 굽은 정도 : <input type="range"  min="0" max="40" value="20" class="spacing" /><br>
 글씨 거꾸로(반대로) : <label><input type="radio" name="reverse" class="reverse" value="true" /> 아래로 </label> <label><input type="radio" name="reverse" class="reverse" value="false" checked="checked" /> 위로</label><br />
@@ -249,7 +249,7 @@ var CurvedText = (function() {
 $(document).ready(function(){
   canvas = new fabric.Canvas('c');
 
-  Example = new CurvedText( canvas, {angle:50} );
+  Example = new CurvedText( canvas, {angle:0} );
   Example.center();
 
 
