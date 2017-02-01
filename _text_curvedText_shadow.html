@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet" href="_text_curvedText_shadow.css">
   <script src = "js/fabric.js"></script>
   <script src = "js/fabric.curvedText.js"></script>
   <script src = "js/underscore.js"></script>
@@ -15,143 +16,148 @@
   <!--<input type="color" id="textColor">-->
 <!--</div>-->
 
-<div style="display: inline-block; border: 1px solid black" >
+<div style="display: inline-block;" >
   <canvas id="canvas" width="800" height="800" style="border: 1px solid black"></canvas>
 </div>
 
 
-<div style="display: inline-block; border: 1px solid black; vertical-align: top">
+<div id="editor" style="display: inline-block; vertical-align: top">
 
   <!-- _shadow.html -->
-<div id="basic">
+  <div id="basic">
 
 
-  <div id="alignment">
-    <label><b>v 정렬</b></label>
-    <br>
-    앵글 회전, 크기x 너비 , 크기y 높이, (v비율유지), 위치top, 위치left
-    뒤집기?
-    <br>
-    뒤로, 앞으로, 맨 뒤로, 맨 앞으로
-
-  </div>
-  <hr>
-  <div id="fill">
-    <label><b>v 채우기</b></label>
-    <br>
-    색깔 <input class="color" type="color"/> <button id="no_fill_btn">채우기 없음</button>
-    <br>
-    불투명도 <input class="opacity_range" type="range" min="0" max="100" value="100"/><input class="opacity_number" type="number" value="100"/>
-  </div>
-  <hr>
-
-  <div id="stroke" class="option">
-    <label><input type ="checkbox" class="checkbox"><b>테두리</b></label>
-    <div class="settings" hidden>
+    <div id="alignment">
+      <label><b>v 정렬</b></label>
       <br>
-      스타일
-      <select class="style" id="stroke_style">
-        <option value="0">선0</option>
-        <option value="1">선1</option>
-        <option value="2">선2</option>
-        <option value=3>선3</option>
-        <option value=4>선4</option>
-        <option value=5>선5</option>
-      </select>
+      앵글 회전, 크기x 너비 , 크기y 높이, (v비율유지), 위치top, 위치left
+      뒤집기?
       <br>
-      두께 <input class="range" id="width_range" type="range" min="0" max="100" value="3"/><input class="number" id="width_number" type="number" value="3"/>
-      <br>
-      색깔 <input class="color" type="color"/>
-    </div>
-  </div>
-  <hr>
-
-
-  <div id="shadow" class="option">
-    <label><input type ="checkbox" class="checkbox"><b>그림자</b></label>
-    <div class="settings" hidden>
-      <br>
-      흐림(번짐 효과) <input id="blur_range" type="range" min="0" max="100" value="10"/><input id="blur_number" type="number" value="10"/>
-      <br>
-      오프셋X <input id="offsetX_range" type="range" min="-50" max="50" value="10"/><input id="offsetX_number" type="number" value="10"/>
-      <br>
-      오프셋Y <input id="offsetY_range" type="range" min="-50" max="50" value="10"/><input id="offsetY_number" type="number" value="10"/>
-      <br>
-      <del>불투명도</del> <input id="opacity_range" type="range" min="0" max="100" value="50"/><input id="opacity_number" type="number" value="50"/>
-      <br>
-      그림자 색깔 <input class="color" id="color" type="color"/> <!-- 직접 입력할 수도 있게? -->
+      뒤로, 앞으로, 맨 뒤로, 맨 앞으로
 
     </div>
-  </div>
-
-  <hr>
-
-  <div id="mirror" class="option">
-    <label><input type ="checkbox" class="checkbox"><del><b>반사</b></del></label>
-    <div class="settings" hidden>
+    <hr>
+    <div id="fill">
+      <label><b>v 채우기</b></label>
       <br>
-      <input class="range" type="range" min="0" max="100" value="50"/><input class="number" type="number" value="50"/>
+      색깔 <input class="color" type="color"/> <button id="no_fill_btn">채우기 없음</button>
+      <br>
+      불투명도 <input class="opacity_range" type="range" min="0" max="100" value="100"/><input class="opacity_number" type="number" value="100"/>
     </div>
+    <hr>
+
+    <div id="stroke" class="option">
+      <label><input type ="checkbox" class="checkbox"><b>테두리</b></label>
+      <div class="settings" hidden>
+        <br>
+        스타일
+        <select class="style" id="stroke_style">
+          <option value="0">선0</option>
+          <option value="1">선1</option>
+          <option value="2">선2</option>
+          <option value=3>선3</option>
+          <option value=4>선4</option>
+          <option value=5>선5</option>
+        </select>
+        <br>
+        두께 <input class="range" id="width_range" type="range" min="0" max="100" value="3"/><input class="number" id="width_number" type="number" value="3"/>
+        <br>
+        색깔 <input class="color" type="color"/>
+      </div>
+    </div>
+    <hr>
+
+
+    <div id="shadow" class="option">
+      <label><input type ="checkbox" class="checkbox"><b>그림자</b></label>
+      <div class="settings" hidden>
+        <br>
+        흐림(번짐 효과) <input id="blur_range" type="range" min="0" max="100" value="10"/><input id="blur_number" type="number" value="10"/>
+        <br>
+        오프셋X <input id="offsetX_range" type="range" min="-50" max="50" value="10"/><input id="offsetX_number" type="number" value="10"/>
+        <br>
+        오프셋Y <input id="offsetY_range" type="range" min="-50" max="50" value="10"/><input id="offsetY_number" type="number" value="10"/>
+        <br>
+        <del>불투명도</del> <input id="opacity_range" type="range" min="0" max="100" value="50"/><input id="opacity_number" type="number" value="50"/>
+        <br>
+        그림자 색깔 <input class="color" id="color" type="color"/> <!-- 직접 입력할 수도 있게? -->
+
+      </div>
+    </div>
+
+    <hr>
+
+    <div id="mirror" class="option">
+      <label><input type ="checkbox" class="checkbox"><del><b>반사</b></del></label>
+      <div class="settings" hidden>
+        <br>
+        <input class="range" type="range" min="0" max="100" value="50"/><input class="number" type="number" value="50"/>
+      </div>
+    </div>
+
   </div>
-
-
-
-</div>
 
   <hr>
   <hr>
   <!-- ------------------------------------------------------------------------------------------------------------ -->
 
-  <label><b>텍스트</b></label>
-  <br>
-  <label>[ 부분적용 가능 ]</label>
-  <br>
-  <span>글씨색</span><input type="color" id="textColor"> <!-- value="#ff0000" 초기 색깔 -->
-  <span>글씨배경색</span><input type="color" id="textBackgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
-  <span>글씨크기</span><input type="number" id="textSize" value=50> <!-- value="#ff0000" 초기 색깔 -->
-  <!--<button>글씨체</button>-->
+  <div id="text" class="option"> <!-- class="settings" ?? -->
 
-  <br>
-  <span>글자 테두리 : </span>
-  <span>색깔</span><input type="color" id="textStrokeColor">
-  <span>두께</span><input type="number" id="textStrokeWidth" value="1">
+    <label><b>텍스트</b></label>
+    <br>
+    <label>[ 부분적용 가능 ]</label>
+    <br>
+    <span>글씨색</span><input type="color" id="textColor"> <!-- value="#ff0000" 초기 색깔 -->
+    <span>글씨배경색</span><input type="color" id="textBackgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
+    <span>글씨크기</span><input type="number" id="textSize" value=50> <!-- value="#ff0000" 초기 색깔 -->
+    <!--<button>글씨체</button>-->
 
-  <br>
-  <button id="bold" onclick="fontWeight_bold()">B</button>
-  <button id="italic" onclick="fontStyle_italic()">I</button>
-  <br>
-  <button id="underLine" onclick="textLine_under()">_</button>
-  <button id="middleLine" onclick="textLine_middle()">―</button> <!-- lineThrough -->
-  <button id="overLine" onclick="textLine_over()">￣</button>
-  <br>
-  <br>
-  <label>[ 부분적용 불가능 ]</label>
-  <br>
-  <span>배경색</span><input type="color" id="backgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
-  <button id="left" onclick="textAlign_left()">left</button>
-  <button id="center" onclick="textAlign_center()">center</button>
-  <button id="right" onclick="textAlign_right()">right</button>
-  <br>
-  <span>줄간격</span><input type="number" id="lineHeight" value="1"/>
-  <span>padding</span><input type="number" id="padding" value="0" min="0"/> <!-- 음수값도 되긴 하넹.. -->
-  <br>
-  <button id="pattern" onclick="loadPattern()">패턴 입히기</button>
-  <br>
+    <br>
+    <span>글자 테두리 : </span>
+    <span>색깔</span><input type="color" id="textStrokeColor">
+    <span>두께</span><input type="number" id="textStrokeWidth" value="1">
+
+    <br>
+    <button id="bold" onclick="fontWeight_bold()">B</button>
+    <button id="italic" onclick="fontStyle_italic()">I</button>
+    <br>
+    <button id="underLine" onclick="textLine_under()">_</button>
+    <button id="middleLine" onclick="textLine_middle()">―</button> <!-- lineThrough -->
+    <button id="overLine" onclick="textLine_over()">￣</button>
+    <br>
+    <br>
+    <label>[ 부분적용 불가능 ]</label>
+    <br>
+    <span>배경색</span><input type="color" id="backgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
+    <button id="left" onclick="textAlign_left()">left</button>
+    <button id="center" onclick="textAlign_center()">center</button>
+    <button id="right" onclick="textAlign_right()">right</button>
+    <br>
+    <span>줄간격</span><input type="number" id="lineHeight" value="1"/>
+    <span>padding</span><input type="number" id="padding" value="0" min="0"/> <!-- 음수값도 되긴 하넹.. -->
+    <br>
+    <button id="pattern" onclick="loadPattern()">패턴 입히기</button>
+    <br>
+  </div>
 
   <hr>
-  <label><b>워드아트</b></label>
-  <br>
+  <hr>
 
-  <input type="text" id="text" value="CurvedText" /><br>
-  Reverse : <input type="checkbox" name="reverse" id="reverse" /><br>
-  Radius : <input type="range"  min="0" max="400" value="50" id="radius" /><br>
-  Spacing : <input type="range"  min="5" max="40" value="20" id="spacing" /><br>
-  Angle : 0 <input type="range"  min="0" max="360" value="0" id="angle" /> 360 <br>  <!-- 공통 -->
-  <!--Color : <input type="color"  value="blue" id="fill" /><br>-->
+  <div id="wordArt" class="option"> <!-- class="settings" ?? -->
+    <label><b>워드아트</b></label>
+    <br>
 
-  <br>
-  <button id="convert">Convert Text/Curved</button>
+    <input type="text" id="text_input" value="aaaaaaaaa" /><br>
+    Reverse : <input type="checkbox" name="reverse" id="reverse" /><br>
+    Radius : <input type="range"  min="0" max="400" value="50" id="radius" /><br>
+    Spacing : <input type="range"  min="5" max="40" value="20" id="spacing" /><br>
+    Angle : 0 <input type="range"  min="0" max="360" value="0" id="angle" /> 360 <br>  <!-- 공통 -->
+    <!--Color : <input type="color"  value="blue" id="fill" /><br>-->
 
+    <br>
+    <button id="convert">Convert Text/Curved</button>
+
+  </div>
 
   <hr>
   v기타
@@ -415,10 +421,10 @@
 //        fontFamily: 'Arial'
   });
   canvas.add(CurvedText).renderAll();
-  canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
-  $('#text').keyup(function(){
+//  canvas.setActiveObject(canvas.item(canvas.getObjects().length-1));
+  $('#text_input').keyup(function(){
     var obj = canvas.getActiveObject();
-    if(obj){
+    if(obj) {
       obj.setText(this.value);
       canvas.renderAll();
     }
@@ -496,15 +502,47 @@
 
     canvas.on('selection:cleared', onDeSelected);
     canvas.on('object:selected', onSelected);
-    canvas.on('selection:created', onSelected);
+//    canvas.on('selection:created', onSelected);
   var obj;
   function onSelected(){
-    console.log("on selected!");
     obj = canvas.getActiveObject();
     if (!obj) return;
 
+    // 채우기
+    set_fill_html(obj.fill);
+
+    // 테두리
+    if (obj.stroke) {
+      set_stroke_html(_.findKey(stroke_dash_ary, obj.strokeDashArray), obj.strokeWidth, obj.stroke); // style, width, color
+      $('#stroke .settings').show();
+      $('#stroke .checkbox').prop("checked", true);
+    } else {
+      $('#stroke .checkbox').prop("checked", false);
+      $('#stroke .settings').hide();
+    }
+
+    // 그림자
+    if (obj.shadow) {
+      var o = obj.shadow;
+      set_shadow_html(o.blur, o.offsetX, o.offsetY, o.color); // blur, offsetX, offsetY, color
+      $('#shadow .settings').show();
+      $('#shadow .checkbox').prop("checked", true);
+    } else {
+      $('#shadow .checkbox').prop("checked", false);
+      $('#shadow .settings').hide();
+    }
+
+    // 반사
+
+
+    if (obj.type == 'curvedText') {
+      $('#wordArt').show();
+    } else {
+      $('#wordArt').hide();
+    }
+
 /*
-    $('#text').val(obj.getText());
+    $('#text_input').val(obj.getText());
     $('#reverse').prop('checked', obj.get('reverse'));
     $('#radius').val(obj.get('radius'));
     $('#angle').val(obj.get('angle'));
@@ -512,13 +550,16 @@
 */
 //    $('#fill').val(obj.getFill());
   }
-  function onDeSelected(){ // 아무것도 안눌렸을 때
-    console.log("on deSelected!");
-
-    $('.option').attr("checked", false);
+  function onDeSelected(){ // 아무것도 안눌렸을 때 - 아예 다 감춰야 하나?
+    $('.checkbox').prop("checked", false);
     $('.settings').hide();
+    $('#wordArt').hide();
+
+//    $('#basic').hide();
+//    $('#editor').hide();
+
     /*
-        $('#text').val('');
+        $('#text_input').val('');
         $('#reverse').prop('checked', false);
         $('#angle').val(obj.get(0));
         $('#radius').val(50);
@@ -604,7 +645,7 @@
     // opacity: 1, // default
 
 
-    stroke: "rgb(0,0,0)",
+    stroke: "#000000",
     strokeWidth: 3,
 //    strokeLineCap: "square", // "buff" "round" "square"  이 두개는 뭔지 모르겠음
 //    strokeLineCap: "square", // "buff" "round" "square"  이 두개는 뭔지 모르겠음a
@@ -640,7 +681,7 @@
 
 
   canvas.add(rect); // 이미지, 텍스트 다 적용해보기
-  canvas.setActiveObject(rect);
+//  canvas.setActiveObject(rect);
 
 
   /* 이벤트 */
@@ -785,51 +826,28 @@
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
   $('#stroke .checkbox').on('click', function(e) {
-    var active = canvas.getActiveObject();
     if (e.target.checked) {
       $('#stroke .settings').show();
       var style = 0, width = 2, color = "#000000";
-      // 값 초기화 셋팅
-      $('#stroke .style').val(style);
-      $('#stroke .range').val(width); $('#stroke .number').val(width);
-      $('#stroke .color').val(color); // black
-      // 값 가져와서 도형 셋팅
-      active.setStrokeDashArray(style); //---------------------------------- 이 두개 워드아트는 안먹음 ㅜㅜ
-      active.setStrokeWidth(width); //active.set("strokeWidth",width);
-      active.setStroke(color);
-
+      set_stroke_html(style, width, color);
+      set_stroke_active(style, width, color);
     } else {
       $('#stroke .settings').hide();
-      // 도형 stroke 없애기
-      active.strokeWidth = 0;
+      canvas.getActiveObject().setStroke();
     }
     canvas.renderAll();
   });
 
   $('#shadow .checkbox').on('click', function(e) {
-    var active = canvas.getActiveObject();
     if (e.target.checked) {
       $('#shadow .settings').show();
-      // 값 초기화 셋팅
       var blur = 10, offsetX = 10, offsetY = 10, opacity = 100, color = "#333333";
-      $('#shadow #blur_range').val(blur); $('#shadow #blur_number').val(blur);
-      $('#shadow #offsetX_range').val(offsetX); $('#shadow #offsetX_number').val(offsetX);
-      $('#shadow #offsetY_range').val(offsetY); $('#shadow #offsetY_number').val(offsetY);
-      $('#shadow #opacity_range').val(opacity); $('#shadow #opacity_number').val(opacity);
-      $('#shadow .color').val(color);
-      // 값 가져와서 도형 셋팅
-      active.setShadow({
-        color: color,
-        blur: blur,
-        offsetX: offsetX,
-        offsetY: offsetY
-      });
+      set_shadow_html(blur, offsetX, offsetY, opacity, color);
+      set_shadow_active(blur, offsetX, offsetY, opacity, color);
     } else {
       $('#shadow .settings').hide();
-      active.setShadow();
+      canvas.getActiveObject().setShadow();
     }
     canvas.renderAll();
   });
@@ -844,7 +862,39 @@
   });
 
 
+  function set_fill_html(color) {
+    $('#fill .color').val(color);
+  }
 
+  function set_stroke_html(style, width, color) {
+    // style = _.findKey(stroke_dash_ary, style) 이거나 둘다 되게
+    $('#stroke .style').val(style);
+    $('#stroke .range').val(width); $('#stroke .number').val(width);
+    $('#stroke .color').val(color); // black
+  }
+  function set_stroke_active(style, width, color) {
+    var active = canvas.getActiveObject();
+    active.setStrokeDashArray(stroke_dash_ary[style]); //---------------------------------- 이 두개 워드아트는 안먹음 ㅜㅜ
+    active.setStrokeWidth(width); //active.set("strokeWidth",width);
+    active.setStroke(color);
+
+  }
+
+  function set_shadow_html(blur, offsetX, offsetY, opacity, color) {
+    $('#shadow #blur_range').val(blur); $('#shadow #blur_number').val(blur);
+    $('#shadow #offsetX_range').val(offsetX); $('#shadow #offsetX_number').val(offsetX);
+    $('#shadow #offsetY_range').val(offsetY); $('#shadow #offsetY_number').val(offsetY);
+    $('#shadow #opacity_range').val(opacity); $('#shadow #opacity_number').val(opacity);
+    $('#shadow .color').val(color);
+  }
+  function set_shadow_active(blur, offsetX, offsetY, opacity, color) {
+    canvas.getActiveObject().setShadow({
+      color: color,
+      blur: blur,
+      offsetX: offsetX,
+      offsetY: offsetY
+    });
+  }
 
 </script>
 
