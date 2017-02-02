@@ -16,52 +16,71 @@
   <!--<input type="color" id="textColor">-->
 <!--</div>-->
 
-<div id="add_object">
-  <br>
-  <b>도형 추가</b>
-  <br>
-  <button id="add_rect"> 사각형 추가 </button>
-  <button id="add_triangle"> 삼각형 추가 </button>
-  <button id="add_circle"> 원 추가 </button>
-  <br>
-  <hr>
-  @@ To do!!! @@ <br>
-  <button id="add_text"> 텍스트 추가 </button>
-  <button id="add_wordArt"> 워드아트 추가 </button>
-  <button id="add_image"> 이미지 추가 </button>
+<div id="toolbar">
+  <div id="add_object">
+    <br>
+    <b>객체 추가</b>
+    <br>
+    <button id="add_rect"> 사각형 추가 </button>
+    <button id="add_triangle"> 삼각형 추가 </button>
+    <button id="add_circle"> 원 추가 </button>
+    <button id="add_text"> 텍스트 추가 </button>
+    <button id="add_wordArt"> 워드아트 추가 </button>
+    <button id="add_image"> 이미지 추가 </button>
+  </div>
+  <div id="undo_redo">
+    <button id="undo"> undo </button>
+    <button id="redo"> redo </button>
+  </div>
+</div>
 
-  <br>
-  <button id="undo"> undo </button>
-  <button id="redo"> redo </button>
+<div id="canvas-wrapper">
+  <canvas id="canvas" width="800" height="800"></canvas>
 </div>
 
 
-
-<div style="display: inline-block" >
-  <canvas id="canvas" width="800" height="800" style="border: 1px solid black"></canvas>
-</div>
+<div id="editor">
 
 
-<div id="editor" style="display: inline-block; vertical-align: top">
 
-  <!-- _shadow.html -->
+  <div id="fixed">
+
+
+  </div>
+
   <div id="basic">
-
 
     <div id="alignment">
       <label><b>v 정렬</b></label>
       <br>
-      앵글 회전, 크기x 너비 , 크기y 높이, (v비율유지), 위치top, 위치left
-      뒤집기?
       <br>
-      뒤로, 앞으로, 맨 뒤로, 맨 앞으로
+      <button>뒤로</button>
+      <button>앞으로</button>
+      <button>맨 뒤로</button>
+      <button>맨 앞으로</button>
       <br>
-      그룹 묶기, 그룹 해제, 좌우반전 상하반전
+      <button>그룹묶기</button>
+      <button>그룹풀기</button>
       <br>
-      센터 정렬, 지우기, 자르기
-
+      센터 정렬?, 지우기, 자르기
+      <hr>
+      [회전] <input id="angle_range" type="range" min="-360" max="360" value="0"/> <input id="angle_number" type="number" value="0"/>
+      <hr>
+      [위치]
+      <br>
+      x <input id="left_range" type="range" min="-100" max="800" value="0"/> <input id="left_number" type="number" value="0"/>
+      y <input id="top_range" type="range" min="-100" max="800" value="0"/> <input id="top_number" type="number" value="0"/>
+      <hr>
+      [크기]
+      <br>
+      너비 <input id="width_range" type="range" min="-100" max="800" value="0"/> <input id="width_number" type="number" value="0"/>
+      높이 <input id="height_range" type="range" min="-100" max="800" value="0"/> <input id="height_number" type="number" value="0"/>
+      <br>
+      <input type="checkbox"> 비율 유지
+      <hr>
+      <input type="checkbox"> 상하반전
+      <input type="checkbox"> 좌우반전
     </div>
-    <hr>
     <div id="fill">
       <label><b>v 채우기</b></label>
       <br>
@@ -69,7 +88,6 @@
       <br>
       불투명도 <input class="opacity_range" type="range" min="0" max="100" value="100"/><input class="opacity_number" type="number" value="100"/>
     </div>
-    <hr>
 
     <div id="stroke" class="option">
       <label><input type ="checkbox" class="checkbox"><b>테두리</b></label>
@@ -90,14 +108,12 @@
         색깔 <input class="color" type="color"/>
       </div>
     </div>
-    <hr>
-
 
     <div id="shadow" class="option">
       <label><input type ="checkbox" class="checkbox"><b>그림자</b></label>
       <div class="settings" hidden>
         <br>
-        흐림(번짐 효과) <input id="blur_range" type="range" min="0" max="100" value="10"/><input id="blur_number" type="number" value="10"/>
+        흐림(번짐 효과) <input id="blur_range" type="range" min="0" max="100" value="5"/><input id="blur_number" type="number" value="5"/>
         <br>
         오프셋X <input id="offsetX_range" type="range" min="-50" max="50" value="10"/><input id="offsetX_number" type="number" value="10"/>
         <br>
@@ -110,7 +126,6 @@
       </div>
     </div>
 
-    <hr>
 
     <div id="mirror" class="option">
       <label><input type ="checkbox" class="checkbox"><del><b>반사</b></del></label>
@@ -122,8 +137,6 @@
 
   </div>
 
-  <hr>
-  <hr>
   <!-- ------------------------------------------------------------------------------------------------------------ -->
 
   <div id="text" class="option"> <!-- class="settings" ?? -->
@@ -175,9 +188,6 @@
     <br>
   </div>
 
-  <hr>
-  <hr>
-
   <div id="wordArt" class="option"> <!-- class="settings" ?? -->
     <label><b>워드아트</b></label>
     <br>
@@ -221,6 +231,7 @@
     fontSize: 50,
     left: 100,
     top: 100,
+    fill: "#000000",
     lineHeight: 1,
     originX: 'left',
     fontFamily: 'Helvetica',   // "Cursive"
@@ -607,6 +618,7 @@
 
   var r = function() { canvas.renderAll(); };
   var a = function() { return canvas.getActiveObject(); };
+  var g = function() { return canvas.getActiveGroup(); };
 
 
 
@@ -651,13 +663,13 @@
 //  var o = { color: "rgba(1,0,0,0.3)", offsetX: 5, offsetY: 5}
 
   text.setShadow({
-    color: "rgba(255,0,0,0.3)",
-    blur: 0, // 주로 0 ~ 20
+    color:'#999999',//"rgba(255,0,0,0.3)",
+    blur: 5, // 주로 0 ~ 20
     offsetX: 5, // 주로 0.00001 ? ~ 20
     offsetY: 5
   });
 
-  text.setShadow("3px 3px 0px rgba(255, 0, 0, 0.5)"); // offsetX, offsetY, blur, color
+//  text.setShadow("3px 3px 0px rgba(255, 0, 0, 0.5)"); // offsetX, offsetY, blur, color
   // 근데, shadow를 주는 방식은 어떻게 할 건지? - keynote 효과 참고!!!
 
   canvas.renderAll();
@@ -678,7 +690,7 @@
     height: 100,
     top: 400,
     left: 100,
-    fill:'rgba(150, 150, 255, 1)',
+    fill: '#9999ff',//'rgba(150, 150, 255, 1)',
     // opacity: 1, // default
 
 
@@ -691,7 +703,7 @@
   });
 
   rect.setShadow({
-    color: "rgba(0,0,0,0.5)", // 그림자의 불투명도는 적당히 fix 시켜두기? 바꿀때마다.. fix가 되나? - fix 안됨 1로됨 ㅜㅜ// 불투명도 0 ~ 100
+    color: '#555555',//"rgba(0,0,0,0.5)", // 그림자의 불투명도는 적당히 fix 시켜두기? 바꿀때마다.. fix가 되나? - fix 안됨 1로됨 ㅜㅜ// 불투명도 0 ~ 100
     blur: 10, // 0 ~ 100
     offsetX: 10, // -50 ~ 50
     offsetY: 10
@@ -879,7 +891,7 @@
   $('#shadow .checkbox').on('click', function(e) {
     if (e.target.checked) {
       $('#shadow .settings').show();
-      var blur = 10, offsetX = 10, offsetY = 10, opacity = 100, color = "#333333";
+      var blur = 5, offsetX = 10, offsetY = 10, opacity = 100, color = "#333333";
       set_shadow_html(blur, offsetX, offsetY, opacity, color);
       set_shadow_active(blur, offsetX, offsetY, opacity, color);
     } else {
@@ -910,11 +922,18 @@
     $('#stroke .color').val(color); // black
   }
   function set_stroke_active(style, width, color) {
-    var active = canvas.getActiveObject();
-    active.setStrokeDashArray(stroke_dash_ary[style]); //---------------------------------- 이 두개 워드아트는 안먹음 ㅜㅜ
-    active.setStrokeWidth(width); //active.set("strokeWidth",width);
-    active.setStroke(color);
-
+    if (canvas.getActiveObject()) {
+      var active = canvas.getActiveObject();
+      active.setStrokeDashArray(stroke_dash_ary[style]);
+      active.setStrokeWidth(width); //active.set("strokeWidth",width);
+      active.setStroke(color);
+    } else {
+      _.each(canvas.getActiveGroup()._objects, function(o) {
+        o.setStrokeDashArray(stroke_dash_ary[style]);
+        o.setStrokeWidth(width); //active.set("strokeWidth",width);
+        o.setStroke(color);
+      });
+    }
   }
 
   function set_shadow_html(blur, offsetX, offsetY, opacity, color) {
@@ -925,12 +944,24 @@
     $('#shadow .color').val(color);
   }
   function set_shadow_active(blur, offsetX, offsetY, opacity, color) {
-    canvas.getActiveObject().setShadow({
-      color: color,
-      blur: blur,
-      offsetX: offsetX,
-      offsetY: offsetY
-    });
+    if (canvas.getActiveObject()) {
+      canvas.getActiveObject().setShadow({
+        color: color,
+        blur: blur,
+        offsetX: offsetX,
+        offsetY: offsetY
+      });
+    } else {
+      _.each(canvas.getActiveGroup()._objects, function(o) {
+        o.setShadow({
+          color: color,
+          blur: blur,
+          offsetX: offsetX,
+          offsetY: offsetY
+        });
+      });
+    }
+    canvas.renderAll();
   }
 
 </script>
