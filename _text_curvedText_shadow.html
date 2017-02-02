@@ -16,7 +16,28 @@
   <!--<input type="color" id="textColor">-->
 <!--</div>-->
 
-<div style="display: inline-block;" >
+<div id="add_object">
+  <br>
+  <b>도형 추가</b>
+  <br>
+  <button id="add_rect"> 사각형 추가 </button>
+  <button id="add_triangle"> 삼각형 추가 </button>
+  <button id="add_circle"> 원 추가 </button>
+  <br>
+  <hr>
+  @@ To do!!! @@ <br>
+  <button id="add_text"> 텍스트 추가 </button>
+  <button id="add_wordArt"> 워드아트 추가 </button>
+  <button id="add_image"> 이미지 추가 </button>
+
+  <br>
+  <button id="undo"> undo </button>
+  <button id="redo"> redo </button>
+</div>
+
+
+
+<div style="display: inline-block" >
   <canvas id="canvas" width="800" height="800" style="border: 1px solid black"></canvas>
 </div>
 
@@ -34,6 +55,10 @@
       뒤집기?
       <br>
       뒤로, 앞으로, 맨 뒤로, 맨 앞으로
+      <br>
+      그룹 묶기, 그룹 해제, 좌우반전 상하반전
+      <br>
+      센터 정렬, 지우기, 자르기
 
     </div>
     <hr>
@@ -107,6 +132,16 @@
     <br>
     <label>[ 부분적용 가능 ]</label>
     <br>
+    <span>글씨체</span>
+    <select class="style" id="textStyle">
+      <option value="0">글씨체0</option>
+      <option value="1">글씨체1</option>
+      <option value="2">글씨체2</option>
+      <option value=3>글씨체3</option>
+      <option value=4>글씨체4</option>
+      <option value=5>글씨체5</option>
+    </select>
+    <br>
     <span>글씨색</span><input type="color" id="textColor"> <!-- value="#ff0000" 초기 색깔 -->
     <span>글씨배경색</span><input type="color" id="textBackgroundColor"> <!-- value="#ff0000" 초기 색깔 -->
     <span>글씨크기</span><input type="number" id="textSize" value=50> <!-- value="#ff0000" 초기 색깔 -->
@@ -159,23 +194,9 @@
 
   </div>
 
-  <hr>
-  v기타
-  <br>
-  그룹 묶기, 풀기
-
-
-
-
-
 </div>
 
-<br>
-<b>도형 추가</b>
-<br>
-<button id="add_rect"> 사각형 추가 </button>
-<button id="add_triangle"> 삼각형 추가 </button>
-<button id="add_circle"> 원 추가 </button>
+
 
 
 <script>
@@ -232,6 +253,15 @@
   /* 부분적용 가능
   * 참고 https://jsfiddle.net/4nzygs8a/
   * */
+
+  var text_style_ary = ["Helvetica", "Cursive", "Comic Sans", "Delicious", "Hoefler Text", "Impact"];
+
+  $('#textStyle').on("change", function(e) {
+    var val = e.target.value, active = canvas.getActiveObject();
+    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ fontFamily: text_style_ary[val] })//.setCoords();
+    else active.setFontFamily(text_style_ary[val])//.setCoords();
+    canvas.renderAll();
+  });
 
 
   // 색깔
@@ -541,6 +571,12 @@
       $('#wordArt').hide();
     }
 
+    if (obj.type == 'curvedText' || obj.type == 'i-text') {
+      $('#text').show();
+    } else {
+      $('#text').hide();
+    }
+
 /*
     $('#text_input').val(obj.getText());
     $('#reverse').prop('checked', obj.get('reverse'));
@@ -554,6 +590,7 @@
     $('.checkbox').prop("checked", false);
     $('.settings').hide();
     $('#wordArt').hide();
+    $('#text').hide();
 
 //    $('#basic').hide();
 //    $('#editor').hide();
