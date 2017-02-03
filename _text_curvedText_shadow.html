@@ -73,8 +73,8 @@
       <hr>
       [크기]
       <br>
-      너비 <input id="width_range" type="range" min="-100" max="800" value="0"/> <input id="width_number" type="number" value="0"/>
-      높이 <input id="height_range" type="range" min="-100" max="800" value="0"/> <input id="height_number" type="number" value="0"/>
+      너비 <input id="width_range" type="range" min="0" max="800" value="0"/> <input id="width_number" type="number" value="0"/>
+      높이 <input id="height_range" type="range" min="0" max="800" value="0"/> <input id="height_number" type="number" value="0"/>
       <br>
       <input type="checkbox"> 비율 유지
       <hr>
@@ -103,7 +103,7 @@
           <option value=5>선5</option>
         </select>
         <br>
-        두께 <input class="range" id="width_range" type="range" min="0" max="100" value="3"/><input class="number" id="width_number" type="number" value="3"/>
+        두께 <input class="range" type="range" min="0" max="100" value="3"/><input class="number" type="number" value="3"/>
         <br>
         색깔 <input class="color" type="color"/>
       </div>
@@ -397,65 +397,44 @@
   /* 부분적용 불가능 */
 
   // 전체배경 색깔
-    var backgroundColor = document.getElementById('backgroundColor');
-    backgroundColor.addEventListener("input", function() {
-  //    text.setBackgroundColor(backgroundColor.value);
-      canvas.getActiveObject().backgroundColor = backgroundColor.value; // 없애려면 = ""
-      canvas.renderAll();
-    });
-//  $("#backgroundColor").on('input', function(e) {
-//    var val = e.target.value, active = canvas.getActiveObject();
-//    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ backgroundColor: val }).setCoords();
-//    else active.setBackgroundColor(val).setCoords(); // active.backgroundColor = val;
-//    canvas.renderAll();
-//  });
-
-
+  $('#text #backgroundColor').on('input', function(e) {
+    set_attribute_active('backgroundColor', e.target.value);
+    canvas.renderAll();
+  });
 
   // 정렬 - 부분적용 안됨
   function textAlign_left() {
-//    canvas.getActiveObject().textAlign = "left"; canvas.renderAll();
-    canvas.getActiveObject().setTextAlign("left"); canvas.renderAll();
+    set_attribute_active('textAlign', 'left');
+    canvas.renderAll();
   }
   function textAlign_center() {
-//    canvas.getActiveObject().textAlign = "center"; canvas.renderAll();
-    canvas.getActiveObject().setTextAlign("center"); canvas.renderAll();
+    set_attribute_active('textAlign', 'center');
+    canvas.renderAll();
   }
   function textAlign_right() {
-//    canvas.getActiveObject().textAlign = "right"; canvas.renderAll();
-    canvas.getActiveObject().setTextAlign("right"); canvas.renderAll();
+    set_attribute_active('textAlign', 'right');
+    canvas.renderAll();
   }
 
-
   $('#lineHeight').on('input', function(e) {
-    canvas.getActiveObject().lineHeight = e.target.value;
+    set_attribute_active('lineHeight', e.target.value);
     canvas.renderAll();
   });
 
-
-  $('#padding').on('input', function(e) { // 근데 배경은 안채워짐 ㅜㅜ 뭐야이게
-    canvas.getActiveObject().padding = e.target.value;
+  $('#padding').on('input', function(e) { // 이거 필요 없는 듯!! - xxxxxxxxxxxxxxxxxxxx
+    set_attribute_active('padding', e.target.value);
     canvas.renderAll();
   });
-
 
   function loadPattern() {
     fabric.util.loadImage('image/pattern.png', function(img) {
       canvas.getActiveObject().fill = new fabric.Pattern({
         source: img,
-        repeat: 'repeat' // 'no-repeat', 'repeat-x', 'repeat-y'
+        repeat: 'repeat'
       });
       canvas.renderAll();
     });
   }
-
-
-
-
-
-
-
-
 
 
 
@@ -537,14 +516,15 @@
   $('#convert').click(function(){
     var props = {};
     var obj = canvas.getActiveObject();
-    if (obj){
-      if(/curvedText/.test(obj.type)) {
-        default_text = obj.getText();
+    if (obj) {
+      var default_text = obj.getText();
+      if (/curvedText/.test(obj.type)) {
+//        default_text = obj.getText();
         props = obj.toObject();
         delete props['type'];
         var textSample = new fabric.Text(default_text, props);
-      }else if(/text/.test(obj.type)) {
-        default_text = obj.getText();
+      } else if (/text/.test(obj.type)) {
+//        default_text = obj.getText();
         props = obj.toObject();
         delete props['type'];
         props['textAlign'] = 'center';
@@ -568,8 +548,17 @@
 //    canvas.on('selection:created', onSelected);
   var obj;
   function onSelected(){
-    obj = canvas.getActiveObject();// || canvas.getActiveGroup();
+    obj = canvas.getActiveObject() || canvas.getActiveGroup();
     if (!obj) return;
+
+
+    // 정렬
+    set_angle_html(obj.angle);
+    set_left_html(obj.left);
+    set_top_html(obj.top);
+    set_width_html(obj.width);
+    set_height_html(obj.height);
+
 
     // 채우기
     set_fill_html(obj.fill);
@@ -776,11 +765,18 @@
 
 
 
+  // 정렬
+  synchronization('#alignment #angle_range', '#alignment #angle_number');
+  synchronization('#alignment #left_range', '#alignment #left_number');
+  synchronization('#alignment #top_range', '#alignment #top_number');
+  synchronization('#alignment #width_range', '#alignment #width_number');
+  synchronization('#alignment #height_range', '#alignment #height_number');
+
   // 채우기
   synchronization('#fill .opacity_range', '#fill .opacity_number');
 
   // 테두리
-  synchronization('#stroke #width_range', '#stroke #width_number');
+  synchronization('#stroke .range', '#stroke .number');
 
   // 그림자
   synchronization('#shadow #blur_range', '#shadow #blur_number');
@@ -821,7 +817,7 @@
 
 
   /* 테두리 */
-  $('#stroke #width_range, #stroke #width_number').on("input change", function(e) {
+  $('#stroke .range, #stroke .number').on("input change", function(e) {
     set_attribute_active('strokeWidth', parseInt(e.target.value));
 //    canvas.getActiveObject().strokeWidth = parseInt(e.target.value);
     canvas.renderAll();
@@ -936,6 +932,32 @@
   });
 
 
+
+
+  function set_angle_html(angle) {
+    $('#alignment #angle_range').val(angle);
+    $('#alignment #angle_number').val(angle);
+  }
+  function set_left_html(left) {
+    $('#alignment #left_range').val(left);
+    $('#alignment #left_number').val(left);
+  }
+  function set_top_html(top) {
+    $('#alignment #top_range').val(top);
+    $('#alignment #top_number').val(top);
+  }
+  function set_width_html(width) {
+    $('#alignment #width_range').val(width);
+    $('#alignment #width_number').val(width);
+  }
+  function set_height_html(height) {
+    $('#alignment #height_range').val(height);
+    $('#alignment #height_number').val(height);
+  }
+
+
+
+
   function set_fill_html(color) {
     $('#fill .color').val(color);
   }
@@ -1021,6 +1043,32 @@
     }
 
   }
+
+
+  $('#angle_range, #angle_number').on('input change', function(e) { // 이 상 해 ㅜㅜㅜㅜ
+    var active = (canvas.getActiveObject() || canvas.getActiveGroup());
+    active.originX = active.originY = "center"; // 그럼 center의 값 다시 지정해줘야 함
+    active.angle = parseInt(e.target.value);
+    //    active.originX = "left"; active.originY = "top";
+    canvas.renderAll();
+  });
+  $('#left_range, #left_number').on('input change', function(e) {
+    (canvas.getActiveObject() || canvas.getActiveGroup()).left = parseInt(e.target.value);
+    canvas.renderAll();
+  });
+  $('#top_range, #top_number').on('input change', function(e) {
+    (canvas.getActiveObject() || canvas.getActiveGroup()).top = parseInt(e.target.value);
+    canvas.renderAll();
+  });
+  $('#width_range, #width_number').on('input change', function(e) { // scale로 할 것, 보여줄 때는 당연 계산된 값.
+    (canvas.getActiveObject() || canvas.getActiveGroup()).width = parseInt(e.target.value);
+    canvas.renderAll();
+  });
+  $('#height_range, #height_number').on('input change', function(e) {
+    (canvas.getActiveObject() || canvas.getActiveGroup()).height = parseInt(e.target.value);
+    canvas.renderAll();
+  });
+
 
 
 </script>
