@@ -546,7 +546,7 @@
 //    canvas.on('selection:created', onSelected);
   var obj;
   function onSelected(){
-    obj = canvas.getActiveObject();
+    obj = canvas.getActiveObject();// || canvas.getActiveGroup();
     if (!obj) return;
 
     // 채우기
@@ -619,20 +619,6 @@
   var r = function() { canvas.renderAll(); };
   var a = function() { return canvas.getActiveObject(); };
   var g = function() { return canvas.getActiveGroup(); };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -796,18 +782,18 @@
 
   /* 채우기 */
   $('#fill .opacity_range, #fill .opacity_number').on("input change", function(e) {
-    canvas.getActiveObject().opacity = (e.target.value) * 0.01;
+    set_attribute_active('opacity', e.target.value * 0.01);
     canvas.renderAll();
   });
 
   $('#fill .color').on("input change", function(e) {
-    canvas.getActiveObject().set('fill', e.target.value);
+    set_attribute_active('fill', e.target.value);
     canvas.renderAll();
   });
 
   //  no_fill_btn
   $('#fill #no_fill_btn').on("click", function(e) {
-    canvas.getActiveObject().set('fill', "rgba(0,0,0,0)");
+    set_attribute_active('fill');
     canvas.renderAll();
   });
 
@@ -874,6 +860,19 @@
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  var init_stroke = {
+    style: 0,
+    width: 2,
+    color: '#000000'
+  };
+  var init_shadow = {
+    blur: 5,
+    offsetX: 10,
+    offsetY: 10,
+    opacity: 100,
+    color: '#333333'
+  };
+
 
   $('#stroke .checkbox').on('click', function(e) {
     if (e.target.checked) {
@@ -883,7 +882,7 @@
       set_stroke_active(style, width, color);
     } else {
       $('#stroke .settings').hide();
-      canvas.getActiveObject().setStroke();
+      unset_stroke_active();
     }
     canvas.renderAll();
   });
@@ -896,7 +895,7 @@
       set_shadow_active(blur, offsetX, offsetY, opacity, color);
     } else {
       $('#shadow .settings').hide();
-      canvas.getActiveObject().setShadow();
+      unset_shadow_active();
     }
     canvas.renderAll();
   });
@@ -915,25 +914,26 @@
     $('#fill .color').val(color);
   }
 
+  function set_fill_active(color) {
+    set_attribute_active('fill', color);
+  }
+
   function set_stroke_html(style, width, color) {
     // style = _.findKey(stroke_dash_ary, style) 이거나 둘다 되게
     $('#stroke .style').val(style);
     $('#stroke .range').val(width); $('#stroke .number').val(width);
     $('#stroke .color').val(color); // black
   }
+
   function set_stroke_active(style, width, color) {
-    if (canvas.getActiveObject()) {
-      var active = canvas.getActiveObject();
-      active.setStrokeDashArray(stroke_dash_ary[style]);
-      active.setStrokeWidth(width); //active.set("strokeWidth",width);
-      active.setStroke(color);
-    } else {
-      _.each(canvas.getActiveGroup()._objects, function(o) {
-        o.setStrokeDashArray(stroke_dash_ary[style]);
-        o.setStrokeWidth(width); //active.set("strokeWidth",width);
-        o.setStroke(color);
-      });
-    }
+    set_attribute_active('stroke', {   // 이건 안될 것 같은데..
+      strokeDashArray: stroke_dash_ary[style],
+      strokeWidth: width,
+      stroke: color
+    });
+  }
+  function unset_stroke_active() {
+    set_attribute_active('stroke');
   }
 
   function set_shadow_html(blur, offsetX, offsetY, opacity, color) {
@@ -943,26 +943,33 @@
     $('#shadow #opacity_range').val(opacity); $('#shadow #opacity_number').val(opacity);
     $('#shadow .color').val(color);
   }
+
   function set_shadow_active(blur, offsetX, offsetY, opacity, color) {
+    set_attribute_active('shadow', {
+      color: color,
+      blur: blur,
+      offsetX: offsetX,
+      offsetY: offsetY
+    });
+  }
+
+  function unset_shadow_active() {
+    set_attribute_active('shadow');
+  }
+
+
+  // 활성화 되어있는 객체(혹은 그룹)의 속성?을 셋팅
+  function set_attribute_active(attr, val) { // set_option_active
     if (canvas.getActiveObject()) {
-      canvas.getActiveObject().setShadow({
-        color: color,
-        blur: blur,
-        offsetX: offsetX,
-        offsetY: offsetY
-      });
+      canvas.getActiveObject().set(attr, val);
     } else {
       _.each(canvas.getActiveGroup()._objects, function(o) {
-        o.setShadow({
-          color: color,
-          blur: blur,
-          offsetX: offsetX,
-          offsetY: offsetY
-        });
+        o.set(attr, val);
       });
     }
-    canvas.renderAll();
   }
+
+
 
 </script>
 

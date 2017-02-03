@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="76b478c1-26dd-40a6-aea4-1bd8d37df9da" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_text_curvedText_shadow.css" afterPath="$PROJECT_DIR$/_text_curvedText_shadow.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_text_curvedText_shadow.html" afterPath="$PROJECT_DIR$/_text_curvedText_shadow.html" />
     </list>
     <ignored path="PlayFabricjs.iws" />
@@ -28,8 +27,8 @@
       <file leaf-file-name="_text_curvedText_shadow.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_text_curvedText_shadow.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38515902">
-              <caret line="667" column="36" selection-start-line="667" selection-start-column="36" selection-end-line="667" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.20685714">
+              <caret line="626" column="0" selection-start-line="626" selection-start-column="0" selection-end-line="626" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -584,7 +583,13 @@
       <option name="project" value="LOCAL" />
       <updated>1486006956463</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary=".">
+      <created>1486024937762</created>
+      <option name="number" value="00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1486024937762</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -970,8 +975,148 @@
           <line>547</line>
           <option name="timeStamp" value="202" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>883</line>
+          <option name="timeStamp" value="208" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>896</line>
+          <option name="timeStamp" value="209" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>916</line>
+          <option name="timeStamp" value="210" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>822</line>
+          <option name="timeStamp" value="211" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>829</line>
+          <option name="timeStamp" value="212" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>833</line>
+          <option name="timeStamp" value="213" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>837</line>
+          <option name="timeStamp" value="214" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>802</line>
+          <option name="timeStamp" value="216" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>807</line>
+          <option name="timeStamp" value="217" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>851</line>
+          <option name="timeStamp" value="219" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>269</line>
+          <option name="timeStamp" value="220" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>283</line>
+          <option name="timeStamp" value="221" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>296</line>
+          <option name="timeStamp" value="222" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>304</line>
+          <option name="timeStamp" value="223" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>312</line>
+          <option name="timeStamp" value="224" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>320</line>
+          <option name="timeStamp" value="225" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>336</line>
+          <option name="timeStamp" value="226" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>343</line>
+          <option name="timeStamp" value="228" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>352</line>
+          <option name="timeStamp" value="229" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>358</line>
+          <option name="timeStamp" value="230" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>364</line>
+          <option name="timeStamp" value="231" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>380</line>
+          <option name="timeStamp" value="232" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>395</line>
+          <option name="timeStamp" value="233" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>399</line>
+          <option name="timeStamp" value="234" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>403</line>
+          <option name="timeStamp" value="235" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>408</line>
+          <option name="timeStamp" value="236" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>414</line>
+          <option name="timeStamp" value="237" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/_text_curvedText_shadow.html</url>
+          <line>421</line>
+          <option name="timeStamp" value="238" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="207" />
+      <option name="time" value="242" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1216,14 +1361,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/fabric.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63987136">
-          <caret line="8728" column="29" selection-start-line="8728" selection-start-column="29" selection-end-line="8728" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/image/pattern.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -1343,10 +1480,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/fabric.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16827439">
+          <caret line="17980" column="6" selection-start-line="17980" selection-start-column="6" selection-end-line="17980" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/_text_curvedText_shadow.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38515902">
-          <caret line="667" column="36" selection-start-line="667" selection-start-column="36" selection-end-line="667" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.20685714">
+          <caret line="626" column="0" selection-start-line="626" selection-start-column="0" selection-end-line="626" selection-end-column="0" />
           <folding />
         </state>
       </provider>
