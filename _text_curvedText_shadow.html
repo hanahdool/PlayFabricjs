@@ -166,12 +166,12 @@
     <span>두께</span><input type="number" id="textStrokeWidth" value="1">
 
     <br>
-    <button id="bold" onclick="fontWeight_bold()">B</button>
-    <button id="italic" onclick="fontStyle_italic()">I</button>
+    <button id="bold" checking="false">B</button>
+    <button id="italic" checking="false">I</button>
     <br>
-    <button id="underLine" onclick="textLine_under()">_</button>
-    <button id="middleLine" onclick="textLine_middle()">―</button> <!-- lineThrough -->
-    <button id="overLine" onclick="textLine_over()">￣</button>
+    <button id="underLine" checking="false" class="text_line">_</button>
+    <button id="middleLine" checking="false" class="text_line">―</button> <!-- lineThrough -->
+    <button id="overLine" checking="false" class="text_line">￣</button>
     <br>
     <br>
     <label>[ 부분적용 불가능 ]</label>
@@ -268,9 +268,7 @@
   var text_style_ary = ["Helvetica", "Cursive", "Comic Sans", "Delicious", "Hoefler Text", "Impact"];
 
   $('#textStyle').on("change", function(e) {
-    var val = e.target.value, active = canvas.getActiveObject();
-    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ fontFamily: text_style_ary[val] })//.setCoords();
-    else active.setFontFamily(text_style_ary[val])//.setCoords();
+    set_attribute_active_forText('fontFamily', text_style_ary[e.target.value]);
     canvas.renderAll();
   });
 
@@ -282,34 +280,23 @@
 //    canvas.renderAll();
 //  });
   $('#textColor').on('input', function(e) {
-    var val = e.target.value, active = canvas.getActiveObject();
-    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ fill: val }).setCoords();
-    else active.setColor(val).setCoords(); // active.fill = val;
+    set_attribute_active_forText('fill', e.target.value);
     canvas.renderAll();
   });
 
   // 글씨배경 색깔
-//  var textBackgroundColor = document.getElementById('textBackgroundColor');
-//  textBackgroundColor.addEventListener("input", function() {
-//    canvas.getActiveObject().textBackgroundColor = textBackgroundColor.value;
-//    canvas.renderAll();
-//  });
   $('#textBackgroundColor').on('input', function(e) {
-    var val = e.target.value, active = canvas.getActiveObject();
-    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ textBackgroundColor: val }).setCoords();
-    else active.setTextBackgroundColor(val).setCoords(); // active.textBackgroundColor = val;
+    set_attribute_active_forText('textBackgroundColor', e.target.value);
     canvas.renderAll();
   });
 
   // 글자 크기
   $('#textSize').on('input', function(e) {
-    var val = e.target.value, active = canvas.getActiveObject();
-    if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ fontSize: val }).setCoords();
-    else active.setFontSize(val).setCoords(); // active.fontSize = val;
+    set_attribute_active_forText('fontSize', e.target.value);
     canvas.renderAll();
   });
 
-  // 글자 테두리 - 색깔
+  // 글자 테두리 - 색깔 -xxxxxxxxxxxx
   $('#textStrokeColor').on('input', function(e) {
     var val = e.target.value, active = canvas.getActiveObject();
     if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles({ stroke: val }).setCoords();
@@ -317,7 +304,7 @@
     canvas.renderAll();
   });
 
-  // 글자 테두리 - 두께
+  // 글자 테두리 - 두께 -xxxxxxxxxxxx
   $('#textStrokeWidth').on('input', function(e) {
     var val = e.target.value, active = canvas.getActiveObject();
     console.log(e.target.value);
@@ -331,43 +318,78 @@
   // 스타일
 //  function fontWeight_bold() {
 //    var text = canvas.getActiveObject();
-//    text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+//    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ fontWeight: (text.getSelectionStyles().fontWeight == "bold") ? "normal" : "bold" }).setCoords();
+//    else text.setFontWeight((text.fontWeight == "bold") ? "normal" : "bold").setCoords(); // text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+////    set_attribute_active_forText('fontWeight', );
 //    canvas.renderAll();
 //  }
-  function fontWeight_bold() {
-    var text = canvas.getActiveObject();
-    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ fontWeight: (text.getSelectionStyles().fontWeight == "bold") ? "normal" : "bold" }).setCoords();
-    else text.setFontWeight((text.fontWeight == "bold") ? "normal" : "bold").setCoords(); // text.fontWeight = (text.fontWeight == "bold") ? "normal" : "bold";
+  $('#text #bold').on('click', function(e) {
+    if (e.target.getAttribute('checking') == "true") { // $(e.target).attr('checking')
+      set_attribute_active_forText('fontWeight', 'normal');
+      e.target.setAttribute('checking', 'false')
+    } else {
+      set_attribute_active_forText('fontWeight', 'bold');
+      e.target.setAttribute('checking', 'true');
+    }
     canvas.renderAll();
-  }
+  });
 
-  function fontStyle_italic() { //"oblique", "normal", ""
-    var text = canvas.getActiveObject();
-    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ fontStyle: (text.getSelectionStyles().fontWeight == "italic") ? "normal" : "italic" }).setCoords();
-    else text.setFontStyle((text.fontStyle == "italic") ? "normal" : "italic").setCoords(); // text.fontStyle = (text.fontStyle == "italic") ? "normal" : "italic"; //_setStrokeStyles
+//  function fontStyle_italic() { //"oblique", "normal", ""
+//    var text = canvas.getActiveObject();
+//    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ fontStyle: (text.getSelectionStyles().fontWeight == "italic") ? "normal" : "italic" }).setCoords();
+//    else text.setFontStyle((text.fontStyle == "italic") ? "normal" : "italic").setCoords(); // text.fontStyle = (text.fontStyle == "italic") ? "normal" : "italic"; //_setStrokeStyles
+//    canvas.renderAll();
+//  } // fontStyle에도 bold가 있나??
+  $('#text #italic').on('click', function(e) {
+    if (e.target.getAttribute('checking') == "true") {
+      set_attribute_active_forText('fontStyle', 'normal');
+      e.target.setAttribute('checking', 'false')
+    } else {
+      set_attribute_active_forText('fontStyle', 'italic');
+      e.target.setAttribute('checking', 'true');
+    }
     canvas.renderAll();
-  } // fontStyle에도 bold가 있나??
+  });
 
 
     // 라인
-  function textLine_under() {
-    var text = canvas.getActiveObject();
-    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "underline") ? "" : "underline" }).setCoords();
-    else text.setTextDecoration((text.textDecoration == "underline") ? "" : "underline").setCoords();
+
+  $('#text #underLine').on('click', function(e) {
+    if (e.target.getAttribute('checking') == "true") {
+      set_attribute_active_forText('textDecoration', '');
+      e.target.setAttribute('checking', 'false')
+    } else {
+      set_attribute_active_forText('textDecoration', 'underline');
+      $('#text .text_line').attr('checking', 'false'); // 일단 line들 다 false 만들어줘야 함!
+      e.target.setAttribute('checking', 'true');
+    }
     canvas.renderAll();
-  }
-  function textLine_middle() {
-    var text = canvas.getActiveObject();
-    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "line-through") ? "" : "line-through" }).setCoords();
-    else text.setTextDecoration((text.textDecoration == "line-through") ? "" : "line-through").setCoords();
+  });
+
+  $('#text #middleLine').on('click', function(e) {
+    if (e.target.getAttribute('checking') == "true") {
+      set_attribute_active_forText('textDecoration', '');
+      e.target.setAttribute('checking', 'false')
+    } else {
+      set_attribute_active_forText('textDecoration', 'line-through');
+      $('#text .text_line').attr('checking', 'false'); // 일단 line들 다 false 만들어줘야 함!
+      e.target.setAttribute('checking', 'true');
+    }
     canvas.renderAll();
-  }
-  function textLine_over() {
-    var text = canvas.getActiveObject();
-    if (text.setSelectionStyles && text.isEditing) text.setSelectionStyles({ textDecoration: (text.getSelectionStyles().textDecoration == "overline") ? "" : "overline" }).setCoords();
-    else text.setTextDecoration((text.textDecoration == "overline") ? "" : "overline").setCoords();
+  });
+
+  $('#text #overLine').on('click', function(e) {
+    if (e.target.getAttribute('checking') == "true") {
+      set_attribute_active_forText('textDecoration', '');
+      e.target.setAttribute('checking', 'false')
+    } else {
+      set_attribute_active_forText('textDecoration', 'overline');
+      $('#text .text_line').attr('checking', 'false'); // 일단 line들 다 false 만들어줘야 함!
+      e.target.setAttribute('checking', 'true');
+    }
     canvas.renderAll();
-  }
+
+  });
 
 
 
@@ -800,12 +822,14 @@
 
   /* 테두리 */
   $('#stroke #width_range, #stroke #width_number').on("input change", function(e) {
-    canvas.getActiveObject().strokeWidth = parseInt(e.target.value);
+    set_attribute_active('strokeWidth', parseInt(e.target.value));
+//    canvas.getActiveObject().strokeWidth = parseInt(e.target.value);
     canvas.renderAll();
   });
 
   $('#stroke .color').on("input change", function(e) {
-    canvas.getActiveObject().set('stroke', e.target.value);
+    set_attribute_active('stroke', e.target.value);
+//    canvas.getActiveObject().set('stroke', e.target.value);
     canvas.renderAll();
   });
 
@@ -820,22 +844,23 @@
   ];
 
   $('#stroke #stroke_style').on("change", function(e) {
-    canvas.getActiveObject().set("strokeDashArray", stroke_dash_ary[ e.target.value ]);
+    set_attribute_active('strokeDashArray', stroke_dash_ary[ e.target.value ]);
+//    canvas.getActiveObject().set("strokeDashArray", stroke_dash_ary[ e.target.value ]);
     canvas.renderAll();
   });
 
 
   /* 그림자 */
   $('#shadow #blur_range, #shadow #blur_number').on("input change", function(e) {
-    canvas.getActiveObject().shadow.blur = e.target.value;
+    set_attr_attr_active('shadow', 'blur', e.target.value);
     canvas.renderAll();
   });
   $('#shadow #offsetX_range, #shadow #offsetX_number').on("input change", function(e) {
-    canvas.getActiveObject().shadow.offsetX = e.target.value;
+    set_attr_attr_active('shadow', 'offsetX', e.target.value);
     canvas.renderAll();
   });
   $('#shadow #offsetY_range, #shadow #offsetY_number').on("input change", function(e) {
-    canvas.getActiveObject().shadow.offsetY = e.target.value;
+    set_attr_attr_active('shadow', 'offsetY', e.target.value);
     canvas.renderAll();
   });
 
@@ -849,7 +874,8 @@
   //  });
 
   $('#shadow #color').on("input change", function(e) {
-    canvas.getActiveObject().shadow.color = e.target.value;
+    set_attr_attr_active('shadow', 'color', e.target.value);
+//    canvas.getActiveObject().shadow.color = e.target.value;
     canvas.renderAll();
   });
 
@@ -914,9 +940,9 @@
     $('#fill .color').val(color);
   }
 
-  function set_fill_active(color) {
-    set_attribute_active('fill', color);
-  }
+//  function set_fill_active(color) { // 이거 안씀
+//    set_attribute_active('fill', color);
+//  }
 
   function set_stroke_html(style, width, color) {
     // style = _.findKey(stroke_dash_ary, style) 이거나 둘다 되게
@@ -969,6 +995,32 @@
     }
   }
 
+  function set_attr_attr_active(attr, attr2, val) {
+    if (canvas.getActiveObject()) {
+      canvas.getActiveObject()[attr][attr2] = val;
+    } else {
+      _.each(canvas.getActiveGroup()._objects, function(o) {
+        o[attr][attr2] = val;
+      });
+    }
+  }
+
+
+
+  ////////////////////////
+
+  function set_attribute_active_forText(attr, val) { // attr 이렇게 안되면 객체로 받아서??
+    if (canvas.getActiveGroup()) {
+      _.each(canvas.getActiveGroup()._objects, function(o) {
+        o.set(attr, val);
+      })
+    } else { //Object
+      var active = canvas.getActiveObject(), o = {}; o[attr] = val; // 다른 방법 없나
+      if (active.setSelectionStyles && active.isEditing) active.setSelectionStyles(o)//.setCoords();
+      else active.set(attr, val)//.setCoords();
+    }
+
+  }
 
 
 </script>
