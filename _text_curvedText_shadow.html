@@ -543,9 +543,19 @@
 
 
 
-    canvas.on('selection:cleared', onDeSelected);
-    canvas.on('object:selected', onSelected);
-//    canvas.on('selection:created', onSelected);
+//    canvas.on('selection:cleared', onDeSelected);
+//    canvas.on('object:selected', onSelected);
+  canvas.on({
+    'selection:cleared': onDeSelected,
+    'object:selected': onSelected,
+
+    'object:rotating': rotating,
+    'object:scaling': scaling,
+    'object:moving': moving
+  });
+
+
+  //    canvas.on('selection:created', onSelected);
   var obj;
   function onSelected(){
     obj = canvas.getActiveObject() || canvas.getActiveGroup();
@@ -626,6 +636,8 @@
     */
 //    $('#fill').val('#0000FF');
   }
+
+
 
   var r = function() { canvas.renderAll(); };
   var a = function() { return canvas.getActiveObject(); };
@@ -1045,11 +1057,27 @@
   }
 
 
+
+  ///////////////////////////// 여기서부터
+
+
   $('#angle_range, #angle_number').on('input change', function(e) { // 이 상 해 ㅜㅜㅜㅜ
     var active = (canvas.getActiveObject() || canvas.getActiveGroup());
     active.originX = active.originY = "center"; // 그럼 center의 값 다시 지정해줘야 함
+    active.left = ((active.oCoords.mt.x + active.oCoords.mb.x)/2); active.top = ((active.oCoords.mt.y + active.oCoords.mb.y)/2);
     active.angle = parseInt(e.target.value);
-    //    active.originX = "left"; active.originY = "top";
+
+//    canvas.renderAll();
+
+
+//    active.originX = "left"; active.originY = "top";
+//    active.left = active.oCoords.tl.x; active.top = active.oCoords.tl.y;
+    // dom에 위치 update
+    console.log('dom에 위치 update');
+//    $('#left_range, #left_number').val(parseInt(active.left));
+    $('#top_range, #top_number').val(parseInt(active.top));
+
+//    active.setCoords(); // 뭐얔ㅋㅋㅋㅋㅋㅋㅋㅋㅋ
     canvas.renderAll();
   });
   $('#left_range, #left_number').on('input change', function(e) {
