@@ -24,14 +24,14 @@
   canvas.setHeight(500);
   canvas.setWidth(500);
 
-  var crit = new fabric.Rect({ width: 300, height: 300, top: 100, left: 100, fill: 'rgba(255, 0, 0, 1)', evented:false });
+  var crit = new fabric.Rect({ width: 300, height: 300, top: 100, left: 100, fill: 'rgba(255, 0, 0, 1)', evented: false });
   canvas.add(crit);
 
 
   canvas.on({
     'object:moving': prevent1,
-//    'object:scaling' : prevent2
-    'object:scaling' : prevent3
+    'object:scaling' : prevent2 //이게 더 잘되는데
+//    'object:scaling' : prevent3 // 좌 상 은 잘되는데  우 하 가 안됨
   });
 
 
@@ -92,7 +92,6 @@
     }
 
   }
-
 
 
   function prevent3(e) {
